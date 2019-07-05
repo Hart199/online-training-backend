@@ -1,2 +1,2 @@
-# propoo-backend
-Backend for HR Training Management System
+# online-training-backend
+Backend for Online Training Management System
