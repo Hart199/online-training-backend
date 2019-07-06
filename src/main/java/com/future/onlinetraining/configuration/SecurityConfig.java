@@ -58,8 +58,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected AuthenticationFailureHandler loginFailureHandler(){
-        return (request, response, exception)
-                -> response.sendError(0, "Login Failed");
+        return (request, response, exception) -> {
+            response.setStatus(0);
+            response.sendRedirect("/auth/failed");
+        };
     }
 
 }
