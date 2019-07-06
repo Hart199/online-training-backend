@@ -1,0 +1,37 @@
+services:
+  - docker
+
+script:
+  - "mvn -Dmaven.test.skip=true package"
+  - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+  - "docker build -t cacadosman/online-training:future ."
+  - "docker push cacadosman/online-training:future"
+
+#image: docker:latest
+#services:
+#  - docker:dind
+#
+#variables:
+#  DOCKER_DRIVER: overlay2
+#  SPRING_PROFILES_ACTIVE: gitlab-ci
+#
+##force update
+#stages:
+#  - build
+#  - package
+#
+#app-build:
+#  image: maven:3-jdk-8-alpine
+#  stage: build
+#  script:
+#    - "mvn -Dmaven.test.skip=true package"
+#  artifacts:
+#    paths:
+#      - ./target/*.jar
+#
+#app-package:
+#  stage: package
+#  script:
+#    - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+#    - "docker build -t cacadosman/joints19-pemilu-republik-ctf:pemilu ."
+#    - "docker push cacadosman/joints19-pemilu-republik-ctf:pemilu"
