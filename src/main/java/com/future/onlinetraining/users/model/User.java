@@ -1,6 +1,7 @@
 package com.future.onlinetraining.users.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.future.onlinetraining.entity.TrainerRating;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
