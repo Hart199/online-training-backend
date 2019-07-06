@@ -35,55 +35,9 @@ public class ClassroomRepositoryTest {
 
     @Test
     public void getAllClassroomTest(){
-        classroomRepository.deleteAll();
-        moduleRepository.deleteAll();
-        moduleSessionRepository.deleteAll();
-        moduleCategoryRepository.deleteAll();
-
-        ModuleCategory moduleCategory = ModuleCategory.builder()
-                .name("cat1")
-                .build();
-
-        moduleCategory = moduleCategoryRepository.save(moduleCategory);
-
-        ModuleSession moduleSession = ModuleSession.builder()
-                .description("desc1")
-                .isExam(false)
-                .startTime(1000)
-                .build();
-
-        moduleSessionRepository.save(moduleSession);
-
-        List<ModuleSession> moduleSessions = moduleSessionRepository.findAll();
-
-        Module module = Module.builder()
-                .name("module1")
-                .timePerSession(60)
-                .description("desc")
-                .moduleCategory(moduleCategory)
-                .moduleSessions(moduleSessions)
-                .build();
-
-        module = moduleRepository.save(module);
-
-        Classroom classroom = Classroom.builder()
-                .name("class1")
-                .min_member(1)
-                .max_member(5)
-                .status("active")
-                .module(module)
-                .build();
-
-        classroomRepository.save(classroom);
 
         Assert.assertNotNull(classroomRepository.findAll());
-        System.out.println(classroomRepository.findAll());
         System.out.println(classroomRepository.findAll(PageRequest.of(0, 5)));
-
-        classroomRepository.deleteAll();
-        moduleRepository.deleteAll();
-        moduleSessionRepository.deleteAll();
-        moduleCategoryRepository.deleteAll();
     }
 
 

@@ -23,25 +23,12 @@ public class ModuleRepositoryTest {
 
     @Test
     public void getAllModuleTestWithPage(){
-//        ModuleCategory moduleCategory = ModuleCategory.builder()
-//                .name("Machine Learning")
-//                .build();
-//
-//        Module module1 = Module.builder()
-//                .name("Machine Learning 1")
-//                .moduleCategory(moduleCategoryRepository.save(moduleCategory))
-//                .timePerSession(60)
-//                .build();
-//
-//        moduleRepository.save(module1);
+
         Page<Module> modulePage = moduleRepository.all(PageRequest.of(0, 5));
-//        Assert.assertNotNull(module);
-//        System.out.println(module);
 
         for(Module module : modulePage.getContent()) {
             System.out.println(module.getName());
         }
-//        moduleRepository.deleteAll();
-//        moduleCategoryRepository.deleteAll();
+
     }
 }
