@@ -3,10 +3,13 @@ package com.future.onlinetraining.users.service.impl;
 import com.future.onlinetraining.users.model.User;
 import com.future.onlinetraining.users.repository.UserRepository;
 import com.future.onlinetraining.users.service.UserService;
+import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,5 +55,13 @@ public class UserServiceImpl implements UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public ResponseEntity unauthenticated(){
+        return new ResponseHelper<>()
+                .setSuccessStatus(false)
+                .setHttpStatus(HttpStatus.UNAUTHORIZED)
+                .setMessage("Anda belum login")
+                .send();
     }
 }
