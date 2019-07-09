@@ -24,9 +24,6 @@ public class ModuleRating {
     @JsonIgnore
     private Module module;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private User user;
-
     private double value;
 
     private String comment;
