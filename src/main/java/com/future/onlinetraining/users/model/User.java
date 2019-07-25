@@ -56,6 +56,7 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
     private List<TrainerRating> trainerRatings;
 
     @Override
