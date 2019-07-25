@@ -41,6 +41,8 @@ public class DataSeeder {
     TrainerRatingRepository trainerRatingRepository;
     @Autowired
     TrainerRepository trainerRepository;
+    @Autowired
+    ModuleRequestLikeRepository moduleRequestLikeRepository;
 
     @Autowired
     BCryptPasswordEncoder encoder;
@@ -174,6 +176,30 @@ public class DataSeeder {
                 .score(0)
                 .build();
         classroomResult = classroomResultRepository.save(classroomResult);
+
+        moduleRequestRepository.save(
+                ModuleRequest.builder()
+                .moduleCategory(moduleCategory)
+                .user(trainee)
+                .title("Deep Learning")
+                .build()
+        );
+
+        classroomRequestRepository.save(
+                ClassroomRequest.builder()
+                .classroom(classroom)
+                .user(trainee)
+                .status("waiting")
+                .build()
+        );
+
+        classroomRequestRepository.save(
+                ClassroomRequest.builder()
+                        .classroom(classroom)
+                        .user(trainer)
+                        .status("waiting")
+                        .build()
+        );
 
     }
 }
