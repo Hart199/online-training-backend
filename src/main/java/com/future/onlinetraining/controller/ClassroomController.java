@@ -16,16 +16,11 @@ public class ClassroomController {
     @Autowired
     ClassroomService classroomService;
 
-    @GetMapping("/class")
-    public ResponseHelper get(){
-        return new ResponseHelper();
-    }
-
     @GetMapping("/classrooms/_subscribed")
     public ResponseEntity getSubscribed(@RequestParam("page") int page, @RequestParam("size") int size) {
         return new ResponseHelper<>()
                 .setHttpStatus(HttpStatus.OK)
-                .setParam("data", classroomService.getAllPageableClassroom())
+                .setParam("data", classroomService.getAllSubscribed(page, size))
                 .setSuccessStatus(true)
                 .send();
     }
