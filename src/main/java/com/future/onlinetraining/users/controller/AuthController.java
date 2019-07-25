@@ -31,7 +31,7 @@ public class AuthController {
     public ResponseEntity authFailedController(){
         return new ResponseHelper<>()
                 .setSuccessStatus(false)
-                .setHttpStatus(HttpStatus.UNAUTHORIZED)
+                .setHttpStatus(HttpStatus.OK)
                 .setMessage("Login Gagal")
                 .send();
     }
