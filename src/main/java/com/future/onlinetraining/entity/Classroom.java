@@ -1,5 +1,7 @@
 package com.future.onlinetraining.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.future.onlinetraining.users.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +37,7 @@ public class Classroom {
 
     @OneToMany(mappedBy = "classroom")
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     private List<ClassroomRequest> classroomRequests;
 
     private int min_member;
