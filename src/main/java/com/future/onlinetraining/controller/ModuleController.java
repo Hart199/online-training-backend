@@ -4,6 +4,7 @@ import com.future.onlinetraining.service.ModuleService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,29 @@ public class ModuleController {
                         id, PageRequest.of(page, size)
                 ))
                 .send();
-
     }
+
+    @GetMapping("/modules/_search")
+    public ResponseEntity getRatingBySearchTerms(
+            @RequestParam("page") int page, @RequestParam("size") int size,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "sortByRating", required = false) String sortByRating) {
+
+        Pageable pageable;
+
+        if (sortByRating == null)
+            pageable = PageRequest.of(page, size);
+        else if (sortByRating.equals("descending"))
+            pageable = PageRequest.of(page, size, Sort.by("rating").descending());
+        else
+            pageable = PageRequest.of(page, size, Sort.by("rating").ascending());
+
+        return new ResponseHelper<>()
+                .setSuccessStatus(true)
+                .setHttpStatus(HttpStatus.OK)
+                .setParam("data", moduleService.getAllBySearchTerm(pageable, name, category))
+                .send();
+    }
+
 }
