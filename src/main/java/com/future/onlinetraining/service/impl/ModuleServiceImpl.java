@@ -25,4 +25,9 @@ public class ModuleServiceImpl implements ModuleService {
     public Page<ModuleRating> getRatings(int id, Pageable pageable) {
         return moduleRatingRepository.findAllByModuleId(id, pageable);
     }
+
+    public Page<ModuleData> getAllBySearchTerm(
+            Pageable pageable, String name, String category) {
+        return moduleRepository.getAllBySearhTerm(pageable, name, category);
+    }
 }

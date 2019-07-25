@@ -10,4 +10,8 @@ public interface ModuleService {
 
     Page<ModuleData> getAll(Pageable pageable);
     Page<ModuleRating> getRatings(int id, Pageable pageable);
+    Page<ModuleData> getAllBySearchTerm(
+            Pageable pageable, String name,
+            String category);
+
 }
