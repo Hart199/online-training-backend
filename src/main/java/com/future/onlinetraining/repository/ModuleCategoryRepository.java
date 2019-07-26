@@ -18,4 +18,5 @@ public interface ModuleCategoryRepository extends JpaRepository<ModuleCategory, 
     )
     ModuleCategory getByName(@Param("name") String name);
 
+    ModuleCategory findByName(String name);
 }
