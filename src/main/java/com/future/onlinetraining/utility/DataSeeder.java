@@ -125,8 +125,16 @@ public class DataSeeder {
                 .name("Tutorial Spring Boot 1")
                 .timePerSession(60)
                 .description("Dasar Spring Boot")
+                .status("open")
                 .build();
         module = moduleRepository.save(module);
+        moduleRepository.save(Module.builder()
+                .moduleCategory(moduleCategory)
+                .name("Tutorial Spring Boot 2")
+                .timePerSession(60)
+                .description("Dasar Spring Boot")
+                .status("closed")
+                .build());
 
         ModuleMaterial moduleMaterial = ModuleMaterial.builder()
                 .module(module)
