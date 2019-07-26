@@ -9,8 +9,8 @@ import java.util.HashMap;
 @Component
 public class ResponseHelper<T> {
 
-    private boolean success = false;
-    private HttpStatus httpStatus =  HttpStatus.NOT_FOUND;
+    private boolean success = true;
+    private HttpStatus httpStatus =  HttpStatus.OK;
     private String message = null;
     private HashMap results = new HashMap();
 
