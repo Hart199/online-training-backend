@@ -36,7 +36,11 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
             nativeQuery = true,
             value = "select m.id, m.name as name, avg(mr.value) as rating, m.description as desc, " +
                     "m.time_per_session as timePerSession, mc.name as category, " +
-                    "count(c.id) as classroomCount, count(ms.id) as sessionCount " +
+                    "count(c.id) as classroomCount, count(ms.id) as sessionCount, " +
+                    "(select count(c2.id) from classrooms c2 where c2.status = 'open' and c2.module_id = m.id) as openClassroomCount, " +
+                    "(select count(c2.id) from classrooms c2 where c2.status = 'closed' and c2.module_id = m.id) as closedClassroomCount, " +
+                    "(select case when count(ms.id) > 0 then true else false end " +
+                    "from module_sessions ms2 where ms2.is_exam = true and ms2.module_id = m.id) as hasExam " +
                     "from modules m " +
                     "inner join module_ratings mr " +
                     "on m.id = mr.module_id " +
