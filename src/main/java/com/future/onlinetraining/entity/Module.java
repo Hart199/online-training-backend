@@ -26,6 +26,8 @@ public class Module {
 
     private int timePerSession;
 
+    private String status;
+
     @ManyToOne(fetch =  FetchType.EAGER)
     private ModuleCategory moduleCategory;
 
