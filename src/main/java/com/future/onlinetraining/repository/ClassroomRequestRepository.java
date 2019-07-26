@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ClassroomRequestRepository extends JpaRepository<ClassroomRequest, Integer> {
 
@@ -20,4 +21,9 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
     )
     Page<ClassroomRequestsData> getAll(Pageable pageable);
 
+    @Query(
+            value = "from ClassroomRequest cr where cr.classroom.id = :classroomId and cr.user.id = :userId"
+    )
+    ClassroomRequest findByClassroomIdandUserId(
+            @Param("classroomId") int classroomId, @Param("userId") int userId);
 }
