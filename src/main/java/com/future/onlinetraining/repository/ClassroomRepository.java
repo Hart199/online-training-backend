@@ -1,6 +1,7 @@
 package com.future.onlinetraining.repository;
 
 import com.future.onlinetraining.entity.Classroom;
+import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +29,18 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
     )
     Page<ClassroomSubscribed> findSubscribed(Pageable pageable, @Param("userId") int userId);
 
+    @Query(
+            value = "select new com.future.onlinetraining.entity.projection.ClassroomData(" +
+                    "c.id, c.name, m.name, t.fullname, c.status, c.min_member, c.max_member, " +
+                    "(select count(cres) from cres), " +
+                    "(select count(cr) from cr)) " +
+                    "from Classroom c " +
+                    "inner join c.module m " +
+                    "inner join m.moduleCategory mc " +
+                    "inner join c.trainer t " +
+                    "inner join c.classroomRequests cr " +
+                    "inner join c.classroomResults cres " +
+                    "group by c, m, t"
+    )
+    Page<ClassroomData> all(Pageable pageable);
 }
