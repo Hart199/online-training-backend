@@ -29,7 +29,7 @@ public class ClassroomController {
     public ResponseEntity getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         return new ResponseHelper<>()
                 .setHttpStatus(HttpStatus.OK)
-                .setParam("data", classroomService.getAll(PageRequest.of(page, size)))
+                .setParam("data", classroomService.all())
                 .setSuccessStatus(true)
                 .send();
     }
