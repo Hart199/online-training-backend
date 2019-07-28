@@ -1,6 +1,7 @@
 package com.future.onlinetraining.service.impl;
 
 import com.future.onlinetraining.entity.Classroom;
+import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
 import com.future.onlinetraining.repository.ClassroomRepository;
 import com.future.onlinetraining.service.ClassroomService;
@@ -31,6 +32,10 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     public Page<Classroom> getAll(Pageable pageable) {
         return classroomRepository.findAll(pageable);
+    }
+
+    public Page<ClassroomData> all() {
+        return classroomRepository.all(PageRequest.of(0,5));
     }
 
 
