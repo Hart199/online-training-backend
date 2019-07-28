@@ -36,6 +36,10 @@ public class Classroom {
     private Module module;
 
     @OneToMany(mappedBy = "classroom")
+    @JsonBackReference
+    private List<ClassroomResult> classroomResults;
+
+    @OneToMany(mappedBy = "classroom")
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonBackReference
     private List<ClassroomRequest> classroomRequests;
