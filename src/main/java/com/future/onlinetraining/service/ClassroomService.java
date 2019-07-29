@@ -1,5 +1,6 @@
 package com.future.onlinetraining.service;
 
+import com.future.onlinetraining.dto.ClassroomDTO;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
@@ -12,4 +13,6 @@ public interface ClassroomService {
     Page<Classroom> getAll(Pageable pageable);
     Page<ClassroomSubscribed> getAllSubscribed(int page, int size);
     Page<ClassroomData> all();
+
+    Classroom create(ClassroomDTO classroomDTO);
 }
