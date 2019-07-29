@@ -12,7 +12,7 @@ public interface ClassroomService {
     Page<Classroom> getAllPageableClassroom();
     Page<Classroom> getAll(Pageable pageable);
     Page<ClassroomSubscribed> getAllSubscribed(int page, int size);
-    Page<ClassroomData> all();
+    Page<ClassroomData> all(String name, Boolean hasExam);
 
     Classroom create(ClassroomDTO classroomDTO);
 }

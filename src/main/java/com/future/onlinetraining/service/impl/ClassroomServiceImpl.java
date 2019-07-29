@@ -56,8 +56,8 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroomRepository.findAll(pageable);
     }
 
-    public Page<ClassroomData> all() {
-        return classroomRepository.all(PageRequest.of(0,5));
+    public Page<ClassroomData> all(String name, Boolean hasExam) {
+        return classroomRepository.all(PageRequest.of(0,5), name, hasExam);
     }
 
     @Transactional

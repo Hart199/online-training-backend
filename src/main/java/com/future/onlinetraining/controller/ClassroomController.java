@@ -25,10 +25,13 @@ public class ClassroomController {
     }
 
     @GetMapping("/classrooms")
-    public ResponseEntity getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity getAll(
+            @RequestParam("page") int page, @RequestParam("size") int size,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "hasExam", required = false) Boolean hasExam) {
         return new ResponseHelper<>()
                 .setHttpStatus(HttpStatus.OK)
-                .setParam("data", classroomService.all())
+                .setParam("data", classroomService.all(name, hasExam))
                 .setSuccessStatus(true)
                 .send();
     }

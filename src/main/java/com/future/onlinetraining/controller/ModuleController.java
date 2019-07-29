@@ -56,17 +56,17 @@ public class ModuleController {
             @RequestParam("page") int page, @RequestParam("size") int size,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "category", required = false) String category,
-            @RequestParam(value = "sortByRating", required = false) String sortByRating,
+            @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "hasExam", required = false) Boolean hasExam){
 
         Pageable pageable;
 
-        if (sortByRating == null)
+        if (sortBy == null)
             pageable = PageRequest.of(page, size);
-        else if (sortByRating.equals("descending"))
+        else if (sortBy.equals("rating"))
             pageable = PageRequest.of(page, size, Sort.by("rating").descending());
         else
-            pageable = PageRequest.of(page, size, Sort.by("rating").ascending());
+            pageable = PageRequest.of(page, size, Sort.by("modules.name").descending());
 
         return new ResponseHelper<>()
                 .setSuccessStatus(true)

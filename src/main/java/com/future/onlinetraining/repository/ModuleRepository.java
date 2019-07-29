@@ -57,7 +57,7 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
                     "and concat(:hasExam) = 't') or " +
                     "((select count(ms3.id) from module_sessions ms3 where ms3.module_id = m.id and ms3.is_exam = true) = 0 " +
                     "and concat(:hasExam) = 'f')) " +
-                    "group by m.id, mc.id "
+                    "group by m.id, mc.id"
     )
     Page<ModuleData> getAllBySearhTerm(
             Pageable pageable, @Param("nameParam") String name,

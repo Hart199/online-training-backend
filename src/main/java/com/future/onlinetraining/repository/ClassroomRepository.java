@@ -40,7 +40,14 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
                     "inner join c.trainer t " +
                     "inner join c.classroomRequests cr " +
                     "inner join c.classroomResults cres " +
+                    "inner join m.moduleSessions ms " +
+                    "where (:nameParam is null or lower(m.name) like %:nameParam%) " +
+                    "and (:hasExam is null or " +
+                    "((select count(ms) from ms where ms.isExam = true) > 0 " +
+                    "and :hasExam = true) or " +
+                    "((select count(ms) from ms where ms.isExam = true) = 0 " +
+                    "and :hasExam = false)) " +
                     "group by c, m, t"
     )
-    Page<ClassroomData> all(Pageable pageable);
+    Page<ClassroomData> all(Pageable pageable, @Param("nameParam") String name, @Param("hasExam") Boolean hasExam);
 }
