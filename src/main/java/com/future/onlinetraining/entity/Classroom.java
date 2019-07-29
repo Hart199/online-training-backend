@@ -32,6 +32,7 @@ public class Classroom {
     private User trainer;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinColumn
     private Module module;
 
