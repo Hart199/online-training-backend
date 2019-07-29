@@ -12,6 +12,6 @@ public interface ModuleService {
     Page<ModuleRating> getRatings(int id, Pageable pageable);
     Page<ModuleData> getAllBySearchTerm(
             Pageable pageable, String name,
-            String category);
+            String category, Boolean hasExam);
 
 }

@@ -56,7 +56,8 @@ public class ModuleController {
             @RequestParam("page") int page, @RequestParam("size") int size,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "category", required = false) String category,
-            @RequestParam(value = "sortByRating", required = false) String sortByRating) {
+            @RequestParam(value = "sortByRating", required = false) String sortByRating,
+            @RequestParam(value = "hasExam", required = false) Boolean hasExam){
 
         Pageable pageable;
 
@@ -70,7 +71,7 @@ public class ModuleController {
         return new ResponseHelper<>()
                 .setSuccessStatus(true)
                 .setHttpStatus(HttpStatus.OK)
-                .setParam("data", moduleService.getAllBySearchTerm(pageable, name, category))
+                .setParam("data", moduleService.getAllBySearchTerm(pageable, name, category, hasExam))
                 .send();
     }
 

@@ -52,10 +52,15 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
                     "on mc.id = m.module_category_id " +
                     "where (:nameParam is null or lower(m.name) like concat('%', :nameParam, '%')) " +
                     "and (:categoryParam is null or mc.name = concat(:categoryParam)) " +
+                    "and (:hasExam is null or " +
+                    "((select count(ms3.id) from module_sessions ms3 where ms3.module_id = m.id and ms3.is_exam = true) > 0 " +
+                    "and concat(:hasExam) = 't') or " +
+                    "((select count(ms3.id) from module_sessions ms3 where ms3.module_id = m.id and ms3.is_exam = true) = 0 " +
+                    "and concat(:hasExam) = 'f')) " +
                     "group by m.id, mc.id "
     )
     Page<ModuleData> getAllBySearhTerm(
             Pageable pageable, @Param("nameParam") String name,
-            @Param("categoryParam") String category);
+            @Param("categoryParam") String category, @Param("hasExam") Boolean hasExam);
 
 }

@@ -27,7 +27,7 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     public Page<ModuleData> getAllBySearchTerm(
-            Pageable pageable, String name, String category) {
-        return moduleRepository.getAllBySearhTerm(pageable, name, category);
+            Pageable pageable, String name, String category, Boolean hasExam) {
+        return moduleRepository.getAllBySearhTerm(pageable, name, category, hasExam);
     }
 }
