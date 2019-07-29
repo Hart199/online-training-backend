@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ClassroomRequestRepository extends JpaRepository<ClassroomRequest, Integer> {
 
     @Query(
@@ -26,4 +28,6 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
     )
     ClassroomRequest findByClassroomIdandUserId(
             @Param("classroomId") int classroomId, @Param("userId") int userId);
+
+    List<ClassroomRequest> findAllByClassroomId(int id);
 }
