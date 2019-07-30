@@ -1,6 +1,8 @@
 package com.future.onlinetraining.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "module_ratings")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class ModuleRating {
 
     @Id
@@ -21,7 +24,6 @@ public class ModuleRating {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private Module module;
 
     private double value;

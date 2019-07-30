@@ -1,5 +1,7 @@
 package com.future.onlinetraining.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.future.onlinetraining.repository.ModuleRequestLikeRepository;
 import com.future.onlinetraining.users.model.User;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "module_requests")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class ModuleRequest {
 
     @Id

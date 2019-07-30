@@ -1,7 +1,6 @@
 package com.future.onlinetraining.users.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.*;
 import com.future.onlinetraining.entity.TrainerRating;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +22,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class User implements UserDetails {
 
     @Id
@@ -56,7 +57,6 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<TrainerRating> trainerRatings;
 
     @Override

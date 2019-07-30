@@ -1,8 +1,6 @@
 package com.future.onlinetraining.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "modules")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class Module {
 
     @Id
@@ -35,7 +34,6 @@ public class Module {
     private String status;
 
     @ManyToOne(fetch =  FetchType.EAGER)
-    @JsonBackReference
     private ModuleCategory moduleCategory;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.REMOVE)
@@ -44,7 +42,4 @@ public class Module {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.REMOVE)
     private List<Classroom> classrooms;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.REMOVE)
-    @JsonManagedReference
-    private List<ModuleMaterial> moduleMaterials;
 }
