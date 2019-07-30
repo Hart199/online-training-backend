@@ -1,5 +1,6 @@
 package com.future.onlinetraining.service;
 
+import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
@@ -16,5 +17,6 @@ public interface ModuleService {
             String category, Boolean hasExam);
     Page<ModuleCategory> getAllModuleCategory(Pageable pageable);
     ModuleCategory addModuleCategory(ModuleCategory moduleCategory);
+    ModuleCategory updateModuleCategory(UpdateModuleCategoryDTO updateModuleCategoryDTO);
 
 }

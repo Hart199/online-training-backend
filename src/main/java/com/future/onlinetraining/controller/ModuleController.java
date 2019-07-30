@@ -1,8 +1,10 @@
 package com.future.onlinetraining.controller;
 
+import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.service.ModuleService;
 import com.future.onlinetraining.utility.ResponseHelper;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -94,6 +96,22 @@ public class ModuleController {
                     .setSuccessStatus(false)
                     .setHttpStatus(HttpStatus.OK)
                     .setMessage("Kategori sudah ada")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setParam("data", category)
+                .send();
+    }
+
+    @PutMapping("/_trainer/modules/_categories")
+    public ResponseEntity updateModuleCategory(@RequestBody UpdateModuleCategoryDTO updateModuleCategoryDTO) {
+        ModuleCategory category = moduleService.updateModuleCategory(updateModuleCategoryDTO);
+
+        if (category == null)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setHttpStatus(HttpStatus.OK)
+                    .setMessage("Kategori tidak ditemukan")
                     .send();
 
         return new ResponseHelper<>()

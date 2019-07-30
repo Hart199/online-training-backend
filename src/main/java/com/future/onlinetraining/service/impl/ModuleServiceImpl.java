@@ -1,5 +1,6 @@
 package com.future.onlinetraining.service.impl;
 
+import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
 import com.future.onlinetraining.entity.projection.ModuleData;
@@ -45,5 +46,14 @@ public class ModuleServiceImpl implements ModuleService {
             return null;
 
         return moduleCategoryRepository.save(moduleCategory);
+    }
+
+    public ModuleCategory updateModuleCategory(UpdateModuleCategoryDTO updateModuleCategoryDTO) {
+        ModuleCategory category = moduleCategoryRepository.findByName(updateModuleCategoryDTO.getModuleCategory().getName());
+        if (category == null)
+            return null;
+
+        category.setName(updateModuleCategoryDTO.getNewCategoryName());
+        return moduleCategoryRepository.save(category);
     }
 }
