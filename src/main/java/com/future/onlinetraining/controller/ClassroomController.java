@@ -80,4 +80,19 @@ public class ClassroomController {
                 .setParam("data", newClassroom)
                 .send();
     }
+
+    @GetMapping("/classrooms/{id}")
+    public ResponseEntity getClassroomDetail(@PathVariable("id") Integer id) {
+        Classroom classroom = classroomService.getClassroomDetail(id);
+
+        if (classroom == null)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setMessage("Kelas tidak ditemukan")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setParam("data", classroom)
+                .send();
+    }
 }

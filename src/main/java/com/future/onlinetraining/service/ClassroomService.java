@@ -6,6 +6,7 @@ import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
+import io.swagger.models.auth.In;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,4 +19,5 @@ public interface ClassroomService {
 
     Classroom create(ClassroomDTO classroomDTO);
     Classroom createModuleAndClassroom(ModuleClassroomDTO moduleClassroomDTO);
+    Classroom getClassroomDetail(Integer id);
 }

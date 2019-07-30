@@ -1,7 +1,6 @@
 package com.future.onlinetraining.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import com.future.onlinetraining.users.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "classrooms")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class Classroom {
 
     @Id
@@ -32,23 +33,24 @@ public class Classroom {
     private User trainer;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn
     private Module module;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     @JsonBackReference
     private List<ClassroomResult> classroomResults;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JsonBackReference
     private List<ClassroomRequest> classroomRequests;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JsonBackReference
     private List<ClassroomSession> classroomSessions;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "classroom", cascade = CascadeType.REMOVE)
+    private List<ClassroomMaterial> classroomMaterials;
 
     private int min_member;
 

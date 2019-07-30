@@ -152,5 +152,14 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroomRepository.save(classroom);
     }
 
+    public Classroom getClassroomDetail(Integer id) {
+        Classroom classroom = classroomRepository.find(id);
+
+        if (classroom == null)
+            return  null;
+
+        return classroom;
+    }
+
 //    public Page<C>
 }
