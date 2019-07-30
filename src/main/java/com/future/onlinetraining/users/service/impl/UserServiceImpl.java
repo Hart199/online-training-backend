@@ -53,8 +53,8 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     public ResponseEntity unauthenticated(){
