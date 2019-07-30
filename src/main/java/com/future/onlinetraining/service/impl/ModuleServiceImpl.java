@@ -38,4 +38,12 @@ public class ModuleServiceImpl implements ModuleService {
     public Page<ModuleCategory> getAllModuleCategory(Pageable pageable) {
         return moduleCategoryRepository.findAll(pageable);
     }
+
+    public ModuleCategory addModuleCategory(ModuleCategory moduleCategory) {
+        ModuleCategory category = moduleCategoryRepository.findByName(moduleCategory.getName());
+        if (category != null)
+            return null;
+
+        return moduleCategoryRepository.save(moduleCategory);
+    }
 }

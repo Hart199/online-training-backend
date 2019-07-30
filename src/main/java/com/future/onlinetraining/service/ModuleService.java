@@ -15,5 +15,6 @@ public interface ModuleService {
             Pageable pageable, String name,
             String category, Boolean hasExam);
     Page<ModuleCategory> getAllModuleCategory(Pageable pageable);
+    ModuleCategory addModuleCategory(ModuleCategory moduleCategory);
 
 }

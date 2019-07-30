@@ -1,5 +1,6 @@
 package com.future.onlinetraining.controller;
 
+import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.service.ModuleService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ModuleController {
@@ -87,4 +85,19 @@ public class ModuleController {
                 .send();
     }
 
+    @PostMapping("/_trainer/modules/_categories")
+    public ResponseEntity addModuleCategory(@RequestBody ModuleCategory moduleCategory) {
+        ModuleCategory category = moduleService.addModuleCategory(moduleCategory);
+
+        if (category == null)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setHttpStatus(HttpStatus.OK)
+                    .setMessage("Kategori sudah ada")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setParam("data", category)
+                .send();
+    }
 }
