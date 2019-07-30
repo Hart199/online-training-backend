@@ -5,6 +5,8 @@ import com.future.onlinetraining.service.ClassroomService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +32,19 @@ public class ClassroomController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
             @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "popular", defaultValue = "false") boolean popular,
             @RequestParam(value = "hasExam", required = false) Boolean hasExam) {
+
+        Pageable pageable;
+
+        if (!popular)
+            pageable = PageRequest.of(page, size);
+        else
+            pageable = PageRequest.of(page, size, Sort.by("rating").descending());
+
         return new ResponseHelper<>()
                 .setHttpStatus(HttpStatus.OK)
-                .setParam("data", classroomService.all(name, hasExam))
+                .setParam("data", classroomService.all(name, hasExam, pageable))
                 .setSuccessStatus(true)
                 .send();
     }

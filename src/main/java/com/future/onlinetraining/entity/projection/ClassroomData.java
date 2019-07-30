@@ -17,4 +17,5 @@ public class ClassroomData {
     private int maxMember;
     private long member;
     private long requestCount;
+    private double moduleRating;
 }
