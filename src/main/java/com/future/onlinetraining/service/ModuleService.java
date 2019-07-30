@@ -18,5 +18,6 @@ public interface ModuleService {
     Page<ModuleCategory> getAllModuleCategory(Pageable pageable);
     ModuleCategory addModuleCategory(ModuleCategory moduleCategory);
     ModuleCategory updateModuleCategory(UpdateModuleCategoryDTO updateModuleCategoryDTO);
+    boolean deleteModuleCategory(ModuleCategory moduleCategory);
 
 }

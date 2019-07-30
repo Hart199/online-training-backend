@@ -34,14 +34,18 @@ public class Module {
     @JsonBackReference
     private ModuleCategory moduleCategory;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "module")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "module", cascade = CascadeType.ALL)
     private List<ModuleSession> moduleSessions;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "module")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ModuleRating> moduleRatings;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "module")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Classroom> classrooms;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ModuleMaterial> moduleMaterials;
 }

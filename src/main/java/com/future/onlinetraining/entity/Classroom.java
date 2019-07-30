@@ -36,11 +36,11 @@ public class Classroom {
     @JoinColumn
     private Module module;
 
-    @OneToMany(mappedBy = "classroom")
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<ClassroomResult> classroomResults;
 
-    @OneToMany(mappedBy = "classroom")
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonBackReference
     private List<ClassroomRequest> classroomRequests;

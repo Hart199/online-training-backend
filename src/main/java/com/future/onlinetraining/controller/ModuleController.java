@@ -118,4 +118,20 @@ public class ModuleController {
                 .setParam("data", category)
                 .send();
     }
+
+    @DeleteMapping("/_trainer/modules/_categories")
+    public ResponseEntity deleteModuleCategory(@RequestBody ModuleCategory moduleCategory) {
+        boolean category = moduleService.deleteModuleCategory(moduleCategory);
+
+        if (!category)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setHttpStatus(HttpStatus.OK)
+                    .setMessage("Kategori tidak ditemukan")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setMessage("kategori " + moduleCategory.getName() + " berhasil dihapus.")
+                .send();
+    }
 }

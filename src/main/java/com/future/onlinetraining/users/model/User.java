@@ -55,7 +55,7 @@ public class User implements UserDetails {
     @OneToOne
     private Role role;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<TrainerRating> trainerRatings;
 

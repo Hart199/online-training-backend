@@ -56,4 +56,13 @@ public class ModuleServiceImpl implements ModuleService {
         category.setName(updateModuleCategoryDTO.getNewCategoryName());
         return moduleCategoryRepository.save(category);
     }
+
+    public boolean deleteModuleCategory(ModuleCategory moduleCategory) {
+        ModuleCategory category = moduleCategoryRepository.findByName(moduleCategory.getName());
+        if (category == null)
+            return false;
+
+        moduleCategoryRepository.delete(category);
+        return true;
+    }
 }
