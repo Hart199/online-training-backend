@@ -1,7 +1,9 @@
 package com.future.onlinetraining.service.impl;
 
+import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
 import com.future.onlinetraining.entity.projection.ModuleData;
+import com.future.onlinetraining.repository.ModuleCategoryRepository;
 import com.future.onlinetraining.repository.ModuleRatingRepository;
 import com.future.onlinetraining.repository.ModuleRepository;
 import com.future.onlinetraining.service.ModuleService;
@@ -17,6 +19,8 @@ public class ModuleServiceImpl implements ModuleService {
     ModuleRepository moduleRepository;
     @Autowired
     ModuleRatingRepository moduleRatingRepository;
+    @Autowired
+    ModuleCategoryRepository moduleCategoryRepository;
 
 //    public Page<ModuleData> getAll(Pageable pageable) {
 //        return moduleRepository.getAllModule(pageable);
@@ -29,5 +33,9 @@ public class ModuleServiceImpl implements ModuleService {
     public Page<ModuleData> getAllBySearchTerm(
             Pageable pageable, String name, String category, Boolean hasExam) {
         return moduleRepository.getAllBySearhTerm(pageable, name, category, hasExam);
+    }
+
+    public Page<ModuleCategory> getAllModuleCategory(Pageable pageable) {
+        return moduleCategoryRepository.findAll(pageable);
     }
 }

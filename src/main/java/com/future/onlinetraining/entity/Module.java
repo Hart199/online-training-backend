@@ -1,5 +1,6 @@
 package com.future.onlinetraining.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class Module {
     private String status;
 
     @ManyToOne(fetch =  FetchType.EAGER)
+    @JsonBackReference
     private ModuleCategory moduleCategory;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "module")

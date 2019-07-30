@@ -76,4 +76,15 @@ public class ModuleController {
                 .send();
     }
 
+    @GetMapping("/modules/_categories")
+    public ResponseEntity getAllModuleCategories
+            (@RequestParam(value = "page", defaultValue = "0") int page,
+             @RequestParam(value = "size", defaultValue = "5") int size) {
+        return new ResponseHelper<>()
+                .setSuccessStatus(true)
+                .setHttpStatus(HttpStatus.OK)
+                .setParam("data", moduleService.getAllModuleCategory(PageRequest.of(page, size)))
+                .send();
+    }
+
 }
