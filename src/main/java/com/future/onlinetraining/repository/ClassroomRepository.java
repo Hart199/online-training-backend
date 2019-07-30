@@ -41,13 +41,13 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
                     "inner join c.trainer t " +
                     "left join c.classroomRequests cr " +
                     "left join c.classroomResults cres " +
-                    "left join m.moduleSessions ms " +
+                    "left join c.classroomSessions cs " +
                     "left join m.moduleRatings mrg " +
                     "where (:nameParam is null or lower(m.name) like %:nameParam%) " +
                     "and (:hasExam is null or " +
-                    "((select count(ms) from ms where ms.isExam = true) > 0 " +
+                    "((select count(cs) from cs where cs.isExam = true) > 0 " +
                     "and :hasExam = true) or " +
-                    "((select count(ms) from ms where ms.isExam = true) = 0 " +
+                    "((select count(cs) from cs where cs.isExam = true) = 0 " +
                     "and :hasExam = false)) " +
                     "group by c, m, t"
     )

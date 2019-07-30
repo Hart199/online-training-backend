@@ -1,7 +1,6 @@
 package com.future.onlinetraining.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -38,9 +37,6 @@ public class Module {
     @ManyToOne(fetch =  FetchType.EAGER)
     @JsonBackReference
     private ModuleCategory moduleCategory;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "module", cascade = CascadeType.REMOVE)
-    private List<ModuleSession> moduleSessions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.REMOVE)
     private List<ModuleRating> moduleRatings;

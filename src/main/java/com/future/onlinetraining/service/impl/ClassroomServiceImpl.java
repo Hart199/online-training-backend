@@ -10,12 +10,10 @@ import com.future.onlinetraining.service.ClassroomService;
 import com.future.onlinetraining.users.model.User;
 import com.future.onlinetraining.users.repository.UserRepository;
 import com.future.onlinetraining.users.service.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -38,7 +36,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Autowired
     ModuleCategoryRepository moduleCategoryRepository;
     @Autowired
-    ModuleSessionRepository moduleSessionRepository;
+    ClassroomSessionRepository classroomSessionRepository;
     @Autowired
     UserService userService;
 
@@ -122,8 +120,8 @@ public class ClassroomServiceImpl implements ClassroomService {
         if (trainer == null)
             return null;
 
-        List<ModuleSession> moduleSessions = moduleClassroomDTO.getModule().getModuleSessions();
-        moduleSessions = moduleSessionRepository.saveAll(moduleSessions);
+        List<ClassroomSession> classroomSessions = moduleClassroomDTO.getClassroom().getClassroomSessions();
+        classroomSessions = classroomSessionRepository.saveAll(classroomSessions);
 
         Module module = Module
                 .builder()
@@ -132,7 +130,6 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .moduleCategory(moduleCategory)
                 .timePerSession(moduleClassroomDTO.getModule().getTimePerSession())
                 .status(moduleClassroomDTO.getModule().getStatus())
-                .moduleSessions(moduleSessions)
                 .build();
 
         module = moduleRepository.save(module);
@@ -145,6 +142,7 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .min_member(moduleClassroomDTO.getClassroom().getMinMember())
                 .status(moduleClassroomDTO.getClassroom().getStatus())
                 .name(moduleClassroomDTO.getClassroom().getName())
+                .classroomSessions(classroomSessions)
                 .build();
 
 //        moduleClassroomDTO.getModule().setModuleCategory(moduleCategory);

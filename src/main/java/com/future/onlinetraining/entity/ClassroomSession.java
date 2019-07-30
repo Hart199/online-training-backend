@@ -13,8 +13,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "module_sessions")
-public class ModuleSession {
+@Table(name = "classroom_sessions")
+public class ClassroomSession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class ModuleSession {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    private Module module;
+    private Classroom classroom;
 
     private int startTime;
 

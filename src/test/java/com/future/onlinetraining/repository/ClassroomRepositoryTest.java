@@ -1,9 +1,5 @@
 package com.future.onlinetraining.repository;
 
-import com.future.onlinetraining.entity.Classroom;
-import com.future.onlinetraining.entity.Module;
-import com.future.onlinetraining.entity.ModuleCategory;
-import com.future.onlinetraining.entity.ModuleSession;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
 import com.future.onlinetraining.users.model.User;
 import com.future.onlinetraining.users.repository.UserRepository;
@@ -16,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ClassroomRepositoryTest {
@@ -29,7 +23,7 @@ public class ClassroomRepositoryTest {
     @Autowired
     private ModuleCategoryRepository moduleCategoryRepository;
     @Autowired
-    private ModuleSessionRepository moduleSessionRepository;
+    private ClassroomSessionRepository classroomSessionRepository;
     @Autowired
     private UserRepository userRepository;
 

@@ -36,7 +36,7 @@ public class DataSeeder {
     @Autowired
     ModuleRequestRepository moduleRequestRepository;
     @Autowired
-    ModuleSessionRepository moduleSessionRepository;
+    ClassroomSessionRepository classroomSessionRepository;
     @Autowired
     TrainerRatingRepository trainerRatingRepository;
     @Autowired
@@ -150,23 +150,6 @@ public class DataSeeder {
                 .build();
         moduleRating = moduleRatingRepository.save(moduleRating);
 
-        ModuleSession moduleSession1 = ModuleSession.builder()
-                .description("Sesi 1")
-                .startTime(1000)
-                .isExam(false)
-                .module(module)
-                .build();
-        moduleSession1 = moduleSessionRepository.save(moduleSession1);
-
-        ModuleSession moduleSession2 = ModuleSession.builder()
-                .description("Sesi 2")
-                .startTime(2000)
-                .isExam(true)
-                .module(module)
-                .build();
-        moduleSession2 = moduleSessionRepository.save(moduleSession2);
-
-
         Classroom classroom = Classroom.builder()
                 .max_member(30)
                 .min_member(1)
@@ -176,6 +159,22 @@ public class DataSeeder {
                 .trainer(trainer)
                 .build();
         classroom = classroomRepository.save(classroom);
+
+        ClassroomSession classroomSession1 = ClassroomSession.builder()
+                .description("Sesi 1")
+                .startTime(1000)
+                .isExam(false)
+                .classroom(classroom)
+                .build();
+        classroomSession1 = classroomSessionRepository.save(classroomSession1);
+
+        ClassroomSession classroomSession2 = ClassroomSession.builder()
+                .description("Sesi 2")
+                .startTime(2000)
+                .isExam(true)
+                .classroom(classroom)
+                .build();
+        classroomSession2 = classroomSessionRepository.save(classroomSession2);
 
         ClassroomResult classroomResult = ClassroomResult.builder()
                 .classroom(classroom)

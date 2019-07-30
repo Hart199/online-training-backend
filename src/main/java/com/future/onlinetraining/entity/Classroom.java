@@ -45,6 +45,11 @@ public class Classroom {
     @JsonBackReference
     private List<ClassroomRequest> classroomRequests;
 
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
+    private List<ClassroomSession> classroomSessions;
+
     private int min_member;
 
     private int max_member;

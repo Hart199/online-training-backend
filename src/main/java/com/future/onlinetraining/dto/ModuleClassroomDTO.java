@@ -1,6 +1,6 @@
 package com.future.onlinetraining.dto;
 
-import com.future.onlinetraining.entity.ModuleSession;
+import com.future.onlinetraining.entity.ClassroomSession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +21,7 @@ public class ModuleClassroomDTO {
         int maxMember;
         String status;
         String trainerEmail;
+        List<ClassroomSession> classroomSessions;
     }
 
     @Data
@@ -32,7 +33,6 @@ public class ModuleClassroomDTO {
         int timePerSession;
         String status;
         String moduleCategory;
-        List<ModuleSession> moduleSessions;
     }
 
     Classroom classroom;
