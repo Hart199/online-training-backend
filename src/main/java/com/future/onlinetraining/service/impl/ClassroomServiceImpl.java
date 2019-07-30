@@ -1,20 +1,16 @@
 package com.future.onlinetraining.service.impl;
 
 import com.future.onlinetraining.dto.ClassroomDTO;
-import com.future.onlinetraining.entity.Classroom;
-import com.future.onlinetraining.entity.ClassroomRequest;
-import com.future.onlinetraining.entity.ClassroomResult;
-import com.future.onlinetraining.entity.Module;
+import com.future.onlinetraining.dto.ModuleClassroomDTO;
+import com.future.onlinetraining.entity.*;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
-import com.future.onlinetraining.repository.ClassroomRepository;
-import com.future.onlinetraining.repository.ClassroomRequestRepository;
-import com.future.onlinetraining.repository.ClassroomResultRepository;
-import com.future.onlinetraining.repository.ModuleRepository;
+import com.future.onlinetraining.repository.*;
 import com.future.onlinetraining.service.ClassroomService;
 import com.future.onlinetraining.users.model.User;
 import com.future.onlinetraining.users.repository.UserRepository;
 import com.future.onlinetraining.users.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +35,10 @@ public class ClassroomServiceImpl implements ClassroomService {
     UserRepository userRepository;
     @Autowired
     ClassroomResultRepository classroomResultRepository;
+    @Autowired
+    ModuleCategoryRepository moduleCategoryRepository;
+    @Autowired
+    ModuleSessionRepository moduleSessionRepository;
     @Autowired
     UserService userService;
 
@@ -112,6 +112,47 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroom;
     }
 
+    @Transactional
+    public Classroom createModuleAndClassroom(ModuleClassroomDTO moduleClassroomDTO) {
+        ModuleCategory moduleCategory = moduleCategoryRepository.findByName(moduleClassroomDTO.getModule().getModuleCategory());
+        if (moduleCategory == null)
+            return null;
+
+        User trainer = userRepository.findByEmail(moduleClassroomDTO.getClassroom().getTrainerEmail());
+        if (trainer == null)
+            return null;
+
+        List<ModuleSession> moduleSessions = moduleClassroomDTO.getModule().getModuleSessions();
+        moduleSessions = moduleSessionRepository.saveAll(moduleSessions);
+
+        Module module = Module
+                .builder()
+                .name(moduleClassroomDTO.getModule().getName())
+                .description(moduleClassroomDTO.getModule().getDescription())
+                .moduleCategory(moduleCategory)
+                .timePerSession(moduleClassroomDTO.getModule().getTimePerSession())
+                .status(moduleClassroomDTO.getModule().getStatus())
+                .moduleSessions(moduleSessions)
+                .build();
+
+        module = moduleRepository.save(module);
+
+        Classroom classroom = Classroom
+                .builder()
+                .module(module)
+                .trainer(trainer)
+                .max_member(moduleClassroomDTO.getClassroom().getMaxMember())
+                .min_member(moduleClassroomDTO.getClassroom().getMinMember())
+                .status(moduleClassroomDTO.getClassroom().getStatus())
+                .name(moduleClassroomDTO.getClassroom().getName())
+                .build();
+
+//        moduleClassroomDTO.getModule().setModuleCategory(moduleCategory);
+//
+//        moduleClassroomDTO.getClassroom().setModule(moduleClassroomDTO.getModule());
+//
+        return classroomRepository.save(classroom);
+    }
 
 //    public Page<C>
 }
