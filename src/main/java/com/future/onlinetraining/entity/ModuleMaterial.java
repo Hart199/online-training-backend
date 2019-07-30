@@ -1,5 +1,6 @@
 package com.future.onlinetraining.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class ModuleMaterial {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Module module;
 
     private String description;

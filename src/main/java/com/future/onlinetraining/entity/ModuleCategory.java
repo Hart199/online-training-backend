@@ -24,11 +24,11 @@ public class ModuleCategory {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "moduleCategory", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "moduleCategory", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Module> modules;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "moduleCategory", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "moduleCategory", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<ModuleRequest> moduleRequests;
 

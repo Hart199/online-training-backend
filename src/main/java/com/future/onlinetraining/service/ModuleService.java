@@ -1,6 +1,8 @@
 package com.future.onlinetraining.service;
 
+import com.future.onlinetraining.dto.DeleteModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
+import com.future.onlinetraining.dto.UpdateModuleDTO;
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
@@ -18,6 +20,8 @@ public interface ModuleService {
     Page<ModuleCategory> getAllModuleCategory(Pageable pageable);
     ModuleCategory addModuleCategory(ModuleCategory moduleCategory);
     ModuleCategory updateModuleCategory(UpdateModuleCategoryDTO updateModuleCategoryDTO);
-    boolean deleteModuleCategory(ModuleCategory moduleCategory);
-
+    boolean deleteModuleCategory(DeleteModuleCategoryDTO deleteModuleCategoryDTO);
+    Module getOne(Integer id);
+    Module editModule(Integer id, UpdateModuleDTO updateModuleDTO);
+    boolean deleteModule(Integer id);
 }

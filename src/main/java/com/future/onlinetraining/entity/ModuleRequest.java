@@ -32,7 +32,7 @@ public class ModuleRequest {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @OneToMany(mappedBy = "moduleRequest", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "moduleRequest", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<ModuleRequestLike> moduleRequestLikes;
 

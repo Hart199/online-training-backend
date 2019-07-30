@@ -1,6 +1,9 @@
 package com.future.onlinetraining.controller;
 
+import com.future.onlinetraining.dto.DeleteModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
+import com.future.onlinetraining.dto.UpdateModuleDTO;
+import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.service.ModuleService;
 import com.future.onlinetraining.utility.ResponseHelper;
@@ -18,25 +21,6 @@ public class ModuleController {
 
     @Autowired
     private ModuleService moduleService;
-
-//    @GetMapping("/modules")
-//    public ResponseEntity getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
-//        return new ResponseHelper<>()
-//                .setSuccessStatus(true)
-//                .setHttpStatus(HttpStatus.OK)
-//                .setParam("data", moduleService.getAll(PageRequest.of(page, size)))
-//                .send();
-//    }
-
-//    @GetMapping("/modules/_top")
-//    public ResponseEntity getTop(@RequestParam("page") int page, @RequestParam("size") int size) {
-//        return new ResponseHelper<>()
-//                .setSuccessStatus(true)
-//                .setHttpStatus(HttpStatus.OK)
-//                .setParam("data", moduleService.getAll(PageRequest.of(
-//                        page, size, Sort.by("rating").descending())))
-//                .send();
-//    }
 
     @GetMapping("/modules/_ratings/{id}")
     public ResponseEntity getRatings(
@@ -120,8 +104,8 @@ public class ModuleController {
     }
 
     @DeleteMapping("/_trainer/modules/_categories")
-    public ResponseEntity deleteModuleCategory(@RequestBody ModuleCategory moduleCategory) {
-        boolean category = moduleService.deleteModuleCategory(moduleCategory);
+    public ResponseEntity deleteModuleCategory(@RequestBody DeleteModuleCategoryDTO deleteModuleCategoryDTO) {
+        boolean category = moduleService.deleteModuleCategory(deleteModuleCategoryDTO);
 
         if (!category)
             return new ResponseHelper<>()
@@ -131,7 +115,55 @@ public class ModuleController {
                     .send();
 
         return new ResponseHelper<>()
-                .setMessage("kategori " + moduleCategory.getName() + " berhasil dihapus.")
+                .setMessage("kategori berhasil dihapus.")
+                .send();
+    }
+
+    @GetMapping("/_trainer/modules/{id}")
+    public ResponseEntity getModuleDetail(@PathVariable("id") Integer id) {
+        Module module = moduleService.getOne(id);
+
+        if (module == null)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setHttpStatus(HttpStatus.OK)
+                    .setMessage("Module tidak ditemukan")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setParam("data", module)
+                .send();
+    }
+
+    @PutMapping("/_trainer/modules/{id}")
+    public ResponseEntity updateModule(@PathVariable("id") Integer id, @RequestBody UpdateModuleDTO updateModuleDTO) {
+        Module module = moduleService.editModule(id, updateModuleDTO);
+
+        if (module == null)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setHttpStatus(HttpStatus.OK)
+                    .setMessage("Gagal mengedit module")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setParam("data", module)
+                .send();
+    }
+
+    @DeleteMapping("/_trainer/modules/{id}")
+    public ResponseEntity deleteModule(@PathVariable("id") Integer id) {
+        boolean module = moduleService.deleteModule(id);
+
+        if (!module)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setHttpStatus(HttpStatus.OK)
+                    .setMessage("Module tidak ditemukan")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setMessage("Module berhasil dihapus.")
                 .send();
     }
 }
