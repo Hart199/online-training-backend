@@ -30,7 +30,7 @@ public class DataSeeder {
     @Autowired
     ClassroomResultRepository classroomResultRepository;
     @Autowired
-    ModuleMaterialRepository moduleMaterialRepository;
+    ClassroomMaterialRepository classroomMaterialRepository;
     @Autowired
     ModuleRatingRepository moduleRatingRepository;
     @Autowired
@@ -136,13 +136,6 @@ public class DataSeeder {
                 .status("closed")
                 .build());
 
-        ModuleMaterial moduleMaterial = ModuleMaterial.builder()
-                .module(module)
-                .description("Basic Java")
-                .file("java.pdf")
-                .build();
-        moduleMaterial = moduleMaterialRepository.save(moduleMaterial);
-
         ModuleRating moduleRating = ModuleRating.builder()
                 .module(module)
                 .comment("mantaap")
@@ -175,6 +168,13 @@ public class DataSeeder {
                 .classroom(classroom)
                 .build();
         classroomSession2 = classroomSessionRepository.save(classroomSession2);
+
+        ClassroomMaterial classroomMaterial = ClassroomMaterial.builder()
+                .classroom(classroom)
+                .description("Basic Java")
+                .file("java.pdf")
+                .build();
+        classroomMaterial = classroomMaterialRepository.save(classroomMaterial);
 
         ClassroomResult classroomResult = ClassroomResult.builder()
                 .classroom(classroom)
