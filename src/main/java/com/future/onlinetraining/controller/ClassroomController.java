@@ -16,7 +16,8 @@ public class ClassroomController {
     ClassroomService classroomService;
 
     @GetMapping("/classrooms/_subscribed")
-    public ResponseEntity getSubscribed(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity getSubscribed(@RequestParam(value = "page", defaultValue = "0") int page,
+                                        @RequestParam(value = "size", defaultValue = "5") int size) {
         return new ResponseHelper<>()
                 .setHttpStatus(HttpStatus.OK)
                 .setParam("data", classroomService.getAllSubscribed(page, size))
@@ -26,7 +27,8 @@ public class ClassroomController {
 
     @GetMapping("/classrooms")
     public ResponseEntity getAll(
-            @RequestParam("page") int page, @RequestParam("size") int size,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "hasExam", required = false) Boolean hasExam) {
         return new ResponseHelper<>()

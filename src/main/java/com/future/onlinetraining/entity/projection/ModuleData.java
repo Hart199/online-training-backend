@@ -1,5 +1,9 @@
 package com.future.onlinetraining.entity.projection;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 public interface ModuleData {
 
     int getId();

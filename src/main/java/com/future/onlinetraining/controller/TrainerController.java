@@ -16,7 +16,8 @@ public class TrainerController {
     TrainerService trainerService;
 
     @GetMapping("/trainers/_top")
-    public ResponseEntity getTop(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity getTop(@RequestParam(value = "page", defaultValue = "0") int page,
+                                 @RequestParam(value = "size", defaultValue = "5") int size) {
         return new ResponseHelper<>()
                 .setHttpStatus(HttpStatus.OK)
                 .setParam("data", trainerService.getTopTrainers(page, size))

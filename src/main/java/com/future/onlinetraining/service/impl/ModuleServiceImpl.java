@@ -18,9 +18,9 @@ public class ModuleServiceImpl implements ModuleService {
     @Autowired
     ModuleRatingRepository moduleRatingRepository;
 
-    public Page<ModuleData> getAll(Pageable pageable) {
-        return moduleRepository.getAllModule(pageable);
-    }
+//    public Page<ModuleData> getAll(Pageable pageable) {
+//        return moduleRepository.getAllModule(pageable);
+//    }
 
     public Page<ModuleRating> getRatings(int id, Pageable pageable) {
         return moduleRatingRepository.findAllByModuleId(id, pageable);

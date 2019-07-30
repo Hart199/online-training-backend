@@ -1,5 +1,6 @@
 package com.future.onlinetraining.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,4 +34,12 @@ public class Module {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "module")
     private List<ModuleSession> moduleSessions;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "module")
+    @JsonIgnore
+    private List<ModuleRating> moduleRatings;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "module")
+    @JsonIgnore
+    private List<Classroom> classrooms;
 }

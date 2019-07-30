@@ -19,28 +19,30 @@ public class ModuleController {
     @Autowired
     private ModuleService moduleService;
 
-    @GetMapping("/modules")
-    public ResponseEntity getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
-        return new ResponseHelper<>()
-                .setSuccessStatus(true)
-                .setHttpStatus(HttpStatus.OK)
-                .setParam("data", moduleService.getAll(PageRequest.of(page, size)))
-                .send();
-    }
+//    @GetMapping("/modules")
+//    public ResponseEntity getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
+//        return new ResponseHelper<>()
+//                .setSuccessStatus(true)
+//                .setHttpStatus(HttpStatus.OK)
+//                .setParam("data", moduleService.getAll(PageRequest.of(page, size)))
+//                .send();
+//    }
 
-    @GetMapping("/modules/_top")
-    public ResponseEntity getTop(@RequestParam("page") int page, @RequestParam("size") int size) {
-        return new ResponseHelper<>()
-                .setSuccessStatus(true)
-                .setHttpStatus(HttpStatus.OK)
-                .setParam("data", moduleService.getAll(PageRequest.of(
-                        page, size, Sort.by("rating").descending())))
-                .send();
-    }
+//    @GetMapping("/modules/_top")
+//    public ResponseEntity getTop(@RequestParam("page") int page, @RequestParam("size") int size) {
+//        return new ResponseHelper<>()
+//                .setSuccessStatus(true)
+//                .setHttpStatus(HttpStatus.OK)
+//                .setParam("data", moduleService.getAll(PageRequest.of(
+//                        page, size, Sort.by("rating").descending())))
+//                .send();
+//    }
 
     @GetMapping("/modules/_ratings/{id}")
     public ResponseEntity getRatings(
-            @RequestParam("page") int page, @RequestParam("size") int size, @PathVariable("id") int id) {
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            @PathVariable("id") int id) {
 
         return new ResponseHelper<>()
                 .setSuccessStatus(true)
@@ -53,7 +55,8 @@ public class ModuleController {
 
     @GetMapping("/modules/_search")
     public ResponseEntity getRatingBySearchTerms(
-            @RequestParam("page") int page, @RequestParam("size") int size,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "sortBy", required = false) String sortBy,

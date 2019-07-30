@@ -22,7 +22,9 @@ public class ModuleRequestController {
 
     @GetMapping("/modules/_requests")
     public ResponseEntity getAllModuleRequests(
-            @RequestParam("page") int page, @RequestParam("size") int size, @RequestParam(value = "name", required = false) String name) {
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            @RequestParam(value = "name", required = false) String name) {
         return new ResponseHelper<>()
                 .setParam("data", moduleRequestService.getAll(PageRequest.of(page, size), name))
                 .setHttpStatus(HttpStatus.OK)

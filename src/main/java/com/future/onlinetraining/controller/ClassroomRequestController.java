@@ -22,7 +22,8 @@ public class ClassroomRequestController {
     ClassroomRequestService classroomRequestService;
 
     @GetMapping("/classrooms/_requests")
-    public ResponseEntity getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity getAll(@RequestParam(value = "page", defaultValue = "0") int page,
+                                 @RequestParam(value = "size", defaultValue = "5") int size) {
         return new ResponseHelper<>()
                 .setParam("data", classroomRequestService.getAll(PageRequest.of(page, size)))
                 .setHttpStatus(HttpStatus.OK)
