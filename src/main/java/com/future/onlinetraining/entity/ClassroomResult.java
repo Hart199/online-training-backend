@@ -27,6 +27,7 @@ public class ClassroomResult {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Classroom classroom;
 
     @ManyToOne(fetch = FetchType.LAZY)

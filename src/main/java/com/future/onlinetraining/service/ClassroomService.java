@@ -1,6 +1,7 @@
 package com.future.onlinetraining.service;
 
 import com.future.onlinetraining.dto.ClassroomDTO;
+import com.future.onlinetraining.dto.ClassroomDetailDTO;
 import com.future.onlinetraining.dto.ModuleClassroomDTO;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.Module;
@@ -9,6 +10,7 @@ import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
 import io.swagger.models.auth.In;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ClassroomService {
 
@@ -20,4 +22,5 @@ public interface ClassroomService {
     Classroom create(ClassroomDTO classroomDTO);
     Classroom createModuleAndClassroom(ModuleClassroomDTO moduleClassroomDTO);
     Classroom getClassroomDetail(Integer id);
+    Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO, MultipartFile[] multipartFiles);
 }

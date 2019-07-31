@@ -1,12 +1,15 @@
 package com.future.onlinetraining.service.impl;
 
 import com.future.onlinetraining.dto.ClassroomDTO;
+import com.future.onlinetraining.dto.ClassroomDetailDTO;
+import com.future.onlinetraining.dto.ClassroomMaterialDTO;
 import com.future.onlinetraining.dto.ModuleClassroomDTO;
 import com.future.onlinetraining.entity.*;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
 import com.future.onlinetraining.repository.*;
 import com.future.onlinetraining.service.ClassroomService;
+import com.future.onlinetraining.service.FileHandlerService;
 import com.future.onlinetraining.users.model.User;
 import com.future.onlinetraining.users.repository.UserRepository;
 import com.future.onlinetraining.users.service.UserService;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -37,6 +41,10 @@ public class ClassroomServiceImpl implements ClassroomService {
     ModuleCategoryRepository moduleCategoryRepository;
     @Autowired
     ClassroomSessionRepository classroomSessionRepository;
+    @Autowired
+    FileHandlerService fileHandlerService;
+    @Autowired
+    ClassroomMaterialRepository classroomMaterialRepository;
     @Autowired
     UserService userService;
 
@@ -161,5 +169,46 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroom;
     }
 
-//    public Page<C>
+    @Transactional
+    public Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO, MultipartFile[] multipartFiles) {
+        List<String> uploadedFiles = fileHandlerService.store(multipartFiles);
+        if (uploadedFiles == null)
+            return null;
+
+        Classroom classroom = classroomRepository.find(id);
+        if (classroom == null)
+            return null;
+
+        User trainer = userRepository.findByEmail(classroomDTO.getTrainerEmail());
+        if (trainer == null)
+            return  null;
+
+        classroom.setName(classroomDTO.getName());
+        classroom.setTrainer(trainer);
+        classroom.setStatus(classroomDTO.getStatus());
+        classroom.setMin_member(classroomDTO.getMinMember());
+        classroom.setMax_member(classroomDTO.getMaxMember());
+        classroom.setClassroomSessions(classroomDTO.getClassroomSessions());
+
+        classroomRepository.save(classroom);
+
+        for (ClassroomMaterialDTO classroomMaterial : classroomDTO.getClassroomMaterials()) {
+            if (classroomMaterial.getId() != null) {
+                if (classroomMaterial.getFile() == null) {
+                    classroomMaterialRepository.deleteById(classroomMaterial.getId());
+                } else {
+                    ClassroomMaterial updatedClassroomMaterial = classroomMaterialRepository.getOne(classroomMaterial.getId());
+                    updatedClassroomMaterial.setFile(classroomMaterial.getFile());
+                }
+            } else {
+                ClassroomMaterial newClassroomMaterial = ClassroomMaterial
+                        .builder()
+                        .classroom(classroom)
+                        .file(classroomMaterial.getFile())
+                        .build();
+                classroomMaterialRepository.save(newClassroomMaterial);
+            }
+        }
+        return classroom;
+    }
 }

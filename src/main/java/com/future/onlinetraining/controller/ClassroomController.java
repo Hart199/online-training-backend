@@ -1,6 +1,7 @@
 package com.future.onlinetraining.controller;
 
 import com.future.onlinetraining.dto.ClassroomDTO;
+import com.future.onlinetraining.dto.ClassroomDetailDTO;
 import com.future.onlinetraining.dto.ModuleClassroomDTO;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.Module;
@@ -17,9 +18,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-@RestController
+@Controller
 public class ClassroomController {
 
     @Autowired
@@ -89,6 +92,23 @@ public class ClassroomController {
             return new ResponseHelper<>()
                     .setSuccessStatus(false)
                     .setMessage("Kelas tidak ditemukan")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setParam("data", classroom)
+                .send();
+    }
+
+    @RequestMapping(value= "/_trainer/classrooms/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
+    public ResponseEntity editDetail(
+            @PathVariable("id") Integer id, @RequestPart("properties") ClassroomDetailDTO classroomDTO,
+            @RequestPart("files") MultipartFile[] multipartFiles) {
+        Classroom classroom = classroomService.editDetail(id, classroomDTO, multipartFiles);
+
+        if (classroom == null)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setMessage("Gagal mengedit kelas")
                     .send();
 
         return new ResponseHelper<>()

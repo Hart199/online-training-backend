@@ -24,7 +24,7 @@ public class Classroom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
 
@@ -38,23 +38,25 @@ public class Classroom {
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @JsonManagedReference
-    @JsonBackReference
     private List<ClassroomResult> classroomResults;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     private List<ClassroomRequest> classroomRequests;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     private List<ClassroomSession> classroomSessions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "classroom", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<ClassroomMaterial> classroomMaterials;
 
-    private int min_member;
+    private Integer min_member;
 
-    private int max_member;
+    private Integer max_member;
 
     private String status;
 

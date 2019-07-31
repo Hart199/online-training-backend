@@ -1,9 +1,6 @@
 package com.future.onlinetraining.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.future.onlinetraining.users.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +26,7 @@ public class ClassroomRequest {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Classroom classroom;
 
     private String status;
