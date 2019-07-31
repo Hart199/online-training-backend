@@ -115,4 +115,32 @@ public class ClassroomController {
                 .setParam("data", classroom)
                 .send();
     }
+
+    @DeleteMapping("/_trainer/classrooms/{id}")
+    public ResponseEntity delete(@PathVariable("id") int id) {
+        Boolean result = classroomService.delete(id);
+        if (!result)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setMessage("Kelas tidak ditemukan")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setMessage("Berhasil menghapus kelas")
+                .send();
+    }
+
+    @DeleteMapping("/_trainer/classrooms/_materials/{id}")
+    public ResponseEntity deleteMaterial(@PathVariable("id") int id) {
+        Boolean result = classroomService.deleteMaterial(id);
+        if (!result)
+            return new ResponseHelper<>()
+                    .setSuccessStatus(false)
+                    .setMessage("Materi kelas tidak ditemukan")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setMessage("Berhasil menghapus materi kelas")
+                .send();
+    }
 }

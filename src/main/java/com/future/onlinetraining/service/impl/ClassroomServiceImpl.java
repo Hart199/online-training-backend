@@ -153,10 +153,6 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .classroomSessions(classroomSessions)
                 .build();
 
-//        moduleClassroomDTO.getModule().setModuleCategory(moduleCategory);
-//
-//        moduleClassroomDTO.getClassroom().setModule(moduleClassroomDTO.getModule());
-//
         return classroomRepository.save(classroom);
     }
 
@@ -210,5 +206,23 @@ public class ClassroomServiceImpl implements ClassroomService {
             }
         }
         return classroom;
+    }
+
+    public Boolean delete(Integer id) {
+        Classroom classroom = classroomRepository.find(id);
+        if (classroom == null)
+            return false;
+
+        classroomRepository.deleteById(id);
+        return true;
+    }
+
+    public Boolean deleteMaterial(Integer id) {
+        ClassroomMaterial classroomMaterial = classroomMaterialRepository.find(id);
+        if (classroomMaterial == null)
+            return false;
+
+        classroomMaterialRepository.deleteById(id);
+        return true;
     }
 }
