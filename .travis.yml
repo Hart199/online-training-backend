@@ -6,7 +6,7 @@ script:
 - docker build -t cacadosman/online-training:future .
 - docker push cacadosman/online-training:future
 - ssh -i ./deploy_key cacadosman@202.43.92.132 cd /home/cacadosman/future-online-training/
-  && docker-compose pull && docker-compose down && docker-compose up -d
+  && id && docker-compose pull && docker-compose down && docker-compose up -d
 before_install:
 - openssl aes-256-cbc -K $encrypted_add5053b7f67_key -iv $encrypted_add5053b7f67_iv
   -in deploy_key.enc -out ./deploy_key -d
