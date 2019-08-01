@@ -119,7 +119,7 @@ public class ModuleController {
                 .send();
     }
 
-    @GetMapping("/_trainer/modules/{id}")
+    @GetMapping("/modules/{id}")
     public ResponseEntity getModuleDetail(@PathVariable("id") Integer id) {
         Module module = moduleService.getOne(id);
 
