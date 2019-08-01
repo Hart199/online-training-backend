@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service("moduleRequestService")
 public class ModuleRequestServiceImpl implements ModuleRequestService {
 
@@ -64,4 +66,12 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
         );
     }
 
+    public ModuleRequest changeStatus(Integer id, String status) {
+        Optional<ModuleRequest> moduleRequest = moduleRequestRepository.findById(id);
+        if (!moduleRequest.isPresent())
+            return null;
+
+        moduleRequest.get().setStatus(status);
+        return moduleRequestRepository.save(moduleRequest.get());
+    }
 }
