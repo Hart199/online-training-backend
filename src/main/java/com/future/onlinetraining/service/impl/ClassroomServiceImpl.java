@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("classroomService")
 public class ClassroomServiceImpl implements ClassroomService {
@@ -45,6 +46,8 @@ public class ClassroomServiceImpl implements ClassroomService {
     FileHandlerService fileHandlerService;
     @Autowired
     ClassroomMaterialRepository classroomMaterialRepository;
+    @Autowired
+    ModuleRequestRepository moduleRequestRepository;
     @Autowired
     UserService userService;
 
@@ -124,6 +127,10 @@ public class ClassroomServiceImpl implements ClassroomService {
         if (moduleCategory == null)
             return null;
 
+        Optional<ModuleRequest> moduleRequest = moduleRequestRepository.findById(moduleClassroomDTO.getModuleRequestId());
+        if (!moduleRequest.isPresent())
+            return null;
+
         User trainer = userRepository.findByEmail(moduleClassroomDTO.getClassroom().getTrainerEmail());
         if (trainer == null)
             return null;
@@ -141,6 +148,9 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .build();
 
         module = moduleRepository.save(module);
+
+        moduleRequest.get().setStatus("accepted");
+        moduleRequestRepository.save(moduleRequest.get());
 
         Classroom classroom = Classroom
                 .builder()

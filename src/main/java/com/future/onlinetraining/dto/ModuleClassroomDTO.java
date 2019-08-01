@@ -37,4 +37,5 @@ public class ModuleClassroomDTO {
 
     Classroom classroom;
     ModuleDTO module;
+    Integer moduleRequestId;
 }
