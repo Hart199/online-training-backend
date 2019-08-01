@@ -28,6 +28,12 @@ public class ClassroomController {
     @Autowired
     ClassroomService classroomService;
 
+    /**
+     * Get all subscribed classrooms
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping("/classrooms/_subscribed")
     public ResponseEntity getSubscribed(@RequestParam(value = "page", defaultValue = "0") int page,
                                         @RequestParam(value = "size", defaultValue = "5") int size) {
@@ -38,6 +44,15 @@ public class ClassroomController {
                 .send();
     }
 
+    /**
+     * Get all classrooms
+     * @param page
+     * @param size
+     * @param name
+     * @param popular
+     * @param hasExam
+     * @return
+     */
     @GetMapping("/classrooms")
     public ResponseEntity getAll(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -62,6 +77,11 @@ public class ClassroomController {
                 .send();
     }
 
+    /**
+     * Create a classroom
+     * @param classroomDTO
+     * @return
+     */
     @PostMapping("/_trainer/classrooms")
     public ResponseEntity create(@RequestBody ClassroomDTO classroomDTO) {
         return new ResponseHelper<>()
@@ -69,6 +89,11 @@ public class ClassroomController {
                 .send();
     }
 
+    /**
+     * Create a module with classroom
+     * @param moduleClassroomDTO
+     * @return
+     */
     @PostMapping("/_trainer/_modulesclassrooms")
     public ResponseEntity createModuleWithClassroom(@RequestBody ModuleClassroomDTO moduleClassroomDTO) {
         Classroom newClassroom = classroomService.createModuleAndClassroom(moduleClassroomDTO);
@@ -84,6 +109,11 @@ public class ClassroomController {
                 .send();
     }
 
+    /**
+     * Get classroom detail
+     * @param id
+     * @return
+     */
     @GetMapping("/classrooms/{id}")
     public ResponseEntity getClassroomDetail(@PathVariable("id") Integer id) {
         Classroom classroom = classroomService.getClassroomDetail(id);
@@ -99,6 +129,13 @@ public class ClassroomController {
                 .send();
     }
 
+    /**
+     * Edit classroom detail
+     * @param id
+     * @param classroomDTO
+     * @param multipartFiles
+     * @return
+     */
     @RequestMapping(value= "/_trainer/classrooms/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
     public ResponseEntity editDetail(
             @PathVariable("id") Integer id, @RequestPart("properties") ClassroomDetailDTO classroomDTO,
@@ -116,6 +153,11 @@ public class ClassroomController {
                 .send();
     }
 
+    /**
+     * Delete a classroom
+     * @param id
+     * @return
+     */
     @DeleteMapping("/_trainer/classrooms/{id}")
     public ResponseEntity delete(@PathVariable("id") int id) {
         Boolean result = classroomService.delete(id);
@@ -130,6 +172,11 @@ public class ClassroomController {
                 .send();
     }
 
+    /**
+     * Delete classroom material
+     * @param id
+     * @return
+     */
     @DeleteMapping("/_trainer/classrooms/_materials/{id}")
     public ResponseEntity deleteMaterial(@PathVariable("id") int id) {
         Boolean result = classroomService.deleteMaterial(id);
