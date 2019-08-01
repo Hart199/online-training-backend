@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service("classroomRequestService")
 public class ClassroomRequestServiceImpl implements ClassroomRequestService {
 
@@ -42,5 +44,14 @@ public class ClassroomRequestServiceImpl implements ClassroomRequestService {
                 .status("waiting")
                 .build();
         return classroomRequestRepository.save(classroomRequest);
+    }
+
+    public ClassroomRequest editStatus (Integer id, String status) {
+        Optional<ClassroomRequest> classroomRequest = classroomRequestRepository.findById(id);
+        if(!classroomRequest.isPresent())
+            return null;
+
+        classroomRequest.get().setStatus(status);
+        return classroomRequestRepository.save(classroomRequest.get());
     }
 }

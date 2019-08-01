@@ -11,4 +11,5 @@ public interface ClassroomRequestService {
 
     Page<ClassroomRequestsData> getAll(Pageable pageable);
     ClassroomRequest request(ClassroomRequestDTO classroomRequestDTO);
+    ClassroomRequest editStatus(Integer id, String status);
 }
