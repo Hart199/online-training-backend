@@ -13,8 +13,10 @@ public interface ModuleRequestRepository extends JpaRepository<ModuleRequest, In
 
     @Query(
             value = "select mr from ModuleRequest mr " +
+                    "left join mr.moduleRequestLikes mrl " +
                     "where (:nameParam is null or lower(mr.title) like %:nameParam%) " +
-                    "and mr.status = 'waiting' "
+                    "and mr.status = 'waiting' " +
+                    "group by mr"
     )
     Page<ModuleRequest> findAllByNameParam(Pageable pageable, @Param("nameParam") String name);
 }

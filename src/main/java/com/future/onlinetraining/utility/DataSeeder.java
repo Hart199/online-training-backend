@@ -189,6 +189,7 @@ public class DataSeeder {
                 .moduleCategory(moduleCategory)
                 .user(trainee)
                 .title("Deep Learning")
+                .status("waiting")
                 .build()
         );
 

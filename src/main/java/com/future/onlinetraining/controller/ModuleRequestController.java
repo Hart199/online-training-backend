@@ -8,6 +8,9 @@ import com.future.onlinetraining.service.ModuleRequestService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +27,18 @@ public class ModuleRequestController {
     public ResponseEntity getAllModuleRequests(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "name", required = false) String name) {
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "popular", defaultValue = "false") Boolean popular) {
+
+        Pageable pageable;
+        if (popular)
+            pageable = PageRequest.of(page, size, JpaSort.unsafe(
+                    Sort.Direction.DESC, "case when count(mrl) is null then 0.0 else count(mrl) end"));
+        else
+            pageable = PageRequest.of(page, size);
+
         return new ResponseHelper<>()
-                .setParam("data", moduleRequestService.getAll(PageRequest.of(page, size), name))
+                .setParam("data", moduleRequestService.getAll(pageable, name))
                 .setHttpStatus(HttpStatus.OK)
                 .setSuccessStatus(true)
                 .send();
