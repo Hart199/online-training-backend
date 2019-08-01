@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ModuleRequestLikeDTO {
-    private int moduleId;
+    private int moduleRequestId;
 }
