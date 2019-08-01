@@ -40,7 +40,7 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
                     "(select count(c2.id) from classrooms c2 where c2.status = 'open' and c2.module_id = m.id) as openClassroomCount, " +
                     "(select count(c2.id) from classrooms c2 where c2.status = 'closed' and c2.module_id = m.id) as closedClassroomCount, " +
                     "(select case when count(cs.id) > 0 then true else false end " +
-                    "from module_sessions ms2 where ms2.is_exam = true and ms2.module_id = m.id) as hasExam " +
+                    "from classroom_sessions cs2 where cs2.is_exam = true and cs2.classroom_id = c.id) as hasExam " +
                     "from modules m " +
                     "inner join module_ratings mr " +
                     "on m.id = mr.module_id " +
@@ -53,11 +53,11 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
                     "where (:nameParam is null or lower(m.name) like concat('%', :nameParam, '%')) " +
                     "and (:categoryParam is null or mc.name = concat(:categoryParam)) " +
                     "and (:hasExam is null or " +
-                    "((select count(ms3.id) from module_sessions ms3 where ms3.module_id = m.id and ms3.is_exam = true) > 0 " +
+                    "((select count(cs3.id) from classroom_sessions cs3 where cs3.classroom_id = c.id and cs3.is_exam = true) > 0 " +
                     "and concat(:hasExam) = 't') or " +
-                    "((select count(ms3.id) from module_sessions ms3 where ms3.module_id = m.id and ms3.is_exam = true) = 0 " +
+                    "((select count(cs3.id) from classroom_sessions cs3 where cs3.classroom_id = c.id and cs3.is_exam = true) = 0 " +
                     "and concat(:hasExam) = 'f')) " +
-                    "group by m.id, mc.id"
+                    "group by m.id, mc.id, c.id"
     )
     Page<ModuleData> getAllBySearhTerm(
             Pageable pageable, @Param("nameParam") String name,
