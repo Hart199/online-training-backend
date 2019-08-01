@@ -19,6 +19,7 @@ public class ClassroomData {
     private Long member;
     private Long requestCount;
     private Double moduleRating;
+    private int version;
 
 //    public void setModuleRating(Double moduleRating) {
 //        if (moduleRating == null) {

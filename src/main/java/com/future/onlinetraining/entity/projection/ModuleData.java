@@ -17,5 +17,6 @@ public interface ModuleData {
     int getClosedClassroomCount();
     int getSessionCount();
     boolean getHasExam();
+    int getVersion();
 
 }

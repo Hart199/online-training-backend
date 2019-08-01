@@ -99,6 +99,7 @@ public class ModuleServiceImpl implements ModuleService {
         module.setStatus(updateModuleDTO.getStatus());
         module.setTimePerSession(updateModuleDTO.getTimePerSession());
         module.setMaterialDescription(updateModuleDTO.getMaterialDescription());
+        module.setVersion(module.getVersion() + 1);
 
         return moduleRepository.save(module);
     }

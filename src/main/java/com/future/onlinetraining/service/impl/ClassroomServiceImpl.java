@@ -145,6 +145,7 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .moduleCategory(moduleCategory)
                 .timePerSession(moduleClassroomDTO.getModule().getTimePerSession())
                 .status(moduleClassroomDTO.getModule().getStatus())
+                .version(1)
                 .build();
 
         module = moduleRepository.save(module);

@@ -27,6 +27,8 @@ public class Module {
 
     private String description;
 
+    private int version;
+
     private String materialDescription;
 
     private int timePerSession;
