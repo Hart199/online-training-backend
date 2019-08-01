@@ -50,14 +50,14 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
 
     public <T> T voteLike(ModuleRequestLikeDTO moduleRequestLikeDTO) {
         ModuleRequestLike moduleRequestLike = moduleRequestLikeRepository.findByIdAndUserId(
-                moduleRequestLikeDTO.getModuleId(), userService.getUserFromSession().getId());
+                moduleRequestLikeDTO.getModuleRequestId(), userService.getUserFromSession().getId());
 
         if (moduleRequestLike != null) {
             moduleRequestLikeRepository.delete(moduleRequestLike);
             return null;
         }
 
-        ModuleRequest moduleRequest = moduleRequestRepository.getOne(moduleRequestLikeDTO.getModuleId());
+        ModuleRequest moduleRequest = moduleRequestRepository.getOne(moduleRequestLikeDTO.getModuleRequestId());
         return (T) moduleRequestLikeRepository.save(
                 ModuleRequestLike.builder()
                 .moduleRequest(moduleRequest)
