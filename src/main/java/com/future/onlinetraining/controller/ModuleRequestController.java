@@ -32,7 +32,7 @@ public class ModuleRequestController {
                 .send();
     }
 
-    @PostMapping("/modules")
+    @PostMapping("/modules/_requests")
     public ResponseEntity store(@RequestBody @Valid ModuleRequestDTO moduleRequestDTO) {
         ResponseHelper responseHelper = new ResponseHelper();
         ModuleRequest moduleRequest = moduleRequestService.store(moduleRequestDTO);
