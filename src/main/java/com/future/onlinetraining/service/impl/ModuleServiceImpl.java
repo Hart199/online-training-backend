@@ -7,6 +7,7 @@ import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
 import com.future.onlinetraining.entity.projection.ModuleData;
+import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import com.future.onlinetraining.repository.ModuleCategoryRepository;
 import com.future.onlinetraining.repository.ModuleRatingRepository;
 import com.future.onlinetraining.repository.ModuleRepository;
@@ -112,5 +113,9 @@ public class ModuleServiceImpl implements ModuleService {
 
         moduleRepository.deleteById(module.getId());
         return true;
+    }
+
+    public ModuleDetailData getModuleDetail(Integer id) {
+        return moduleRepository.find(id);
     }
 }

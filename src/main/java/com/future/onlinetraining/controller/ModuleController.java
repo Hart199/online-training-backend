@@ -5,6 +5,7 @@ import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleDTO;
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
+import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import com.future.onlinetraining.service.ModuleService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.hibernate.sql.Update;
@@ -121,7 +122,7 @@ public class ModuleController {
 
     @GetMapping("/modules/{id}")
     public ResponseEntity getModuleDetail(@PathVariable("id") Integer id) {
-        Module module = moduleService.getOne(id);
+        ModuleDetailData module = moduleService.getModuleDetail(id);
 
         if (module == null)
             return new ResponseHelper<>()

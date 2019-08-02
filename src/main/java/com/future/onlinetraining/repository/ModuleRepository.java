@@ -2,6 +2,7 @@ package com.future.onlinetraining.repository;
 
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.projection.ModuleData;
+import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,8 +40,7 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
                     "count(c.id) as classroomCount, count(cs.id) as sessionCount, " +
                     "(select count(c2.id) from classrooms c2 where c2.status = 'open' and c2.module_id = m.id) as openClassroomCount, " +
                     "(select count(c2.id) from classrooms c2 where c2.status = 'closed' and c2.module_id = m.id) as closedClassroomCount, " +
-                    "(select case when count(cs.id) > 0 then true else false end " +
-                    "from classroom_sessions cs2 where cs2.is_exam = true and cs2.classroom_id = c.id) as hasExam, m.version as version " +
+                    "m.has_exam as hasExam, m.version as version " +
                     "from modules m " +
                     "inner join module_ratings mr " +
                     "on m.id = mr.module_id " +
@@ -53,14 +53,21 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
                     "where (:nameParam is null or lower(m.name) like concat('%', :nameParam, '%')) " +
                     "and (:categoryParam is null or mc.name = concat(:categoryParam)) " +
                     "and (:hasExam is null or " +
-                    "((select count(cs3.id) from classroom_sessions cs3 where cs3.classroom_id = c.id and cs3.is_exam = true) > 0 " +
-                    "and concat(:hasExam) = 't') or " +
-                    "((select count(cs3.id) from classroom_sessions cs3 where cs3.classroom_id = c.id and cs3.is_exam = true) = 0 " +
-                    "and concat(:hasExam) = 'f')) " +
+                    "(m.has_exam = true and concat(:hasExam) = 't') or " +
+                    "(m.has_exam = false and concat(:hasExam) = 'f' )) " +
                     "group by m.id, mc.id, c.id"
     )
     Page<ModuleData> getAllBySearhTerm(
             Pageable pageable, @Param("nameParam") String name,
             @Param("categoryParam") String category, @Param("hasExam") Boolean hasExam);
+
+    @Query(
+            value = "select new com.future.onlinetraining.entity.projection.ModuleDetailData(m, avg(mr.value), m.hasExam) " +
+                    "from Module m " +
+                    "left join m.moduleRatings mr " +
+                    "where m.id = :id " +
+                    "group by m.id "
+    )
+    ModuleDetailData find(@Param("id") Integer id);
 
 }

@@ -29,6 +29,8 @@ public class Module {
 
     private int version;
 
+    private boolean hasExam;
+
     private String materialDescription;
 
     private int timePerSession;

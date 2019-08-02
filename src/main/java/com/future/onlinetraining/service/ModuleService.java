@@ -7,6 +7,7 @@ import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
 import com.future.onlinetraining.entity.projection.ModuleData;
+import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,4 +25,5 @@ public interface ModuleService {
     Module getOne(Integer id);
     Module editModule(Integer id, UpdateModuleDTO updateModuleDTO);
     boolean deleteModule(Integer id);
+    ModuleDetailData getModuleDetail(Integer id);
 }
