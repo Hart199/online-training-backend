@@ -31,6 +31,8 @@ public class Module {
 
     private boolean hasExam;
 
+    private int totalSession;
+
     private String materialDescription;
 
     private int timePerSession;

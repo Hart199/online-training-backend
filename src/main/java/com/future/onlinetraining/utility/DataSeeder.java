@@ -127,6 +127,7 @@ public class DataSeeder {
                 .description("Dasar Spring Boot")
                 .status("open")
                 .version(1)
+                .totalSession(2)
                 .hasExam(true)
                 .build();
         module = moduleRepository.save(module);
@@ -136,6 +137,8 @@ public class DataSeeder {
                 .timePerSession(60)
                 .description("Dasar Spring Boot")
                 .status("closed")
+                .totalSession(2)
+                .version(1)
                 .hasExam(true)
                 .build());
 
