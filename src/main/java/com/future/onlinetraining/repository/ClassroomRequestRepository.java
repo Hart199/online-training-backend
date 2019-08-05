@@ -24,7 +24,7 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
     Page<ClassroomRequestsData> getAll(Pageable pageable);
 
     @Query(
-            value = "from ClassroomRequest cr where cr.classroom.id = :classroomId and cr.user.id = :userId"
+            value = "from ClassroomRequest cr where cr.classroom.id = :classroomId and cr.user.id = :userId and cr.status = 'waiting' "
     )
     ClassroomRequest findByClassroomIdandUserId(
             @Param("classroomId") int classroomId, @Param("userId") int userId);
