@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,6 +70,19 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroomRepository.all(pageable, name, hasExam);
     }
 
+    public void verifyClassroomSessionOnModule(Module module, List<ClassroomSession> classroomSessions) {
+        if (classroomSessions.size() != module.getTotalSession())
+            throw new RuntimeException("Jumlah sesi pada kelas harus sama dengan jumlah sesi pada modul.");
+
+        boolean hasExam = false;
+        for(ClassroomSession classroomSession : classroomSessions) {
+            hasExam = classroomSession.isExam() ? true : hasExam;
+        }
+
+        if (module.isHasExam() != hasExam)
+            throw new RuntimeException("Opsi ujian harus sama dengan modul.");
+    }
+
     @Transactional
     public Classroom create(ClassroomDTO classroomDTO) {
         User user = userService.getUserFromSession();
@@ -78,6 +92,10 @@ public class ClassroomServiceImpl implements ClassroomService {
         if (module == null)
             return null;
 
+        verifyClassroomSessionOnModule(module, classroomDTO.getClassroomSessions());
+
+        List<ClassroomSession> classroomSessions = classroomSessionRepository.saveAll(classroomDTO.getClassroomSessions());
+
         Classroom classroom = Classroom
                 .builder()
                 .name(classroomDTO.getName())
@@ -85,6 +103,7 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .module(module)
                 .min_member(classroomDTO.getMinMember())
                 .max_member(classroomDTO.getMaxMember())
+                .classroomSessions(classroomSessions)
                 .trainer(user)
                 .build();
 
@@ -135,20 +154,24 @@ public class ClassroomServiceImpl implements ClassroomService {
         if (trainer == null)
             return null;
 
-        List<ClassroomSession> classroomSessions = moduleClassroomDTO.getClassroom().getClassroomSessions();
-        classroomSessions = classroomSessionRepository.saveAll(classroomSessions);
-
         Module module = Module
                 .builder()
                 .name(moduleClassroomDTO.getModule().getName())
                 .description(moduleClassroomDTO.getModule().getDescription())
+                .materialDescription(moduleClassroomDTO.getModule().getMaterialDescription())
                 .moduleCategory(moduleCategory)
                 .timePerSession(moduleClassroomDTO.getModule().getTimePerSession())
                 .status(moduleClassroomDTO.getModule().getStatus())
+                .totalSession(moduleClassroomDTO.getModule().getTotalSession())
                 .version(1)
                 .build();
 
         module = moduleRepository.save(module);
+
+        List<ClassroomSession> classroomSessions = moduleClassroomDTO.getClassroom().getClassroomSessions();
+        verifyClassroomSessionOnModule(module, moduleClassroomDTO.getClassroom().getClassroomSessions());
+
+        classroomSessions = classroomSessionRepository.saveAll(classroomSessions);
 
         moduleRequest.get().setStatus("accepted");
         moduleRequestRepository.save(moduleRequest.get());

@@ -33,6 +33,8 @@ public class ModuleClassroomDTO {
         int timePerSession;
         String status;
         String moduleCategory;
+        String materialDescription;
+        int totalSession;
     }
 
     Classroom classroom;
