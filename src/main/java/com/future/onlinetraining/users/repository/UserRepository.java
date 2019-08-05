@@ -16,7 +16,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Page<User> findAll(Pageable pageable);
 
     @Query(
-            value = "from User u where (:role is null or u.role.value = :role)"
+            value = "from User u where (:role is null or u.role.value = :role) " +
+                    "and (:name is null or u.fullname like :name%) "
     )
-    Page<User> findAllBySearchTerm(Pageable pageable,@Param("role") String role);
+    Page<User> findAllBySearchTerm(
+            Pageable pageable,@Param("role") String role, @Param("name") String name);
 }

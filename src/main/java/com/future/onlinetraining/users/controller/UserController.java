@@ -26,7 +26,8 @@ public class UserController {
     public ResponseEntity all(@RequestParam(value = "page", defaultValue = "0") int page,
                               @RequestParam(value = "size", defaultValue = "5") int size,
                               @RequestParam(value = "role", required = false) String role,
-                              @RequestParam(value = "sortBy", defaultValue = "") String sortParam) {
+                              @RequestParam(value = "sortBy", defaultValue = "") String sortParam,
+                              @RequestParam(value = "name", required = false) String name) {
         Pageable pageable;
         String[] sortParams = {"fullname", "email", "phone"};
         boolean isSortParamValid = Arrays.asList(sortParams).contains(sortParam.toLowerCase());
@@ -38,7 +39,7 @@ public class UserController {
 
         return new ResponseHelper<>()
                 .setHttpStatus(HttpStatus.OK)
-                .setParam("data", userService.findAll(pageable, role))
+                .setParam("data", userService.findAll(pageable, role, name))
                 .setSuccessStatus(true)
                 .send();
     }

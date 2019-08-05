@@ -57,13 +57,13 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public Page<User> findAll(Pageable pageable, String role) {
+    public Page<User> findAll(Pageable pageable, String role, String name) {
         if (role != null) {
             role = role.toUpperCase();
             if (!Arrays.asList(this.roles).contains(role))
                 role = null;
         }
-        return userRepository.findAllBySearchTerm(pageable, role);
+        return userRepository.findAllBySearchTerm(pageable, role, name);
     }
 
     public ResponseEntity unauthenticated(){
