@@ -1,5 +1,6 @@
 package com.future.onlinetraining.users.service;
 
+import com.future.onlinetraining.dto.UserDTO;
 import com.future.onlinetraining.users.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,4 +14,5 @@ public interface UserService  extends UserDetailsService {
     User getUserFromSession();
     Page<User> findAll(Pageable pageable, String role, String name);
     ResponseEntity unauthenticated();
+    User create(UserDTO user);
 }

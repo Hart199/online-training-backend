@@ -89,7 +89,6 @@ public class DataSeeder {
                 .fullname("Trainer Mantaap")
                 .password(encoder.encode("trainer123"))
                 .role(trainerRole)
-                .description("Seorang trainer yang sangat mantap")
                 .phone("081234567890")
                 .build();
         trainer = userRepository.save(trainer);
@@ -99,7 +98,6 @@ public class DataSeeder {
                 .fullname("Trainee Istiqomah")
                 .password(encoder.encode("trainee123"))
                 .role(traineeRole)
-                .description("Seorang trainee yang ingin belajar")
                 .phone("080987654321")
                 .build();
         trainee = userRepository.save(trainee);

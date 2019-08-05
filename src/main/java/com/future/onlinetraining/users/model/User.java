@@ -45,9 +45,6 @@ public class User implements UserDetails {
     private String phone;
 
     @Column
-    private String description;
-
-    @Column
     private String photo;
 
     @Column

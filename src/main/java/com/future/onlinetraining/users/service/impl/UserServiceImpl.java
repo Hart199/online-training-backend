@@ -1,9 +1,13 @@
 package com.future.onlinetraining.users.service.impl;
 
+import com.future.onlinetraining.dto.UserDTO;
+import com.future.onlinetraining.users.model.Role;
 import com.future.onlinetraining.users.model.User;
+import com.future.onlinetraining.users.repository.RoleRepository;
 import com.future.onlinetraining.users.repository.UserRepository;
 import com.future.onlinetraining.users.service.UserService;
 import com.future.onlinetraining.utility.ResponseHelper;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
     @Autowired
     BCryptPasswordEncoder encoder;
@@ -64,6 +70,27 @@ public class UserServiceImpl implements UserService {
                 role = null;
         }
         return userRepository.findAllBySearchTerm(pageable, role, name);
+    }
+
+    public User create(UserDTO user) {
+        try {
+            if (!Arrays.asList(this.roles).contains(user.getRole().toUpperCase()))
+                throw new RuntimeException("Role tidak ditemukan.");
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Role tidak boleh kosong.");
+        }
+
+        Role role = roleRepository.findByValue(user.getRole().toUpperCase());
+
+        String password = "12345678";
+        User newUser = User.builder()
+                .email(user.getEmail())
+                .fullname(user.getName())
+                .role(role)
+                .phone(user.getPhone())
+                .password(password)
+                .build();
+        return userRepository.save(newUser);
     }
 
     public ResponseEntity unauthenticated(){
