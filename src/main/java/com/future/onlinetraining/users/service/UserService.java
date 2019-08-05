@@ -11,6 +11,6 @@ import java.util.List;
 public interface UserService  extends UserDetailsService {
     User createOrUpdate(User user);
     User getUserFromSession();
-    Page<User> findAll(Pageable pageable);
+    Page<User> findAll(Pageable pageable, String role);
     ResponseEntity unauthenticated();
 }

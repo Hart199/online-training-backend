@@ -11,11 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -27,6 +29,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     BCryptPasswordEncoder encoder;
+
+    private final String[] roles = {"ADMIN", "TRAINER", "TRAINEE"};
 
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(s);
@@ -53,8 +57,13 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public Page<User> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public Page<User> findAll(Pageable pageable, String role) {
+        if (role != null) {
+            role = role.toUpperCase();
+            if (!Arrays.asList(this.roles).contains(role))
+                role = null;
+        }
+        return userRepository.findAllBySearchTerm(pageable, role);
     }
 
     public ResponseEntity unauthenticated(){
