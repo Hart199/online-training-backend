@@ -6,6 +6,7 @@ import com.future.onlinetraining.dto.ClassroomMaterialDTO;
 import com.future.onlinetraining.dto.ModuleClassroomDTO;
 import com.future.onlinetraining.entity.*;
 import com.future.onlinetraining.entity.projection.ClassroomData;
+import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
 import com.future.onlinetraining.repository.*;
 import com.future.onlinetraining.service.ClassroomService;
@@ -190,8 +191,8 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroomRepository.save(classroom);
     }
 
-    public Classroom getClassroomDetail(Integer id) {
-        Classroom classroom = classroomRepository.find(id);
+    public ClassroomDetailData getClassroomDetail(Integer id) {
+        ClassroomDetailData classroom = classroomRepository.getDetail(id);
 
         if (classroom == null)
             return  null;

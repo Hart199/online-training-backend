@@ -5,6 +5,7 @@ import com.future.onlinetraining.dto.ClassroomDetailDTO;
 import com.future.onlinetraining.dto.ModuleClassroomDTO;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.Module;
+import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.service.ClassroomService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import com.sun.org.apache.xpath.internal.operations.Mod;
@@ -116,7 +117,7 @@ public class ClassroomController {
      */
     @GetMapping("/classrooms/{id}")
     public ResponseEntity getClassroomDetail(@PathVariable("id") Integer id) {
-        Classroom classroom = classroomService.getClassroomDetail(id);
+        ClassroomDetailData classroom = classroomService.getClassroomDetail(id);
 
         if (classroom == null)
             return new ResponseHelper<>()

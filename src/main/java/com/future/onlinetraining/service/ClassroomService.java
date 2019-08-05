@@ -6,6 +6,7 @@ import com.future.onlinetraining.dto.ModuleClassroomDTO;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.projection.ClassroomData;
+import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.models.auth.In;
@@ -22,7 +23,7 @@ public interface ClassroomService {
 
     Classroom create(ClassroomDTO classroomDTO);
     Classroom createModuleAndClassroom(ModuleClassroomDTO moduleClassroomDTO);
-    Classroom getClassroomDetail(Integer id);
+    ClassroomDetailData getClassroomDetail(Integer id);
     Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO, MultipartFile[] multipartFiles);
     Boolean delete(Integer id);
     Boolean deleteMaterial(Integer id);

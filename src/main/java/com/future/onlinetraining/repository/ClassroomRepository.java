@@ -2,6 +2,7 @@ package com.future.onlinetraining.repository;
 
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.projection.ClassroomData;
+import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
 import io.swagger.models.auth.In;
 import org.springframework.data.domain.Page;
@@ -60,4 +61,10 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
             value = "from Classroom c where c.id = :id"
     )
     Classroom find(@Param("id") Integer id);
+
+    @Query(
+            value = "select new com.future.onlinetraining.entity.projection.ClassroomDetailData(c, count(crs)) " +
+            "from Classroom c left join c.classroomResults crs " +
+            "where c.id = :id group by c ")
+    ClassroomDetailData getDetail(@Param("id") Integer id);
 }
