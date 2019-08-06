@@ -260,14 +260,14 @@ public class DataSeeder {
 //      classroom session -> classrom2
         ClassroomSession classroomSession21 = ClassroomSession.builder()
                 .description("Sesi 1")
-                .startTime(2000)
+                .startTime(new Timestamp(2000))
                 .isExam(true)
                 .classroom(classroom2)
                 .build();
         classroomSession21 = classroomSessionRepository.save(classroomSession21);
         ClassroomSession classroomSession22 = ClassroomSession.builder()
                 .description("Sesi 2")
-                .startTime(2000)
+                .startTime(new Timestamp(2000))
                 .isExam(true)
                 .classroom(classroom2)
                 .build();
@@ -276,21 +276,21 @@ public class DataSeeder {
 //      classroom session -> classrom3
         ClassroomSession classroomSession31 = ClassroomSession.builder()
                 .description("Sesi 1")
-                .startTime(3000)
+                .startTime(new Timestamp(3000))
                 .isExam(false)
                 .classroom(classroom3)
                 .build();
         classroomSession31 = classroomSessionRepository.save(classroomSession31);
         ClassroomSession classroomSession32 = ClassroomSession.builder()
                 .description("Sesi 2")
-                .startTime(3000)
+                .startTime(new Timestamp(3000))
                 .isExam(false)
                 .classroom(classroom3)
                 .build();
         classroomSession32 = classroomSessionRepository.save(classroomSession32);
         ClassroomSession classroomSession33 = ClassroomSession.builder()
                 .description("Sesi 3")
-                .startTime(3000)
+                .startTime(new Timestamp(3000))
                 .isExam(false)
                 .classroom(classroom3)
                 .build();
@@ -299,21 +299,21 @@ public class DataSeeder {
 //      classroom session -> classrom4
         ClassroomSession classroomSession41 = ClassroomSession.builder()
                 .description("Sesi 1")
-                .startTime(4000)
+                .startTime(new Timestamp(4000))
                 .isExam(false)
                 .classroom(classroom4)
                 .build();
         classroomSession41 = classroomSessionRepository.save(classroomSession41);
         ClassroomSession classroomSession42 = ClassroomSession.builder()
                 .description("Sesi 2")
-                .startTime(4000)
+                .startTime(new Timestamp(4000))
                 .isExam(false)
                 .classroom(classroom4)
                 .build();
         classroomSession42 = classroomSessionRepository.save(classroomSession42);
         ClassroomSession classroomSession43 = ClassroomSession.builder()
                 .description("Sesi 3")
-                .startTime(4000)
+                .startTime(new Timestamp(4000))
                 .isExam(false)
                 .classroom(classroom4)
                 .build();
@@ -322,14 +322,14 @@ public class DataSeeder {
 //      classroom session -> classrom5
         ClassroomSession classroomSession51 = ClassroomSession.builder()
                 .description("Sesi 1")
-                .startTime(5000)
+                .startTime(new Timestamp(5000))
                 .isExam(false)
                 .classroom(classroom5)
                 .build();
         classroomSession51 = classroomSessionRepository.save(classroomSession51);
         ClassroomSession classroomSession52 = ClassroomSession.builder()
                 .description("Sesi 2")
-                .startTime(5000)
+                .startTime(new Timestamp(5000))
                 .isExam(true)
                 .classroom(classroom5)
                 .build();
