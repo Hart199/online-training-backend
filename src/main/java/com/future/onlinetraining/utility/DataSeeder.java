@@ -83,6 +83,16 @@ public class DataSeeder {
                 .name("Backend Development")
                 .build()
         );
+        ModuleCategory moduleCategory2 = moduleCategoryRepository.save(
+                ModuleCategory.builder()
+                        .name("Artificial Intellegent")
+                        .build()
+        );
+        ModuleCategory moduleCategory3 = moduleCategoryRepository.save(
+                ModuleCategory.builder()
+                        .name("Data Visualization")
+                        .build()
+        );
 
         User trainer = User.builder()
                 .email("trainer@gmail.com")
@@ -118,6 +128,7 @@ public class DataSeeder {
                 .build();
         trainerRatingRepository.save(trainerRating);
 
+//      MODULE
         Module module = Module.builder()
                 .moduleCategory(moduleCategory)
                 .name("Tutorial Spring Boot 1")
@@ -129,7 +140,7 @@ public class DataSeeder {
                 .hasExam(true)
                 .build();
         module = moduleRepository.save(module);
-        moduleRepository.save(Module.builder()
+        Module module2 = moduleRepository.save(Module.builder()
                 .moduleCategory(moduleCategory)
                 .name("Tutorial Spring Boot 2")
                 .timePerSession(60)
@@ -139,47 +150,217 @@ public class DataSeeder {
                 .version(1)
                 .hasExam(true)
                 .build());
+        Module module3 = moduleRepository.save(Module.builder()
+                .moduleCategory(moduleCategory2)
+                .name("Machine Learning Dasar")
+                .timePerSession(90)
+                .description("Machine learning, bidang ilmu komputer yang memberikan kemampuan sistem komputer untuk belajar dari data, adalah salah satu topik terpanas dalam ilmu komputer.")
+                .status("open")
+                .totalSession(3)
+                .version(1)
+                .hasExam(false)
+                .build());
+        Module module4 = moduleRepository.save(Module.builder()
+                .moduleCategory(moduleCategory3)
+                .name("Data Visualization in Python")
+                .timePerSession(45)
+                .description("Learn how to present data graphically with Python, Matplotlib, and Seaborn.")
+                .status("open")
+                .totalSession(2)
+                .version(1)
+                .hasExam(true)
+                .build());
 
+//      MODULE RATING
         ModuleRating moduleRating = ModuleRating.builder()
                 .module(module)
                 .comment("mantaap")
                 .value(5)
                 .build();
         moduleRating = moduleRatingRepository.save(moduleRating);
+        moduleRatingRepository.save(ModuleRating.builder()
+                .module(module2)
+                .comment("mantaap")
+                .value(4.5)
+                .build());
+        moduleRatingRepository.save(ModuleRating.builder()
+                .module(module3)
+                .comment("mantaap")
+                .value(4)
+                .build());
+        moduleRatingRepository.save(ModuleRating.builder()
+                .module(module4)
+                .comment("kurang mantaap")
+                .value(3.5)
+                .build());
 
+//      CLASSROOM
         Classroom classroom = Classroom.builder()
                 .max_member(30)
-                .min_member(1)
+                .min_member(10)
                 .module(module)
                 .status("open")
                 .name("Kelas Spring Boot 01")
                 .trainer(trainer)
                 .build();
         classroom = classroomRepository.save(classroom);
+        Classroom classroom2 = classroomRepository.save(Classroom.builder()
+                .max_member(25)
+                .min_member(10)
+                .module(module2)
+                .status("close")
+                .name("Kelas Spring Boot 02")
+                .trainer(trainer)
+                .build());
+        Classroom classroom3 = classroomRepository.save(Classroom.builder()
+                .max_member(50)
+                .min_member(10)
+                .module(module3)
+                .status("open")
+                .name("Kelas Unsupervised Learning 1")
+                .trainer(trainer)
+                .build());
+        Classroom classroom4 = classroomRepository.save(Classroom.builder()
+                .max_member(50)
+                .min_member(10)
+                .module(module3)
+                .status("open")
+                .name("Kelas Unsupervised Learning 2")
+                .trainer(trainer)
+                .build());
+        Classroom classroom5 = classroomRepository.save(Classroom.builder()
+                .max_member(30)
+                .min_member(5)
+                .module(module4)
+                .status("open")
+                .name("Kelas Visdat 01")
+                .trainer(trainer)
+                .build());
 
-        ClassroomSession classroomSession1 = ClassroomSession.builder()
+//      CLASSROOM SESSION
+//      classroom session -> classrom
+        ClassroomSession classroomSession11 = ClassroomSession.builder()
                 .description("Sesi 1")
                 .startTime(1000)
                 .isExam(false)
                 .classroom(classroom)
                 .build();
-        classroomSession1 = classroomSessionRepository.save(classroomSession1);
-
-        ClassroomSession classroomSession2 = ClassroomSession.builder()
+        classroomSession11 = classroomSessionRepository.save(classroomSession11);
+        ClassroomSession classroomSession12 = ClassroomSession.builder()
                 .description("Sesi 2")
                 .startTime(2000)
                 .isExam(true)
                 .classroom(classroom)
                 .build();
-        classroomSession2 = classroomSessionRepository.save(classroomSession2);
+        classroomSession12 = classroomSessionRepository.save(classroomSession12);
 
+//      classroom session -> classrom2
+        ClassroomSession classroomSession21 = ClassroomSession.builder()
+                .description("Sesi 1")
+                .startTime(2000)
+                .isExam(true)
+                .classroom(classroom2)
+                .build();
+        classroomSession21 = classroomSessionRepository.save(classroomSession21);
+        ClassroomSession classroomSession22 = ClassroomSession.builder()
+                .description("Sesi 2")
+                .startTime(2000)
+                .isExam(true)
+                .classroom(classroom2)
+                .build();
+        classroomSession22 = classroomSessionRepository.save(classroomSession22);
+
+//      classroom session -> classrom3
+        ClassroomSession classroomSession31 = ClassroomSession.builder()
+                .description("Sesi 1")
+                .startTime(3000)
+                .isExam(false)
+                .classroom(classroom3)
+                .build();
+        classroomSession31 = classroomSessionRepository.save(classroomSession31);
+        ClassroomSession classroomSession32 = ClassroomSession.builder()
+                .description("Sesi 2")
+                .startTime(3000)
+                .isExam(false)
+                .classroom(classroom3)
+                .build();
+        classroomSession32 = classroomSessionRepository.save(classroomSession32);
+        ClassroomSession classroomSession33 = ClassroomSession.builder()
+                .description("Sesi 3")
+                .startTime(3000)
+                .isExam(false)
+                .classroom(classroom3)
+                .build();
+        classroomSession33 = classroomSessionRepository.save(classroomSession33);
+
+//      classroom session -> classrom4
+        ClassroomSession classroomSession41 = ClassroomSession.builder()
+                .description("Sesi 1")
+                .startTime(4000)
+                .isExam(false)
+                .classroom(classroom4)
+                .build();
+        classroomSession41 = classroomSessionRepository.save(classroomSession41);
+        ClassroomSession classroomSession42 = ClassroomSession.builder()
+                .description("Sesi 2")
+                .startTime(4000)
+                .isExam(false)
+                .classroom(classroom4)
+                .build();
+        classroomSession42 = classroomSessionRepository.save(classroomSession42);
+        ClassroomSession classroomSession43 = ClassroomSession.builder()
+                .description("Sesi 3")
+                .startTime(4000)
+                .isExam(false)
+                .classroom(classroom4)
+                .build();
+        classroomSession43 = classroomSessionRepository.save(classroomSession43);
+
+//      classroom session -> classrom5
+        ClassroomSession classroomSession51 = ClassroomSession.builder()
+                .description("Sesi 1")
+                .startTime(5000)
+                .isExam(false)
+                .classroom(classroom5)
+                .build();
+        classroomSession51 = classroomSessionRepository.save(classroomSession51);
+        ClassroomSession classroomSession52 = ClassroomSession.builder()
+                .description("Sesi 2")
+                .startTime(5000)
+                .isExam(true)
+                .classroom(classroom5)
+                .build();
+        classroomSession52 = classroomSessionRepository.save(classroomSession52);
+
+//      CLASS ROOM MATERIAL
         ClassroomMaterial classroomMaterial = ClassroomMaterial.builder()
                 .classroom(classroom)
                 .description("Basic Java")
                 .file("java.pdf")
                 .build();
         classroomMaterial = classroomMaterialRepository.save(classroomMaterial);
+        classroomMaterialRepository.save(ClassroomMaterial.builder()
+                .classroom(classroom2)
+                .description("Basic Java")
+                .file("java_Spring_Boot.pdf")
+                .build());
+        classroomMaterialRepository.save(ClassroomMaterial.builder()
+                .classroom(classroom3)
+                .description("UnLe Dasar")
+                .file("unsupervised_learning_beginners.pdf")
+                .build());
+        classroomMaterialRepository.save(ClassroomMaterial.builder()
+                .classroom(classroom4)
+                .description("UnLe Dasar")
+                .file("unsupervised_learning_beginners.pdf")
+                .build());
+        classroomMaterialRepository.save(ClassroomMaterial.builder()
+                .classroom(classroom5)
+                .description("Visdar")
+                .file("data_visualization_by_Steve.pdf")
+                .build());
 
+//      CLASSROOM RESULT
         ClassroomResult classroomResult = ClassroomResult.builder()
                 .classroom(classroom)
                 .status("pending")
@@ -187,6 +368,12 @@ public class DataSeeder {
                 .score(0)
                 .build();
         classroomResult = classroomResultRepository.save(classroomResult);
+        classroomResultRepository.save(ClassroomResult.builder()
+                .classroom(classroom2)
+                .status("done")
+                .user(trainee)
+                .score(9)
+                .build());
 
         moduleRequestRepository.save(
                 ModuleRequest.builder()
@@ -196,10 +383,18 @@ public class DataSeeder {
                 .status("waiting")
                 .build()
         );
+        moduleRequestRepository.save(
+                ModuleRequest.builder()
+                .moduleCategory(moduleCategory2)
+                .user(trainee)
+                .title("Min-Max and Deep Search Method")
+                .status("waiting")
+                .build()
+        );
 
         classroomRequestRepository.save(
                 ClassroomRequest.builder()
-                .classroom(classroom)
+                .classroom(classroom2)
                 .user(trainee)
                 .status("waiting")
                 .build()
@@ -207,10 +402,10 @@ public class DataSeeder {
 
         classroomRequestRepository.save(
                 ClassroomRequest.builder()
-                        .classroom(classroom)
-                        .user(trainer)
-                        .status("waiting")
-                        .build()
+                .classroom(classroom2)
+                .user(trainer)
+                .status("waiting")
+                .build()
         );
 
     }
