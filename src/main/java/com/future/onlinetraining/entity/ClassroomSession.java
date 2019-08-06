@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -30,7 +31,7 @@ public class ClassroomSession {
     @JsonIgnore
     private Classroom classroom;
 
-    private int startTime;
+    private Timestamp startTime;
 
     private String description;
 

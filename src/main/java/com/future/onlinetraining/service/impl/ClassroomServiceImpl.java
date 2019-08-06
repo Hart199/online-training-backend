@@ -7,7 +7,6 @@ import com.future.onlinetraining.dto.ModuleClassroomDTO;
 import com.future.onlinetraining.entity.*;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomDetailData;
-import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
 import com.future.onlinetraining.repository.*;
 import com.future.onlinetraining.service.ClassroomService;
 import com.future.onlinetraining.service.FileHandlerService;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +56,7 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroomRepository.findAll(PageRequest.of(0,5));
     }
 
-    public Page<ClassroomSubscribed> getAllSubscribed(int page, int size) {
+    public Page<Classroom> getAllSubscribed(int page, int size) {
         return classroomRepository.findSubscribed(
                 PageRequest.of(page, size), userService.getUserFromSession().getId());
     }

@@ -3,16 +3,12 @@ package com.future.onlinetraining.repository;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomDetailData;
-import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
-import io.swagger.models.auth.In;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
-import javax.validation.OverridesAttribute;
 import java.util.List;
 
 public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
@@ -22,16 +18,12 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
     Page<Classroom> findAll(Pageable pageable);
 
     @Query(
-            nativeQuery = true,
-            value = "select c.id, c.name, m.name as module_name, m.description " +
-                    "from classrooms c " +
-                    "inner join modules m " +
-                    "on m.id = c.module_id " +
-                    "inner join classroom_results cr " +
-                    "on c.id = cr.classroom_id " +
-                    "where cr.user_id = :userId "
+            value = "from Classroom c " +
+                    "inner join c.classroomResults crs " +
+                    "inner join crs.user u " +
+                    "where u.id = :userId"
     )
-    Page<ClassroomSubscribed> findSubscribed(Pageable pageable, @Param("userId") int userId);
+    Page<Classroom> findSubscribed(Pageable pageable, @Param("userId") int userId);
 
     @Query(
             value = "select new com.future.onlinetraining.entity.projection.ClassroomData(" +

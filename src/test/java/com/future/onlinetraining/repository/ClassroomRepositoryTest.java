@@ -1,6 +1,6 @@
 package com.future.onlinetraining.repository;
 
-import com.future.onlinetraining.entity.projection.ClassroomSubscribed;
+import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.users.model.User;
 import com.future.onlinetraining.users.repository.UserRepository;
 import org.junit.Assert;
@@ -38,10 +38,10 @@ public class ClassroomRepositoryTest {
     @Test
     public void getSubscribedClassroomTest() {
         User user = userRepository.findByEmail("trainee@gmail.com");
-        Page<ClassroomSubscribed> classroomSubscribedPage = classroomRepository.findSubscribed(
+        Page<Classroom> classroomSubscribedPage = classroomRepository.findSubscribed(
                 PageRequest.of(0, 2), user.getId());
 
-        for (ClassroomSubscribed classroomSubscribed : classroomSubscribedPage.getContent()) {
+        for (Classroom classroomSubscribed : classroomSubscribedPage.getContent()) {
             System.out.println(classroomSubscribed.getName());
         }
     }

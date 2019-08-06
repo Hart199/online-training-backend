@@ -12,6 +12,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 @Component
 public class DataSeeder {
 
@@ -159,7 +162,7 @@ public class DataSeeder {
 
         ClassroomSession classroomSession1 = ClassroomSession.builder()
                 .description("Sesi 1")
-                .startTime(1000)
+                .startTime(new Timestamp(System.currentTimeMillis()))
                 .isExam(false)
                 .classroom(classroom)
                 .build();
@@ -167,7 +170,7 @@ public class DataSeeder {
 
         ClassroomSession classroomSession2 = ClassroomSession.builder()
                 .description("Sesi 2")
-                .startTime(2000)
+                .startTime(new Timestamp(System.currentTimeMillis()))
                 .isExam(true)
                 .classroom(classroom)
                 .build();
