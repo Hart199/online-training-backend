@@ -4,7 +4,6 @@ public interface TrainerData {
 
     int getId();
     String getName();
-    String getDesc();
     String getPhoto();
     double getRating();
 

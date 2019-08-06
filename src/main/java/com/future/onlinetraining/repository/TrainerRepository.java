@@ -11,7 +11,7 @@ public interface TrainerRepository extends JpaRepository<User, Integer> {
 
     @Query (
             nativeQuery = true,
-            value = "select u.id, u.fullname as name, u.description as desc, u.photo, avg(tr.value) as rating " +
+            value = "select u.id, u.fullname as name, u.photo, avg(tr.value) as rating " +
                     "from users u " +
                     "inner join trainer_ratings tr " +
                     "on u.id = tr.trainer_id " +
