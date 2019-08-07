@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Data
 public class ClassroomRequestsData {
     String className;
@@ -12,12 +16,17 @@ public class ClassroomRequestsData {
     String trainerName;
     long requesterCount;
     Boolean hasVote;
+    String moduleName;
+    Date createdAt;
 
-    public ClassroomRequestsData(String className, int classId, String trainerName, long requesterCount) {
+    public ClassroomRequestsData(
+            String className, int classId, String trainerName, long requesterCount, String moduleName, Date createdAt) {
         this.className = className;
         this.classId = classId;
         this.trainerName = trainerName;
         this.requesterCount = requesterCount;
+        this.moduleName = moduleName;
+        this.createdAt = createdAt;
     }
 
     public String getClassName() {
@@ -60,4 +69,19 @@ public class ClassroomRequestsData {
         this.hasVote = hasVote;
     }
 
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 }

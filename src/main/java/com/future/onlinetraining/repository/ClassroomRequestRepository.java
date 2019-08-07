@@ -15,11 +15,12 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
     @Query(
             value = "SELECT new com.future.onlinetraining.entity.projection.ClassroomRequestsData(c.name, " +
                     "c.id, t.fullname, " +
-                    "count(c.id) as requesterCount) " +
+                    "count(c.id) as requesterCount, m.name, min(cr.createdAt) ) " +
                     "FROM ClassroomRequest cr " +
                     "inner join cr.classroom as c " +
                     "inner join c.trainer as t " +
-                    "group by c, t"
+                    "inner join c.module m " +
+                    "group by c, t, m"
     )
     Page<ClassroomRequestsData> getAll(Pageable pageable);
 
