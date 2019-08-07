@@ -35,7 +35,7 @@ public class ModuleRequestController {
             pageable = PageRequest.of(page, size, JpaSort.unsafe(
                     Sort.Direction.DESC, "case when count(mrl) is null then 0.0 else count(mrl) end"));
         else
-            pageable = PageRequest.of(page, size);
+            pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
         return new ResponseHelper<>()
                 .setParam("data", moduleRequestService.getAll(pageable, name))
