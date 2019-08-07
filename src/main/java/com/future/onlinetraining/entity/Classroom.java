@@ -42,7 +42,7 @@ public class Classroom {
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JsonBackReference
+//    @JsonBackReference
     private List<ClassroomRequest> classroomRequests;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
