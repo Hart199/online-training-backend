@@ -73,4 +73,14 @@ public class ClassroomRequestServiceImpl implements ClassroomRequestService {
         classroomRequest.get().setStatus(status);
         return classroomRequestRepository.save(classroomRequest.get());
     }
+
+    public Page<ClassroomRequestsData> getAllByTrainer(Pageable pageable, String name) {
+        User user = userService.getUserFromSession();
+        if (user == null)
+            throw new NullPointerException("Anda belum login.");
+
+        Page<ClassroomRequestsData> classroomRequestsDataPage = classroomRequestRepository
+                .getAllbyTrainerId(pageable, user.getId(), name);
+        return classroomRequestsDataPage;
+    }
 }

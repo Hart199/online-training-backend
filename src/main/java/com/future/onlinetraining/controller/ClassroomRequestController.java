@@ -40,6 +40,19 @@ public class ClassroomRequestController {
                 .send();
     }
 
+    @GetMapping("/_trainer/classrooms/_requests")
+    public ResponseEntity getAllByTrainer(@RequestParam(value = "page", defaultValue = "0") int page,
+                                 @RequestParam(value = "size", defaultValue = "5") int size,
+                                 @RequestParam(value = "name", required = false) String name) {
+
+        return new ResponseHelper<>()
+                .setParam("data", classroomRequestService.getAllByTrainer(
+                        PageRequest.of(page, size, Sort.by("createdAt").descending()), name))
+                .setHttpStatus(HttpStatus.OK)
+                .setSuccessStatus(true)
+                .send();
+    }
+
     @PostMapping("/classrooms/_requests")
     public ResponseEntity request(@RequestBody @Valid ClassroomRequestDTO classroomRequestDTO) {
         ClassroomRequest classroomRequest = classroomRequestService.request(classroomRequestDTO);
