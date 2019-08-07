@@ -20,9 +20,10 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
                     "inner join cr.classroom as c " +
                     "inner join c.trainer as t " +
                     "inner join c.module m " +
+                    "where (:name is null or c.name like :name%) " +
                     "group by c, t, m"
     )
-    Page<ClassroomRequestsData> getAll(Pageable pageable);
+    Page<ClassroomRequestsData> getAll(Pageable pageable, @Param("name") String name);
 
     @Query(
             value = "SELECT new com.future.onlinetraining.entity.projection.ClassroomRequestsData(c.name, " +

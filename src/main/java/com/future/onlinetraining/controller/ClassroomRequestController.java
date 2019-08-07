@@ -26,7 +26,8 @@ public class ClassroomRequestController {
     @GetMapping("/classrooms/_requests")
     public ResponseEntity getAll(@RequestParam(value = "page", defaultValue = "0") int page,
                                  @RequestParam(value = "size", defaultValue = "5") int size,
-                                 @RequestParam(value = "popular", defaultValue = "false") Boolean popular) {
+                                 @RequestParam(value = "popular", defaultValue = "false") Boolean popular,
+                                 @RequestParam(value = "name", required = false) String name) {
         Pageable pageable;
         if (popular)
             pageable = PageRequest.of(page, size, Sort.by("requesterCount").descending());
@@ -34,7 +35,7 @@ public class ClassroomRequestController {
             pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         return new ResponseHelper<>()
-                .setParam("data", classroomRequestService.getAll(pageable))
+                .setParam("data", classroomRequestService.getAll(pageable, name))
                 .setHttpStatus(HttpStatus.OK)
                 .setSuccessStatus(true)
                 .send();

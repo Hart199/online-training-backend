@@ -25,8 +25,8 @@ public class ClassroomRequestServiceImpl implements ClassroomRequestService {
     @Autowired
     private UserService userService;
 
-    public Page<ClassroomRequestsData> getAll(Pageable pageable) {
-        Page<ClassroomRequestsData> classroomRequestsDataPage = classroomRequestRepository.getAll(pageable);
+    public Page<ClassroomRequestsData> getAll(Pageable pageable, String name) {
+        Page<ClassroomRequestsData> classroomRequestsDataPage = classroomRequestRepository.getAll(pageable, name);
         classroomRequestsDataPage.getContent().forEach(classroomRequestsData -> {
            classroomRequestsData.setHasVote(this.isHasVote(classroomRequestsData.getClassId()));
         });

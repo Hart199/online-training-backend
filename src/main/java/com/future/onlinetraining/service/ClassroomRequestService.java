@@ -10,7 +10,7 @@ import org.springframework.security.core.parameters.P;
 
 public interface ClassroomRequestService {
 
-    Page<ClassroomRequestsData> getAll(Pageable pageable);
+    Page<ClassroomRequestsData> getAll(Pageable pageable, String name);
     ClassroomRequest request(ClassroomRequestDTO classroomRequestDTO);
     ClassroomRequest editStatus(Integer id, String status);
     Page<ClassroomRequestsData> getAllByTrainer(Pageable pageable, String name);
