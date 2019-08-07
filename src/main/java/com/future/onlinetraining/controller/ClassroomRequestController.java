@@ -31,7 +31,7 @@ public class ClassroomRequestController {
         if (popular)
             pageable = PageRequest.of(page, size, Sort.by("requesterCount").descending());
         else
-            pageable = PageRequest.of(page, size, Sort.by("id").descending());
+            pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         return new ResponseHelper<>()
                 .setParam("data", classroomRequestService.getAll(pageable))

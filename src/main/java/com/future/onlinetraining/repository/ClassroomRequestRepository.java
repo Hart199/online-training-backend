@@ -15,7 +15,7 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
     @Query(
             value = "SELECT new com.future.onlinetraining.entity.projection.ClassroomRequestsData(c.name, " +
                     "c.id, t.fullname, " +
-                    "count(c.id) as requesterCount, m.name, min(cr.createdAt) ) " +
+                    "count(c.id) as requesterCount, m.name, min(cr.createdAt) as createdAt ) " +
                     "FROM ClassroomRequest cr " +
                     "inner join cr.classroom as c " +
                     "inner join c.trainer as t " +
