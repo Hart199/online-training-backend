@@ -25,7 +25,20 @@ public class ClassroomRequestServiceImpl implements ClassroomRequestService {
     private UserService userService;
 
     public Page<ClassroomRequestsData> getAll(Pageable pageable) {
-        return classroomRequestRepository.getAll(pageable);
+        Page<ClassroomRequestsData> classroomRequestsDataPage = classroomRequestRepository.getAll(pageable);
+        classroomRequestsDataPage.getContent().forEach(classroomRequestsData -> {
+           classroomRequestsData.setHasVote(this.isHasVote(classroomRequestsData.getClassId()));
+        });
+        return classroomRequestsDataPage;
+    }
+
+    public Boolean isHasVote(int classId) {
+        try {
+            return classroomRequestRepository.findByClassroomIdandUserId(classId, userService.getUserFromSession().getId()) == null ?
+                    false : true;
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Anda belum login");
+        }
     }
 
     public ClassroomRequest request(ClassroomRequestDTO classroomRequestDTO) {
