@@ -5,10 +5,12 @@ import com.future.onlinetraining.dto.ModuleRequestLikeDTO;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRequest;
 import com.future.onlinetraining.entity.ModuleRequestLike;
+import com.future.onlinetraining.entity.projection.ModuleRequestData;
 import com.future.onlinetraining.repository.ModuleCategoryRepository;
 import com.future.onlinetraining.repository.ModuleRequestLikeRepository;
 import com.future.onlinetraining.repository.ModuleRequestRepository;
 import com.future.onlinetraining.service.ModuleRequestService;
+import com.future.onlinetraining.users.model.User;
 import com.future.onlinetraining.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,8 +31,26 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
     @Autowired
     UserService userService;
 
-    public Page<ModuleRequest> getAll(Pageable pageable, String name) {
-        return moduleRequestRepository.findAllByNameParam(pageable, name);
+    public Page<ModuleRequestData> getAll(Pageable pageable, String name) {
+        Page<ModuleRequestData> moduleRequestData =  moduleRequestRepository.findAllByNameParam(pageable, name);
+        moduleRequestData.getContent().forEach(data -> {
+            data.setHasVote(this.isHasVote(data.getModuleRequest().getId()));
+        });
+        return moduleRequestData;
+    }
+
+    public Boolean isHasVote(int moduleRequestId) {
+        User user;
+        try {
+            user = userService.getUserFromSession();
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Anda belum login.");
+        }
+
+        ModuleRequestLike moduleRequestLike = moduleRequestLikeRepository
+                .findByIdAndUserId(moduleRequestId, user.getId());
+
+        return moduleRequestLike == null ? false : true;
     }
 
     public ModuleRequest store(ModuleRequestDTO moduleRequestDTO) {
