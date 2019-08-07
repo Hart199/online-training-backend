@@ -16,6 +16,7 @@ public interface ClassroomService {
     Page<Classroom> getAll(Pageable pageable);
     Page<Classroom> getAllSubscribed(int page, int size, String status);
     Page<ClassroomData> all(String name, Boolean hasExam, Pageable pageable);
+    Page<Classroom> getTrainerClassrooms(Pageable pageable, String status);
 
     Classroom create(ClassroomDTO classroomDTO);
     Classroom createModuleAndClassroom(ModuleClassroomDTO moduleClassroomDTO);

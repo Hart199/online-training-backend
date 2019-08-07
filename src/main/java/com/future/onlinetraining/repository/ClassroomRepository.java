@@ -61,4 +61,10 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
             "from Classroom c left join c.classroomResults crs " +
             "where c.id = :id group by c ")
     ClassroomDetailData getDetail(@Param("id") Integer id);
+
+    @Query(
+            value = "from Classroom c where c.trainer.id = :id " +
+                    "and (:status is null or c.status = :status) "
+    )
+    Page<Classroom> getTrainerClassrooms(Pageable pageable, @Param("id") int id, @Param("status") String status);
 }

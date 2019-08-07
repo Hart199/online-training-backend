@@ -261,4 +261,14 @@ public class ClassroomServiceImpl implements ClassroomService {
         classroomMaterialRepository.deleteById(id);
         return true;
     }
+
+    public Page<Classroom> getTrainerClassrooms(Pageable pageable, String status) {
+        User user = userService.getUserFromSession();
+        if (user == null)
+            throw new NullPointerException("Anda belum login.");
+        Page<Classroom> trainerClassrooms = classroomRepository.getTrainerClassrooms(pageable, user.getId(), status);
+        if (trainerClassrooms.getContent() == null)
+            return null;
+        return trainerClassrooms;
+    }
 }
