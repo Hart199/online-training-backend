@@ -6,6 +6,7 @@ import com.future.onlinetraining.entity.projection.ClassroomRequestsData;
 import com.future.onlinetraining.repository.ClassroomRepository;
 import com.future.onlinetraining.repository.ClassroomRequestRepository;
 import com.future.onlinetraining.service.ClassroomRequestService;
+import com.future.onlinetraining.users.model.User;
 import com.future.onlinetraining.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,12 +34,17 @@ public class ClassroomRequestServiceImpl implements ClassroomRequestService {
     }
 
     public Boolean isHasVote(int classId) {
+        User user;
         try {
-            return classroomRequestRepository.findByClassroomIdandUserId(classId, userService.getUserFromSession().getId()) == null ?
-                    false : true;
+            user = userService.getUserFromSession();
         } catch (NullPointerException e) {
             throw new RuntimeException("Anda belum login");
         }
+        ClassroomRequest classroomRequest = classroomRequestRepository
+                .findByClassroomIdandUserId(classId, user.getId());
+        if (classroomRequest == null)
+            return false;
+        return true;
     }
 
     public ClassroomRequest request(ClassroomRequestDTO classroomRequestDTO) {

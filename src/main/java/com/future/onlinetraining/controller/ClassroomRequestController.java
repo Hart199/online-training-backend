@@ -46,11 +46,11 @@ public class ClassroomRequestController {
 
         if (classroomRequest == null)
             return new ResponseHelper<>()
-                    .setMessage("Berhasil melakukan request kelas")
+                    .setMessage("Berhasil membatalkan request kelas")
                     .send();
 
         return new ResponseHelper<>()
-                .setMessage("Berhasil membatalkan request kelas")
+                .setMessage("Berhasil melakukan request kelas")
                 .send();
     }
 
