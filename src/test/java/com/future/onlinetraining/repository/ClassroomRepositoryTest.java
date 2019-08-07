@@ -39,7 +39,7 @@ public class ClassroomRepositoryTest {
     public void getSubscribedClassroomTest() {
         User user = userRepository.findByEmail("trainee@gmail.com");
         Page<Classroom> classroomSubscribedPage = classroomRepository.findSubscribed(
-                PageRequest.of(0, 2), user.getId());
+                PageRequest.of(0, 2), user.getId(), null);
 
         for (Classroom classroomSubscribed : classroomSubscribedPage.getContent()) {
             System.out.println(classroomSubscribed.getName());

@@ -37,10 +37,11 @@ public class ClassroomController {
      */
     @GetMapping("/classrooms/_subscribed")
     public ResponseEntity getSubscribed(@RequestParam(value = "page", defaultValue = "0") int page,
-                                        @RequestParam(value = "size", defaultValue = "5") int size) {
+                                        @RequestParam(value = "size", defaultValue = "5") int size,
+                                        @RequestParam(value = "status", required = false) String status) {
         return new ResponseHelper<>()
                 .setHttpStatus(HttpStatus.OK)
-                .setParam("data", classroomService.getAllSubscribed(page, size))
+                .setParam("data", classroomService.getAllSubscribed(page, size, status))
                 .setSuccessStatus(true)
                 .send();
     }
