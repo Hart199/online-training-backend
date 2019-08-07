@@ -6,6 +6,7 @@ import com.future.onlinetraining.dto.UpdateModuleDTO;
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
+import com.future.onlinetraining.entity.projection.GetAllModuleData;
 import com.future.onlinetraining.entity.projection.ModuleData;
 import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import com.future.onlinetraining.repository.ModuleCategoryRepository;
@@ -38,7 +39,7 @@ public class ModuleServiceImpl implements ModuleService {
         return moduleRatingRepository.findAllByModuleId(id, pageable);
     }
 
-    public Page<ModuleData> getAllBySearchTerm(
+    public Page<GetAllModuleData> getAllBySearchTerm(
             Pageable pageable, String name, String category, Boolean hasExam) {
         return moduleRepository.getAllBySearhTerm(pageable, name, category, hasExam);
     }

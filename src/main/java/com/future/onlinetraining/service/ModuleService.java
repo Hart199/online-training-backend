@@ -6,6 +6,7 @@ import com.future.onlinetraining.dto.UpdateModuleDTO;
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
+import com.future.onlinetraining.entity.projection.GetAllModuleData;
 import com.future.onlinetraining.entity.projection.ModuleData;
 import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,7 @@ public interface ModuleService {
 
 //    Page<ModuleData> getAll(Pageable pageable);
     Page<ModuleRating> getRatings(int id, Pageable pageable);
-    Page<ModuleData> getAllBySearchTerm(
+    Page<GetAllModuleData> getAllBySearchTerm(
             Pageable pageable, String name,
             String category, Boolean hasExam);
     Page<ModuleCategory> getAllModuleCategory(Pageable pageable);
