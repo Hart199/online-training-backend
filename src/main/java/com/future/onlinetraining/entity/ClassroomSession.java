@@ -1,9 +1,6 @@
 package com.future.onlinetraining.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +25,7 @@ public class ClassroomSession {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ApiModelProperty(hidden = true)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = "classroomSessions")
     private Classroom classroom;
 
     private Timestamp startTime;

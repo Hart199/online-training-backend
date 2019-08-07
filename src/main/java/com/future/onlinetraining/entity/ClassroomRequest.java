@@ -31,7 +31,7 @@ public class ClassroomRequest {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonIgnoreProperties(value = "classroomRequests")
     private Classroom classroom;
 
     private String status;

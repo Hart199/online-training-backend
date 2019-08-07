@@ -34,24 +34,25 @@ public class Classroom {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
+    @JsonIgnoreProperties(value = "classrooms")
     private Module module;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
-    @JsonManagedReference
+    @JsonIgnoreProperties(value = "classroom")
     private List<ClassroomResult> classroomResults;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
-//    @JsonBackReference
+    @JsonIgnoreProperties(value = "classroom")
     private List<ClassroomRequest> classroomRequests;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JsonManagedReference
+    @JsonIgnoreProperties(value = "classroom")
     private List<ClassroomSession> classroomSessions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "classroom", cascade = CascadeType.REMOVE)
-    @JsonManagedReference
+    @JsonIgnoreProperties(value = "classroom")
     private List<ClassroomMaterial> classroomMaterials;
 
     private Integer min_member;

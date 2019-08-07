@@ -1,6 +1,7 @@
 package com.future.onlinetraining.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.future.onlinetraining.repository.ModuleRequestLikeRepository;
 import com.future.onlinetraining.users.model.User;
@@ -34,6 +35,7 @@ public class ModuleRequest {
     private String title;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = "moduleRequests")
     private ModuleCategory moduleCategory;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,6 +43,7 @@ public class ModuleRequest {
 
     @OneToMany(mappedBy = "moduleRequest", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnoreProperties(value = "moduleRequest")
     private List<ModuleRequestLike> moduleRequestLikes;
 
     private String status;

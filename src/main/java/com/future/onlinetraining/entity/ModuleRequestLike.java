@@ -1,6 +1,7 @@
 package com.future.onlinetraining.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.future.onlinetraining.users.model.User;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class ModuleRequestLike {
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = "moduleRequestLikes")
     private ModuleRequest moduleRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -25,7 +25,7 @@ public class ClassroomMaterial {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ApiModelProperty(hidden = true)
-    @JsonBackReference
+    @JsonIgnoreProperties(value = "classroomMaterials")
     private Classroom classroom;
 
     private String description;

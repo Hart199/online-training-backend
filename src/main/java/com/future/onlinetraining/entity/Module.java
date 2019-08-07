@@ -40,12 +40,15 @@ public class Module {
     private String status;
 
     @ManyToOne(fetch =  FetchType.EAGER)
+    @JsonIgnoreProperties(value = "modules")
     private ModuleCategory moduleCategory;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties(value = "module")
     private List<ModuleRating> moduleRatings;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties(value = "module")
     private List<Classroom> classrooms;
 
 }

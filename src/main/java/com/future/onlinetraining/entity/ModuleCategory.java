@@ -1,9 +1,6 @@
 package com.future.onlinetraining.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,11 +25,11 @@ public class ModuleCategory {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "moduleCategory", cascade = CascadeType.REMOVE)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = "moduleCategory")
     private List<Module> modules;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "moduleCategory", cascade = CascadeType.REMOVE)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = "moduleCategory")
     private List<ModuleRequest> moduleRequests;
 
 }
