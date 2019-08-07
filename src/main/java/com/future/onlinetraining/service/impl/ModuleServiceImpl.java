@@ -1,5 +1,6 @@
 package com.future.onlinetraining.service.impl;
 
+import com.future.onlinetraining.dto.AddModuleRatingDTO;
 import com.future.onlinetraining.dto.DeleteModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleDTO;
@@ -13,6 +14,8 @@ import com.future.onlinetraining.repository.ModuleCategoryRepository;
 import com.future.onlinetraining.repository.ModuleRatingRepository;
 import com.future.onlinetraining.repository.ModuleRepository;
 import com.future.onlinetraining.service.ModuleService;
+import com.future.onlinetraining.users.model.User;
+import com.future.onlinetraining.users.service.UserService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @Service("moduleService")
 public class ModuleServiceImpl implements ModuleService {
@@ -30,6 +34,8 @@ public class ModuleServiceImpl implements ModuleService {
     ModuleRatingRepository moduleRatingRepository;
     @Autowired
     ModuleCategoryRepository moduleCategoryRepository;
+    @Autowired
+    UserService userService;
 
 //    public Page<ModuleData> getAll(Pageable pageable) {
 //        return moduleRepository.getAllModule(pageable);
@@ -37,6 +43,28 @@ public class ModuleServiceImpl implements ModuleService {
 
     public Page<ModuleRating> getRatings(int id, Pageable pageable) {
         return moduleRatingRepository.findAllByModuleId(id, pageable);
+    }
+
+    public ModuleRating addRating(int id, AddModuleRatingDTO addModuleRatingDTO) {
+        User user = userService.getUserFromSession();
+        if (user == null)
+            throw new NullPointerException("Anda belum login.");
+
+        Optional<Module> module = moduleRepository.findById(id);
+        if (!module.isPresent())
+            throw new RuntimeException("Module tidak ditemukan.");
+
+        Optional<ModuleRating> moduleRatingOptional = moduleRatingRepository.findByModuleIdAndUserId(
+                id, user.getId());
+        ModuleRating moduleRating = new ModuleRating();
+        if (moduleRatingOptional.isPresent())
+            moduleRating = moduleRatingOptional.get();
+        moduleRating.setUser(user);
+        moduleRating.setModule(module.get());
+        moduleRating.setComment(addModuleRatingDTO.getComment());
+        moduleRating.setValue(addModuleRatingDTO.getValue());
+
+        return moduleRatingRepository.save(moduleRating);
     }
 
     public Page<GetAllModuleData> getAllBySearchTerm(

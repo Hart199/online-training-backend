@@ -1,5 +1,6 @@
 package com.future.onlinetraining.controller;
 
+import com.future.onlinetraining.dto.AddModuleRatingDTO;
 import com.future.onlinetraining.dto.DeleteModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleDTO;
@@ -35,6 +36,13 @@ public class ModuleController {
                 .setParam("data", moduleService.getRatings(
                         id, PageRequest.of(page, size)
                 ))
+                .send();
+    }
+
+    @PostMapping("/modules/_ratings/{id}")
+    public ResponseEntity addRatings(@PathVariable("id") int id, @RequestBody AddModuleRatingDTO addModuleRatingDTO) {
+        return new ResponseHelper<>()
+                .setParam("data", moduleService.addRating(id, addModuleRatingDTO))
                 .send();
     }
 

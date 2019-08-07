@@ -1,5 +1,6 @@
 package com.future.onlinetraining.service;
 
+import com.future.onlinetraining.dto.AddModuleRatingDTO;
 import com.future.onlinetraining.dto.DeleteModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleDTO;
@@ -16,6 +17,7 @@ public interface ModuleService {
 
 //    Page<ModuleData> getAll(Pageable pageable);
     Page<ModuleRating> getRatings(int id, Pageable pageable);
+    ModuleRating addRating(int id, AddModuleRatingDTO addModuleRatingDTO);
     Page<GetAllModuleData> getAllBySearchTerm(
             Pageable pageable, String name,
             String category, Boolean hasExam);
