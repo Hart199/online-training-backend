@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface ClassroomMaterialRepository extends JpaRepository<ClassroomMaterial, Integer> {
 
     @Query(value = "from ClassroomMaterial cm where cm.id = :id")
     ClassroomMaterial find(@Param("id") int id);
 
+    Optional<ClassroomMaterial> findByIdAndClassroomId(int id, int classroomId);
 }

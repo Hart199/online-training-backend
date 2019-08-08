@@ -15,18 +15,34 @@ public class FileHandlerServiceImpl implements FileHandlerService {
     @Value("${filePath}")
     private String uploadDir;
 
-    public List<String> store (MultipartFile[] multipartFiles) {
-        System.out.println(multipartFiles);
-        List<String > uploadedFiles = new ArrayList<>();
-        for (MultipartFile multipartFile : multipartFiles) {
-            File file = new File(uploadDir + multipartFile.getOriginalFilename());
+    public String store (String filename, MultipartFile multipartFile) {
+        File file = new File(uploadDir + filename);
+        try {
+            multipartFile.transferTo(file);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return filename;
+    }
+
+    public String update(
+            String oldFilename, String newFilename, MultipartFile multipartFile) {
+        File file = new File(uploadDir + oldFilename);
+        if (file.delete()) {
+            file = new File(uploadDir + newFilename);
             try {
                 multipartFile.transferTo(file);
-                uploadedFiles.add(multipartFile.getOriginalFilename());
+                return newFilename;
             } catch (Exception e) {
                 return null;
             }
         }
-        return uploadedFiles;
+        return null;
+    }
+
+    public boolean delete(String filename) {
+        File file = new File(uploadDir + filename);
+        return file.delete();
     }
 }

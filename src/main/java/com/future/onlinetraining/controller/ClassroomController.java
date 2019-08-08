@@ -178,7 +178,7 @@ public class ClassroomController<T> {
      */
     @PutMapping(value= "/_trainer/classrooms/{id}")
     public ResponseEntity editDetail(
-            @PathVariable("id") Integer id, @RequestPart("properties") ClassroomDetailDTO classroomDTO) {
+            @PathVariable("id") Integer id, @RequestBody ClassroomDetailDTO classroomDTO) {
         Classroom classroom = classroomService.editDetail(id, classroomDTO);
 
         if (classroom == null)

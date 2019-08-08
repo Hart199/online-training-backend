@@ -19,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "classrooms")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Classroom {
 
     @Id
