@@ -23,7 +23,6 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class User implements UserDetails {
 
     @Id
@@ -54,7 +53,8 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = {"user", "trainer"})
+//    @JsonIgnoreProperties(value = {"user", "trainer"})
+    @JsonIgnore
     private List<TrainerRating> trainerRatings;
 
     @Override

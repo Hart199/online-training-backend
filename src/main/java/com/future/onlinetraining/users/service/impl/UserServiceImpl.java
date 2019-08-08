@@ -93,6 +93,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(newUser);
     }
 
+    public User profile() {
+        return getUserFromSession();
+    }
+
     public ResponseEntity unauthenticated(){
         return new ResponseHelper<>()
                 .setSuccessStatus(false)

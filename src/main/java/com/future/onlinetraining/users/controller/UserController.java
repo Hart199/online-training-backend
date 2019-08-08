@@ -50,4 +50,11 @@ public class UserController {
                 .send();
     }
 
+    @GetMapping("/users/_profile")
+    public ResponseEntity getProfile() {
+        return new ResponseHelper<>()
+                .setParam("data", userService.profile())
+                .send();
+    }
+
 }
