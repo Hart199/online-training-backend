@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ClassroomDetailDTO {
 
-    List<ClassroomMaterialDTO> classroomMaterials;
     List<ClassroomSession> classroomSessions;
     String name;
     String trainerEmail;
