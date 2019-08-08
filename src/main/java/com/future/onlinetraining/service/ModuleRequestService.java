@@ -13,4 +13,5 @@ public interface ModuleRequestService {
     ModuleRequest store(ModuleRequestDTO moduleRequestDTO);
     <T> T voteLike(ModuleRequestLikeDTO moduleRequestLikeDTO);
     ModuleRequest changeStatus(Integer id, String status);
+    Page<ModuleRequestData> getAllByUser(Pageable pageable, String name, String status);
 }

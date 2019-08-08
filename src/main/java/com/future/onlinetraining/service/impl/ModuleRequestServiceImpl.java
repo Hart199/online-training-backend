@@ -39,6 +39,14 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
         return moduleRequestData;
     }
 
+    public Page<ModuleRequestData> getAllByUser(Pageable pageable, String name, String status) {
+        User user = userService.getUserFromSession();
+        if (user == null)
+            throw new NullPointerException("Anda belum login.");
+
+        return moduleRequestRepository.findAllByUser(pageable, user.getId(), name, status);
+    }
+
     public Boolean isHasVote(int moduleRequestId) {
         User user;
         try {

@@ -44,6 +44,28 @@ public class ModuleRequestController {
                 .send();
     }
 
+    @GetMapping("/modules/_requests/_users")
+    public ResponseEntity getAllModuleRequestsByUser(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "popular", defaultValue = "false") Boolean popular) {
+
+        Pageable pageable;
+        if (popular)
+            pageable = PageRequest.of(page, size, JpaSort.unsafe(
+                    Sort.Direction.DESC, "case when count(mrl) is null then 0.0 else count(mrl) end"));
+        else
+            pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        return new ResponseHelper<>()
+                .setParam("data", moduleRequestService.getAllByUser(pageable, name, status))
+                .setHttpStatus(HttpStatus.OK)
+                .setSuccessStatus(true)
+                .send();
+    }
+
     @PostMapping("/modules/_requests")
     public ResponseEntity store(@RequestBody @Valid ModuleRequestDTO moduleRequestDTO) {
         ResponseHelper responseHelper = new ResponseHelper();
