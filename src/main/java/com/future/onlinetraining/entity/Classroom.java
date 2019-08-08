@@ -40,7 +40,7 @@ public class Classroom {
     private Module module;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties(value = "classroom")
+    @JsonIgnoreProperties(value = {"classroom", "user", "score"})
     @ApiModelProperty(hidden = true)
     private List<ClassroomResult> classroomResults;
 

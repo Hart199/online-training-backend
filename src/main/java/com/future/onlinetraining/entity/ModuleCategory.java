@@ -25,12 +25,12 @@ public class ModuleCategory {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "moduleCategory", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties(value = "moduleCategory")
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private List<Module> modules;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "moduleCategory", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties(value = "moduleCategory")
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private List<ModuleRequest> moduleRequests;
 
