@@ -1,13 +1,12 @@
 package com.future.onlinetraining.controller;
 
+import com.future.onlinetraining.dto.RatingDTO;
 import com.future.onlinetraining.service.TrainerService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TrainerController {
@@ -22,6 +21,13 @@ public class TrainerController {
                 .setHttpStatus(HttpStatus.OK)
                 .setParam("data", trainerService.getTopTrainers(page, size))
                 .setSuccessStatus(true)
+                .send();
+    }
+
+    @PostMapping("/trainers/_ratings/{id}")
+    public ResponseEntity addRatings(@PathVariable("id") int id, @RequestBody RatingDTO ratingDTO) {
+        return new ResponseHelper<>()
+                .setParam("data", trainerService.rate(id, ratingDTO))
                 .send();
     }
 }

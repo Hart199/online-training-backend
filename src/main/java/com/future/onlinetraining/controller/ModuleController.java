@@ -1,6 +1,6 @@
 package com.future.onlinetraining.controller;
 
-import com.future.onlinetraining.dto.AddModuleRatingDTO;
+import com.future.onlinetraining.dto.RatingDTO;
 import com.future.onlinetraining.dto.DeleteModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleDTO;
@@ -9,7 +9,6 @@ import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import com.future.onlinetraining.service.ModuleService;
 import com.future.onlinetraining.utility.ResponseHelper;
-import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,9 +39,9 @@ public class ModuleController {
     }
 
     @PostMapping("/modules/_ratings/{id}")
-    public ResponseEntity addRatings(@PathVariable("id") int id, @RequestBody AddModuleRatingDTO addModuleRatingDTO) {
+    public ResponseEntity addRatings(@PathVariable("id") int id, @RequestBody RatingDTO ratingDTO) {
         return new ResponseHelper<>()
-                .setParam("data", moduleService.addRating(id, addModuleRatingDTO))
+                .setParam("data", moduleService.addRating(id, ratingDTO))
                 .send();
     }
 

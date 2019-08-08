@@ -1,6 +1,6 @@
 package com.future.onlinetraining.service.impl;
 
-import com.future.onlinetraining.dto.AddModuleRatingDTO;
+import com.future.onlinetraining.dto.RatingDTO;
 import com.future.onlinetraining.dto.DeleteModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleCategoryDTO;
 import com.future.onlinetraining.dto.UpdateModuleDTO;
@@ -8,7 +8,6 @@ import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
 import com.future.onlinetraining.entity.projection.GetAllModuleData;
-import com.future.onlinetraining.entity.projection.ModuleData;
 import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import com.future.onlinetraining.repository.ModuleCategoryRepository;
 import com.future.onlinetraining.repository.ModuleRatingRepository;
@@ -16,13 +15,11 @@ import com.future.onlinetraining.repository.ModuleRepository;
 import com.future.onlinetraining.service.ModuleService;
 import com.future.onlinetraining.users.model.User;
 import com.future.onlinetraining.users.service.UserService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service("moduleService")
@@ -45,7 +42,7 @@ public class ModuleServiceImpl implements ModuleService {
         return moduleRatingRepository.findAllByModuleId(id, pageable);
     }
 
-    public ModuleRating addRating(int id, AddModuleRatingDTO addModuleRatingDTO) {
+    public ModuleRating addRating(int id, RatingDTO ratingDTO) {
         User user = userService.getUserFromSession();
         if (user == null)
             throw new NullPointerException("Anda belum login.");
@@ -61,8 +58,8 @@ public class ModuleServiceImpl implements ModuleService {
             moduleRating = moduleRatingOptional.get();
         moduleRating.setUser(user);
         moduleRating.setModule(module.get());
-        moduleRating.setComment(addModuleRatingDTO.getComment());
-        moduleRating.setValue(addModuleRatingDTO.getValue());
+        moduleRating.setComment(ratingDTO.getComment());
+        moduleRating.setValue(ratingDTO.getValue());
 
         return moduleRatingRepository.save(moduleRating);
     }

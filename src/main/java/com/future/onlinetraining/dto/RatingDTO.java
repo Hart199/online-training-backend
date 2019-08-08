@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddModuleRatingDTO {
+public class RatingDTO {
     private double value;
     private String comment;
 }
