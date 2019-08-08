@@ -1,6 +1,7 @@
 package com.future.onlinetraining.entity;
 
 import com.fasterxml.jackson.annotation.*;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,10 +26,12 @@ public class ModuleCategory {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "moduleCategory", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties(value = "moduleCategory")
+    @ApiModelProperty(hidden = true)
     private List<Module> modules;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "moduleCategory", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties(value = "moduleCategory")
+    @ApiModelProperty(hidden = true)
     private List<ModuleRequest> moduleRequests;
 
 }

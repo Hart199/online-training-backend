@@ -2,6 +2,7 @@ package com.future.onlinetraining.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.future.onlinetraining.users.model.User;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class ModuleRating {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = "moduleRatings")
+    @ApiModelProperty(hidden = true)
     private Module module;
 
     private double value;
@@ -30,6 +32,7 @@ public class ModuleRating {
     private String comment;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @ApiModelProperty(hidden = true)
     private User user;
 
 }

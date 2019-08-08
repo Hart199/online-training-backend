@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.future.onlinetraining.users.model.User;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,10 +26,12 @@ public class TrainerRating {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "trainerRatings")
+    @ApiModelProperty(hidden = true)
     private User trainer;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "trainerRatings")
+    @ApiModelProperty(hidden = true)
     private  User user;
 
     private double value;

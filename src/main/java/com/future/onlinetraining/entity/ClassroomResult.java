@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.future.onlinetraining.users.model.User;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,9 +27,11 @@ public class ClassroomResult {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = "classroomResults")
+    @ApiModelProperty(hidden = true)
     private Classroom classroom;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ApiModelProperty(hidden = true)
     private User user;
 
     private double score;

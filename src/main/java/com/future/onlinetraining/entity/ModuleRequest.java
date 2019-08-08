@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.future.onlinetraining.repository.ModuleRequestLikeRepository;
 import com.future.onlinetraining.users.model.User;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,14 +36,17 @@ public class ModuleRequest {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = "moduleRequests")
+    @ApiModelProperty(hidden = true)
     private ModuleCategory moduleCategory;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @ApiModelProperty(hidden = true)
     private User user;
 
     @OneToMany(mappedBy = "moduleRequest", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnoreProperties(value = "moduleRequest")
+    @ApiModelProperty(hidden = true)
     private List<ModuleRequestLike> moduleRequestLikes;
 
     private String status;

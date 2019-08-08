@@ -2,6 +2,7 @@ package com.future.onlinetraining.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.future.onlinetraining.users.model.User;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,24 +34,29 @@ public class Classroom {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     @JsonIgnoreProperties(value = "classrooms")
+    @ApiModelProperty(hidden = true)
     private Module module;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties(value = "classroom")
+    @ApiModelProperty(hidden = true)
     private List<ClassroomResult> classroomResults;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnoreProperties(value = "classroom")
+    @ApiModelProperty(hidden = true)
     private List<ClassroomRequest> classroomRequests;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnoreProperties(value = "classroom")
+    @ApiModelProperty(hidden = true)
     private List<ClassroomSession> classroomSessions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "classroom", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties(value = "classroom")
+    @ApiModelProperty(hidden = true)
     private List<ClassroomMaterial> classroomMaterials;
 
     private Integer min_member;

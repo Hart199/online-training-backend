@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 @Data
@@ -27,6 +28,7 @@ public class ClassroomSession {
     @JsonIgnoreProperties(value = "classroomSessions")
     private Classroom classroom;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Timestamp startTime;
 
     private String description;

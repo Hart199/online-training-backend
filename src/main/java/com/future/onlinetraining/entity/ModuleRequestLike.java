@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.future.onlinetraining.users.model.User;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,9 +26,11 @@ public class ModuleRequestLike {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = "moduleRequestLikes")
+    @ApiModelProperty(hidden = true)
     private ModuleRequest moduleRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ApiModelProperty(hidden = true)
     private User user;
 
 }

@@ -2,6 +2,7 @@ package com.future.onlinetraining.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.future.onlinetraining.users.model.User;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,10 +28,12 @@ public class ClassroomRequest {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ApiModelProperty(hidden = true)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = "classroomRequests")
+    @ApiModelProperty(hidden = true)
     private Classroom classroom;
 
     private String status;
