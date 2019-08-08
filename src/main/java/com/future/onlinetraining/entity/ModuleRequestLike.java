@@ -17,7 +17,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "module_request_likes")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class ModuleRequestLike {
 
     @Id

@@ -25,7 +25,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "module_requests")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class ModuleRequest {
 
     @Id

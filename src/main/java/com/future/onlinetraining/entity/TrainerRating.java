@@ -17,7 +17,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "trainer_ratings")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class TrainerRating {
 
     @Id

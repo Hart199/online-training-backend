@@ -15,8 +15,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "classroom_materials")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ClassroomMaterial {
 
     @Id

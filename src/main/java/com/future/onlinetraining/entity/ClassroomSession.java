@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "classroom_sessions")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Integer.class)
 public class ClassroomSession {
 
     @Id
