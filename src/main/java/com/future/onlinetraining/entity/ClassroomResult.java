@@ -31,6 +31,7 @@ public class ClassroomResult {
     private Classroom classroom;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = "trainerRatings")
     @ApiModelProperty(hidden = true)
     private User user;
 
