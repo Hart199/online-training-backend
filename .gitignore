@@ -26,4 +26,4 @@ HELP.md
 /build/
 deploy_key
 
-./src/main/resources/application.properties
+/src/main/resources/application.properties
