@@ -28,7 +28,7 @@ public class ClassroomSession {
     @JsonIgnoreProperties(value = "classroomSessions")
     private Classroom classroom;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Timestamp startTime;
 
     private String description;
