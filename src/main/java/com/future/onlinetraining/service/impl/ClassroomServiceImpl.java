@@ -148,9 +148,9 @@ public class ClassroomServiceImpl implements ClassroomService {
         if (moduleCategory == null)
             return null;
 
-        Optional<ModuleRequest> moduleRequest = moduleRequestRepository.findById(moduleClassroomDTO.getModuleRequestId());
-        if (!moduleRequest.isPresent())
-            return null;
+        Optional<ModuleRequest> moduleRequest = Optional.empty();
+        if (moduleClassroomDTO.getModuleRequestId() != null)
+            moduleRequest = moduleRequestRepository.findById(moduleClassroomDTO.getModuleRequestId());
 
         User trainer = userRepository.findByEmail(moduleClassroomDTO.getClassroom().getTrainerEmail());
         if (trainer == null)
@@ -165,6 +165,7 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .timePerSession(moduleClassroomDTO.getModule().getTimePerSession())
                 .status(moduleClassroomDTO.getModule().getStatus())
                 .totalSession(moduleClassroomDTO.getModule().getTotalSession())
+                .hasExam(moduleClassroomDTO.getModule().isHasExam())
                 .version(1)
                 .build();
 
@@ -175,8 +176,10 @@ public class ClassroomServiceImpl implements ClassroomService {
 
         classroomSessions = classroomSessionRepository.saveAll(classroomSessions);
 
-        moduleRequest.get().setStatus("accepted");
-        moduleRequestRepository.save(moduleRequest.get());
+        if (moduleRequest.isPresent()) {
+            moduleRequest.get().setStatus("accepted");
+            moduleRequestRepository.save(moduleRequest.get());
+        }
 
         Classroom classroom = Classroom
                 .builder()

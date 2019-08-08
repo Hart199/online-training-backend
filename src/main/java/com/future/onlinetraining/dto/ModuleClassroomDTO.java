@@ -35,6 +35,7 @@ public class ModuleClassroomDTO {
         String moduleCategory;
         String materialDescription;
         int totalSession;
+        boolean hasExam;
     }
 
     Classroom classroom;
