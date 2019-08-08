@@ -1,6 +1,7 @@
 package com.future.onlinetraining.service;
 
 import com.future.onlinetraining.dto.ClassroomRequestDTO;
+import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.ClassroomRequest;
 import com.future.onlinetraining.entity.projection.ClassroomRequestsData;
 import org.junit.internal.requests.ClassRequest;
@@ -14,5 +15,5 @@ public interface ClassroomRequestService {
     ClassroomRequest request(ClassroomRequestDTO classroomRequestDTO);
     ClassroomRequest editStatus(Integer id, String status);
     Page<ClassroomRequestsData> getAllByTrainer(Pageable pageable, String name);
-    Page<ClassroomRequestsData> getAllByUser(Pageable pageable, String name, String status);
+    Page<Classroom> getAllByUser(Pageable pageable, String name, String status);
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,8 @@ public class ClassroomRequestController {
                                        @RequestParam(value = "status", required = false) String status) {
         return new ResponseHelper<>()
                 .setParam("data", classroomRequestService.getAllByUser(
-                        PageRequest.of(page, size, Sort.by("createdAt").descending()), name, status))
+                        PageRequest.of(page, size, JpaSort.unsafe(
+                                Sort.Direction.DESC, "max(cr.createdAt)")), name, status))
                 .setHttpStatus(HttpStatus.OK)
                 .setSuccessStatus(true)
                 .send();

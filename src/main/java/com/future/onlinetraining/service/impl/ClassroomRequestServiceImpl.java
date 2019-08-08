@@ -1,6 +1,7 @@
 package com.future.onlinetraining.service.impl;
 
 import com.future.onlinetraining.dto.ClassroomRequestDTO;
+import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.ClassroomRequest;
 import com.future.onlinetraining.entity.projection.ClassroomRequestsData;
 import com.future.onlinetraining.repository.ClassroomRepository;
@@ -33,13 +34,13 @@ public class ClassroomRequestServiceImpl implements ClassroomRequestService {
         return classroomRequestsDataPage;
     }
 
-    public Page<ClassroomRequestsData> getAllByUser(
+    public Page<Classroom> getAllByUser(
             Pageable pageable, String name, String status) {
         User user = userService.getUserFromSession();
         if (user == null)
             throw new NullPointerException("Anda belum login.");
 
-        return classroomRequestRepository.getAllbyUserId(pageable, user.getId(), name, status);
+        return classroomRepository.getRequestedUserClassroom(pageable, user.getId(), name, status);
     }
 
     public Boolean isHasVote(int classId) {
