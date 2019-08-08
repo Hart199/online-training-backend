@@ -4,6 +4,7 @@ import com.future.onlinetraining.dto.RatingDTO;
 import com.future.onlinetraining.service.TrainerService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,16 @@ public class TrainerController {
     public ResponseEntity addRatings(@PathVariable("id") int id, @RequestBody RatingDTO ratingDTO) {
         return new ResponseHelper<>()
                 .setParam("data", trainerService.rate(id, ratingDTO))
+                .send();
+    }
+
+    @GetMapping("/trainers/_ratings/{id}")
+    public ResponseEntity getRatings(
+            @PathVariable("id") int id,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
+        return new ResponseHelper<>()
+                .setParam("data", trainerService.getRatings(PageRequest.of(page, size), id))
                 .send();
     }
 }

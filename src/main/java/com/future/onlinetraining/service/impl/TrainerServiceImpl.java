@@ -56,4 +56,8 @@ public class TrainerServiceImpl implements TrainerService {
 
         return trainerRatingRepository.save(trainerRating);
     }
+
+    public Page<TrainerRating> getRatings(Pageable pageable, int id) {
+        return trainerRatingRepository.findAllByTrainerId(pageable, id);
+    }
 }
