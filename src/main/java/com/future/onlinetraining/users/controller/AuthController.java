@@ -36,6 +36,15 @@ public class AuthController {
                 .send();
     }
 
+    @GetMapping("/auth")
+    public ResponseEntity unauthenticated(){
+        return new ResponseHelper<>()
+                .setSuccessStatus(false)
+                .setHttpStatus(HttpStatus.OK)
+                .setMessage("Anda belum login.")
+                .send();
+    }
+
     @GetMapping("/auth/_role")
     public ResponseEntity getRole(){
         if(userService.getUserFromSession() == null){
