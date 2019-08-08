@@ -27,9 +27,10 @@ public interface ModuleRequestRepository extends JpaRepository<ModuleRequest, In
                     "from ModuleRequest mr " +
                     "left join mr.moduleRequestLikes mrl " +
                     "inner join mr.user u " +
+                    "left join mrl.user u2 " +
                     "where (:nameParam is null or lower(mr.title) like %:nameParam%) " +
                     "and (:status is null or mr.status = :status) " +
-                    "and u.id = :id " +
+                    "and (u2.id = :id or u.id = :id) " +
                     "group by mr"
     )
     Page<ModuleRequestData> findAllByUser(

@@ -44,7 +44,13 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
         if (user == null)
             throw new NullPointerException("Anda belum login.");
 
-        return moduleRequestRepository.findAllByUser(pageable, user.getId(), name, status);
+        Page<ModuleRequestData> moduleRequestData = moduleRequestRepository
+                .findAllByUser(pageable, user.getId(), name, status);
+
+        moduleRequestData.getContent().forEach(data -> {
+            data.setHasVote(this.isHasVote(data.getModuleRequest().getId()));
+        });
+        return moduleRequestData;
     }
 
     public Boolean isHasVote(int moduleRequestId) {
@@ -73,7 +79,13 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
                 .moduleCategory(moduleCategory)
                 .build();
 
-        return moduleRequestRepository.save(moduleRequest);
+        moduleRequest = moduleRequestRepository.save(moduleRequest);
+
+        ModuleRequestLikeDTO moduleRequestLikeDTO = new ModuleRequestLikeDTO();
+        moduleRequestLikeDTO.setModuleRequestId(moduleRequest.getId());
+        this.voteLike(moduleRequestLikeDTO);
+
+        return moduleRequest;
     }
 
     public <T> T voteLike(ModuleRequestLikeDTO moduleRequestLikeDTO) {
