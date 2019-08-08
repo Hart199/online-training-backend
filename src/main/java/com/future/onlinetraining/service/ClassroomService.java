@@ -21,7 +21,7 @@ public interface ClassroomService<T> {
     Classroom create(ClassroomDTO classroomDTO);
     Classroom createModuleAndClassroom(ModuleClassroomDTO moduleClassroomDTO);
     ClassroomDetailData getClassroomDetail(Integer id);
-    Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO, MultipartFile[] multipartFiles);
+    Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO);
     Boolean delete(Integer id);
     Boolean deleteMaterial(Integer id);
     T join(int classroomId);

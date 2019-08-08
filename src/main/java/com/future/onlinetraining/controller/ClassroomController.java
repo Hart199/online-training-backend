@@ -80,6 +80,11 @@ public class ClassroomController<T> {
                 .send();
     }
 
+    /**
+     * Join classroom
+     * @param id
+     * @return
+     */
     @PostMapping("/classrooms/{id}/_join")
     public ResponseEntity joinClassroom(@PathVariable("id") int id) {
         T object = (T) classroomService.join(id);
@@ -169,14 +174,12 @@ public class ClassroomController<T> {
      * Edit classroom detail
      * @param id
      * @param classroomDTO
-     * @param multipartFiles
      * @return
      */
-    @RequestMapping(value= "/_trainer/classrooms/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
+    @PutMapping(value= "/_trainer/classrooms/{id}")
     public ResponseEntity editDetail(
-            @PathVariable("id") Integer id, @RequestPart("properties") ClassroomDetailDTO classroomDTO,
-            @RequestPart("files") MultipartFile[] multipartFiles) {
-        Classroom classroom = classroomService.editDetail(id, classroomDTO, multipartFiles);
+            @PathVariable("id") Integer id, @RequestPart("properties") ClassroomDetailDTO classroomDTO) {
+        Classroom classroom = classroomService.editDetail(id, classroomDTO);
 
         if (classroom == null)
             return new ResponseHelper<>()

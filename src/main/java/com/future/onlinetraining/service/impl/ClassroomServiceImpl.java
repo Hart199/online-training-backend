@@ -205,11 +205,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     }
 
     @Transactional
-    public Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO, MultipartFile[] multipartFiles) {
-        List<String> uploadedFiles = fileHandlerService.store(multipartFiles);
-        if (uploadedFiles == null)
-            return null;
-
+    public Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO) {
         Classroom classroom = classroomRepository.find(id);
         if (classroom == null)
             return null;
@@ -223,28 +219,8 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         classroom.setStatus(classroomDTO.getStatus());
         classroom.setMin_member(classroomDTO.getMinMember());
         classroom.setMax_member(classroomDTO.getMaxMember());
-        classroom.setClassroomSessions(classroomDTO.getClassroomSessions());
 
-        classroomRepository.save(classroom);
-
-        for (ClassroomMaterialDTO classroomMaterial : classroomDTO.getClassroomMaterials()) {
-            if (classroomMaterial.getId() != null) {
-                if (classroomMaterial.getFile() == null) {
-                    classroomMaterialRepository.deleteById(classroomMaterial.getId());
-                } else {
-                    ClassroomMaterial updatedClassroomMaterial = classroomMaterialRepository.getOne(classroomMaterial.getId());
-                    updatedClassroomMaterial.setFile(classroomMaterial.getFile());
-                }
-            } else {
-                ClassroomMaterial newClassroomMaterial = ClassroomMaterial
-                        .builder()
-                        .classroom(classroom)
-                        .file(classroomMaterial.getFile())
-                        .build();
-                classroomMaterialRepository.save(newClassroomMaterial);
-            }
-        }
-        return classroom;
+        return classroomRepository.save(classroom);
     }
 
     public T join(int classroomId) {
