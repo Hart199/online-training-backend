@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "modules")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Module {
 
     @Id
