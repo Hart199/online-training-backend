@@ -41,6 +41,19 @@ public class ClassroomRequestController {
                 .send();
     }
 
+    @GetMapping("/classrooms/_requests/_users")
+    public ResponseEntity getAllByUser(@RequestParam(value = "page", defaultValue = "0") int page,
+                                       @RequestParam(value = "size", defaultValue = "5") int size,
+                                       @RequestParam(value = "name", required = false) String name,
+                                       @RequestParam(value = "status", required = false) String status) {
+        return new ResponseHelper<>()
+                .setParam("data", classroomRequestService.getAllByUser(
+                        PageRequest.of(page, size, Sort.by("createdAt").descending()), name, status))
+                .setHttpStatus(HttpStatus.OK)
+                .setSuccessStatus(true)
+                .send();
+    }
+
     @GetMapping("/_trainer/classrooms/_requests")
     public ResponseEntity getAllByTrainer(@RequestParam(value = "page", defaultValue = "0") int page,
                                  @RequestParam(value = "size", defaultValue = "5") int size,

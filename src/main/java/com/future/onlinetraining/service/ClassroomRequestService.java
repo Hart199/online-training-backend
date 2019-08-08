@@ -14,4 +14,5 @@ public interface ClassroomRequestService {
     ClassroomRequest request(ClassroomRequestDTO classroomRequestDTO);
     ClassroomRequest editStatus(Integer id, String status);
     Page<ClassroomRequestsData> getAllByTrainer(Pageable pageable, String name);
+    Page<ClassroomRequestsData> getAllByUser(Pageable pageable, String name, String status);
 }
