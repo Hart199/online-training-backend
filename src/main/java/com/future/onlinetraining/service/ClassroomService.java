@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface ClassroomService {
+public interface ClassroomService<T> {
 
     Page<Classroom> getAllPageableClassroom();
     Page<Classroom> getAll(Pageable pageable);
@@ -24,4 +24,5 @@ public interface ClassroomService {
     Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO, MultipartFile[] multipartFiles);
     Boolean delete(Integer id);
     Boolean deleteMaterial(Integer id);
+    T join(int classroomId);
 }

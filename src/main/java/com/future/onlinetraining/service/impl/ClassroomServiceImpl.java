@@ -1,13 +1,11 @@
 package com.future.onlinetraining.service.impl;
 
-import com.future.onlinetraining.dto.ClassroomDTO;
-import com.future.onlinetraining.dto.ClassroomDetailDTO;
-import com.future.onlinetraining.dto.ClassroomMaterialDTO;
-import com.future.onlinetraining.dto.ModuleClassroomDTO;
+import com.future.onlinetraining.dto.*;
 import com.future.onlinetraining.entity.*;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.repository.*;
+import com.future.onlinetraining.service.ClassroomRequestService;
 import com.future.onlinetraining.service.ClassroomService;
 import com.future.onlinetraining.service.FileHandlerService;
 import com.future.onlinetraining.users.model.User;
@@ -26,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("classroomService")
-public class ClassroomServiceImpl implements ClassroomService {
+public class ClassroomServiceImpl<T> implements ClassroomService {
 
     @Autowired
     ClassroomRepository classroomRepository;
@@ -50,6 +48,8 @@ public class ClassroomServiceImpl implements ClassroomService {
     ModuleRequestRepository moduleRequestRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    ClassroomRequestService classroomRequestService;
 
     @Override
     public Page<Classroom> getAllPageableClassroom() {
@@ -245,6 +245,38 @@ public class ClassroomServiceImpl implements ClassroomService {
             }
         }
         return classroom;
+    }
+
+    public T join(int classroomId) {
+        User user = userService.getUserFromSession();
+        if (user == null)
+            throw new NullPointerException("Anda belum login.");
+
+        Optional<Classroom> classroomOptional = classroomRepository.findById(classroomId);
+        if (!classroomOptional.isPresent())
+            throw new NullPointerException("Kelas tidak ditemukan.");
+
+        Optional<ClassroomResult> classroomResultOptional = classroomResultRepository
+                .findByUserIdAndClassroomId(user.getId(), classroomId);
+        if (classroomResultOptional.isPresent())
+            throw new RuntimeException("Anda sudah mengikuti kelas.");
+
+        // Check if classroom is full or not
+        // if classroom is full, call request classroom
+        if (classroomOptional.get().getClassroomResults().size() >= classroomOptional.get().getMax_member()) {
+            ClassroomRequestDTO classroomRequestDTO = new ClassroomRequestDTO();
+            classroomRequestDTO.setClassroomId(classroomId);
+            return (T) classroomRequestService.request(classroomRequestDTO);
+        }
+
+        ClassroomResult classroomResult = ClassroomResult
+                .builder()
+                .classroom(classroomOptional.get())
+                .status("accepted")
+                .user(user)
+                .build();
+
+        return (T) classroomResult;
     }
 
     public Boolean delete(Integer id) {

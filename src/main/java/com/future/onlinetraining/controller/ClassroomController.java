@@ -4,6 +4,7 @@ import com.future.onlinetraining.dto.ClassroomDTO;
 import com.future.onlinetraining.dto.ClassroomDetailDTO;
 import com.future.onlinetraining.dto.ModuleClassroomDTO;
 import com.future.onlinetraining.entity.Classroom;
+import com.future.onlinetraining.entity.ClassroomResult;
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.service.ClassroomService;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-public class ClassroomController {
+public class ClassroomController<T> {
 
     @Autowired
     ClassroomService classroomService;
@@ -76,6 +77,22 @@ public class ClassroomController {
                 .setHttpStatus(HttpStatus.OK)
                 .setParam("data", classroomService.all(name, hasExam, pageable))
                 .setSuccessStatus(true)
+                .send();
+    }
+
+    @PostMapping("/classrooms/{id}/_join")
+    public ResponseEntity joinClassroom(@PathVariable("id") int id) {
+        T object = (T) classroomService.join(id);
+
+        if (object instanceof ClassroomResult)
+            return new ResponseHelper<>()
+                    .setParam("data", object)
+                    .setMessage("Berhasil mengikuti kelas.")
+                    .send();
+
+        return new ResponseHelper<>()
+                .setParam("data", object)
+                .setMessage("Melakukan request kelas karena kelas tidak dapat mengikuti kelas")
                 .send();
     }
 
