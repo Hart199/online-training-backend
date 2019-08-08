@@ -18,6 +18,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "trainer_ratings")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TrainerRating {
 
     @Id
