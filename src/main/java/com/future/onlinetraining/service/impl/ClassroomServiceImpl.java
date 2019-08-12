@@ -56,10 +56,19 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         return classroomRepository.findAll(PageRequest.of(0,5));
     }
 
-    public Page<Classroom> getAllSubscribed(int page, int size, String status) {
-        Page<Classroom> classroom = classroomRepository.findSubscribed(
-                PageRequest.of(page, size), userService.getUserFromSession().getId(), status);
-        if (classroom == null)
+    public Page<Classroom> getAllSubscribed(int page, int size, String status, Boolean passed) {
+        Page<Classroom> classroom;
+        if (passed == null)
+            classroom = classroomRepository.findSubscribed(
+                    PageRequest.of(page, size), userService.getUserFromSession().getId(), status);
+        else if (passed)
+            classroom = classroomRepository.findSubscribedAndPassed(
+                    PageRequest.of(page, size), userService.getUserFromSession().getId(), status);
+        else
+            classroom = classroomRepository.findSubscribedAndNotPassed(
+                    PageRequest.of(page, size), userService.getUserFromSession().getId(), status);
+
+        if (classroom.isEmpty())
             return null;
         return classroom;
     }

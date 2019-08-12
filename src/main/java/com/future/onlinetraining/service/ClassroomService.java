@@ -14,7 +14,7 @@ public interface ClassroomService<T> {
 
     Page<Classroom> getAllPageableClassroom();
     Page<Classroom> getAll(Pageable pageable);
-    Page<Classroom> getAllSubscribed(int page, int size, String status);
+    Page<Classroom> getAllSubscribed(int page, int size, String status, Boolean passed);
     Page<ClassroomData> all(String name, Boolean hasExam, Pageable pageable);
     Page<Classroom> getTrainerClassrooms(Pageable pageable, String status);
 

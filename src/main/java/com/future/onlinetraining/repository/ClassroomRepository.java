@@ -28,6 +28,28 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
             Pageable pageable, @Param("userId") int userId, @Param("status") String status);
 
     @Query(
+            value = "from Classroom c " +
+                    "inner join c.classroomResults crs " +
+                    "inner join crs.user u " +
+                    "where u.id = :userId " +
+                    "and (:status is null or crs.status = :status) " +
+                    "and crs.score >= c.minScore "
+    )
+    Page<Classroom> findSubscribedAndPassed(
+            Pageable pageable, @Param("userId") int userId, @Param("status") String status);
+
+    @Query(
+            value = "from Classroom c " +
+                    "inner join c.classroomResults crs " +
+                    "inner join crs.user u " +
+                    "where u.id = :userId " +
+                    "and (:status is null or crs.status = :status) " +
+                    "and crs.score < c.minScore "
+    )
+    Page<Classroom> findSubscribedAndNotPassed(
+            Pageable pageable, @Param("userId") int userId, @Param("status") String status);
+
+    @Query(
             value = "select new com.future.onlinetraining.entity.projection.ClassroomData(" +
                     "c.id, c.name, m.name, t.fullname, c.status, c.min_member, c.max_member, " +
                     "(select count(cres) from cres), " +
