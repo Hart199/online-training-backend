@@ -30,7 +30,6 @@ public class Classroom {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
-    @JsonIgnoreProperties(value = "trainerRatings")
     private User trainer;
 
     @ManyToOne(fetch = FetchType.EAGER)

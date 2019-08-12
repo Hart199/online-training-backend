@@ -50,7 +50,7 @@ public class Module {
     private List<ModuleRating> moduleRatings;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties(value = "module")
+    @JsonIgnoreProperties(value = {"module", "classroomResults"})
     @ApiModelProperty(hidden = true)
     private List<Classroom> classrooms;
 
