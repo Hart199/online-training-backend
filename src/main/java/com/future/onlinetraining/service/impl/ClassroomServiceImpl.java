@@ -63,10 +63,10 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                     PageRequest.of(page, size), userService.getUserFromSession().getId(), status);
         else if (passed)
             classroom = classroomRepository.findSubscribedAndPassed(
-                    PageRequest.of(page, size), userService.getUserFromSession().getId(), status);
+                    PageRequest.of(page, size), userService.getUserFromSession().getId());
         else
             classroom = classroomRepository.findSubscribedAndNotPassed(
-                    PageRequest.of(page, size), userService.getUserFromSession().getId(), status);
+                    PageRequest.of(page, size), userService.getUserFromSession().getId());
 
         if (classroom.isEmpty())
             return null;
