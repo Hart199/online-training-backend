@@ -252,7 +252,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                 .user(user)
                 .build();
 
-        return (T) classroomResult;
+        return (T) classroomResultRepository.save(classroomResult);
     }
 
     public Boolean delete(Integer id) {
