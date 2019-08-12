@@ -3,6 +3,7 @@ package com.future.onlinetraining.service;
 import com.future.onlinetraining.dto.ClassroomDTO;
 import com.future.onlinetraining.dto.ClassroomDetailDTO;
 import com.future.onlinetraining.dto.ModuleClassroomDTO;
+import com.future.onlinetraining.dto.SetScoreDTO;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.ClassroomResult;
 import com.future.onlinetraining.entity.projection.ClassroomData;
@@ -10,6 +11,8 @@ import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface ClassroomService<T> {
 
@@ -27,4 +30,5 @@ public interface ClassroomService<T> {
     Boolean delete(Integer id);
     Boolean deleteMaterial(Integer id);
     T join(int classroomId);
+    List<ClassroomResult> setScore(SetScoreDTO setScoreDTO);
 }

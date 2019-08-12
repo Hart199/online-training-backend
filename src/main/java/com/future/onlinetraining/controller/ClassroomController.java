@@ -3,6 +3,7 @@ package com.future.onlinetraining.controller;
 import com.future.onlinetraining.dto.ClassroomDTO;
 import com.future.onlinetraining.dto.ClassroomDetailDTO;
 import com.future.onlinetraining.dto.ModuleClassroomDTO;
+import com.future.onlinetraining.dto.SetScoreDTO;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.ClassroomResult;
 import com.future.onlinetraining.entity.Module;
@@ -238,6 +239,13 @@ public class ClassroomController<T> {
 
         return new ResponseHelper<>()
                 .setParam("data", classroomService.getClassroomHistory(pageable, passed))
+                .send();
+    }
+
+    @PutMapping("/_trainer/classrooms/_setscore")
+    public ResponseEntity setScore(@RequestBody SetScoreDTO setScoreDTO) {
+        return new ResponseHelper<>()
+                .setParam("data", classroomService.setScore(setScoreDTO))
                 .send();
     }
 }

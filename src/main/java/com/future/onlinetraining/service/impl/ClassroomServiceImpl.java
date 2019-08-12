@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -106,7 +107,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                 .module(module)
                 .min_member(classroomDTO.getMinMember())
                 .max_member(classroomDTO.getMaxMember())
-                .minScore(classroomDTO.getMinScore())
                 .classroomSessions(classroomSessions)
                 .trainer(user)
                 .build();
@@ -192,7 +192,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                 .status(moduleClassroomDTO.getClassroom().getStatus())
                 .name(moduleClassroomDTO.getClassroom().getName())
                 .classroomSessions(classroomSessions)
-                .minScore(moduleClassroomDTO.getClassroom().getMinScore())
                 .build();
 
         return classroomRepository.save(classroom);
@@ -290,5 +289,32 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         if (passed)
             return classroomResultRepository.getPassed(pageable, userService.getUserFromSession().getId());
         return classroomResultRepository.getPassed(pageable, userService.getUserFromSession().getId());
+    }
+
+    @Transactional
+    public List<ClassroomResult> setScore(SetScoreDTO setScoreDTO) {
+        Optional<Classroom> classroomOptional = classroomRepository.findById(setScoreDTO.getClassroomId());
+        if (!classroomOptional.isPresent())
+            throw new NullPointerException("Kelas tidak ditemukan");
+
+        Classroom classroom = classroomOptional.get();
+        classroom.setMinScore(setScoreDTO.getMinScore());
+        classroom.setStatus("closed");
+        classroomRepository.save(classroom);
+
+        List<ClassroomResult> classroomResultList = new ArrayList<>();
+        for (ClassroomResult classroomResultDTO : setScoreDTO.getClassroomResultList()) {
+            Optional<ClassroomResult> classroomResultOptional = classroomResultRepository
+                    .findById(classroomResultDTO.getId());
+            if (!classroomResultOptional.isPresent())
+                continue;
+
+            ClassroomResult classroomResult = classroomResultOptional.get();
+            classroomResult.setScore(classroomResultDTO.getScore());
+            classroomResult.setStatus("finished");
+            classroomResultList.add(classroomResult);
+        }
+
+        return classroomResultRepository.saveAll(classroomResultList);
     }
 }
