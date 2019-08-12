@@ -105,6 +105,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                 .module(module)
                 .min_member(classroomDTO.getMinMember())
                 .max_member(classroomDTO.getMaxMember())
+                .minScore(classroomDTO.getMinScore())
                 .classroomSessions(classroomSessions)
                 .trainer(user)
                 .build();
@@ -190,6 +191,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                 .status(moduleClassroomDTO.getClassroom().getStatus())
                 .name(moduleClassroomDTO.getClassroom().getName())
                 .classroomSessions(classroomSessions)
+                .minScore(moduleClassroomDTO.getClassroom().getMinScore())
                 .build();
 
         return classroomRepository.save(classroom);

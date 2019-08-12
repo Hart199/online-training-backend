@@ -19,6 +19,7 @@ public class ModuleClassroomDTO {
         String name;
         int minMember;
         int maxMember;
+        int minScore;
         String status;
         String trainerEmail;
         List<ClassroomSession> classroomSessions;

@@ -64,6 +64,8 @@ public class Classroom {
 
     private Integer max_member;
 
+    private Integer minScore;
+
     private String status;
 
 }
