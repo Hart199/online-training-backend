@@ -73,4 +73,11 @@ public class UserController {
                 .send();
     }
 
+    @PutMapping("/_admin/users/{id}")
+    public ResponseEntity edit(@PathVariable("id") int id, @RequestBody UserDTO userDTO) {
+        return new ResponseHelper<>()
+                .setParam("data", userService.edit(id, userDTO))
+                .send();
+    }
+
 }

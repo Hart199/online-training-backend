@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service("userService")
@@ -111,6 +112,24 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = encoder.encode(changePasswordDTO.getNewPassword());
         User user = getUserFromSession();
         user.setPassword(encodedPassword);
+        return userRepository.save(user);
+    }
+
+    public User edit(int id, UserDTO userDTO) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent())
+            throw new NullPointerException("User tidak ditemukan.");
+
+        Role role = roleRepository.findByValue(userDTO.getRole());
+        if (role == null)
+            throw new NullPointerException("Role tidak ditemukan.");
+
+        User user = userOptional.get();
+        user.setFullname(userDTO.getName());
+        user.setRole(role);
+        user.setEmail(userDTO.getEmail());
+        user.setPhone(userDTO.getPhone());
+
         return userRepository.save(user);
     }
 
