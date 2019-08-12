@@ -57,4 +57,12 @@ public class UserController {
                 .send();
     }
 
+    @DeleteMapping("/_admin/users/{id}")
+    public ResponseEntity delete(@PathVariable("id") int id) {
+        userService.delete(id);
+        return new ResponseHelper<>()
+                .setMessage("Berhasil menghapus user")
+                .send();
+    }
+
 }

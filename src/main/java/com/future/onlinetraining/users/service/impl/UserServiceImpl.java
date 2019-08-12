@@ -97,6 +97,10 @@ public class UserServiceImpl implements UserService {
         return getUserFromSession();
     }
 
+    public void delete(int id) {
+        userRepository.deleteById(id);
+    }
+
     public ResponseEntity unauthenticated(){
         return new ResponseHelper<>()
                 .setSuccessStatus(false)

@@ -15,5 +15,6 @@ public interface UserService  extends UserDetailsService {
     Page<User> findAll(Pageable pageable, String role, String name);
     ResponseEntity unauthenticated();
     User create(UserDTO user);
+    void delete(int id);
     public User profile();
 }

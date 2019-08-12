@@ -1,6 +1,9 @@
 package com.future.onlinetraining.users.model;
 
 import com.fasterxml.jackson.annotation.*;
+import com.future.onlinetraining.entity.ClassroomRequest;
+import com.future.onlinetraining.entity.ClassroomResult;
+import com.future.onlinetraining.entity.ModuleRequest;
 import com.future.onlinetraining.entity.TrainerRating;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,6 +62,18 @@ public class User implements UserDetails {
     @LazyCollection(LazyCollectionOption.FALSE)
 //    @JsonIgnore
     private List<TrainerRating> trainerRatings;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ClassroomRequest> classroomRequests;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ClassroomResult> classroomResult;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ModuleRequest> moduleRequests;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
