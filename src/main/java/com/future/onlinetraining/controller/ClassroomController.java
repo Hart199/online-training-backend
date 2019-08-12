@@ -39,11 +39,10 @@ public class ClassroomController<T> {
     @GetMapping("/classrooms/_subscribed")
     public ResponseEntity getSubscribed(@RequestParam(value = "page", defaultValue = "0") int page,
                                         @RequestParam(value = "size", defaultValue = "5") int size,
-                                        @RequestParam(value = "status", required = false) String status,
-                                        @RequestParam(value = "passed", required = false) Boolean passed) {
+                                        @RequestParam(value = "status", required = false) String status) {
         return new ResponseHelper<>()
                 .setHttpStatus(HttpStatus.OK)
-                .setParam("data", classroomService.getAllSubscribed(page, size, status, passed))
+                .setParam("data", classroomService.getAllSubscribed(page, size, status))
                 .setSuccessStatus(true)
                 .send();
     }
@@ -228,6 +227,17 @@ public class ClassroomController<T> {
 
         return new ResponseHelper<>()
                 .setMessage("Berhasil menghapus materi kelas")
+                .send();
+    }
+
+    @GetMapping("/classrooms/_history")
+    public ResponseEntity getHistory(@RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "size", defaultValue = "5") int size,
+                                     @RequestParam(value = "passed", defaultValue = "true") boolean passed) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        return new ResponseHelper<>()
+                .setParam("data", classroomService.getClassroomHistory(pageable, passed))
                 .send();
     }
 }
