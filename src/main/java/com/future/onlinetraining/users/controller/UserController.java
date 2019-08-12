@@ -1,5 +1,6 @@
 package com.future.onlinetraining.users.controller;
 
+import com.future.onlinetraining.dto.ChangePasswordDTO;
 import com.future.onlinetraining.dto.UserDTO;
 import com.future.onlinetraining.users.service.UserService;
 import com.future.onlinetraining.utility.ResponseHelper;
@@ -54,6 +55,13 @@ public class UserController {
     public ResponseEntity getProfile() {
         return new ResponseHelper<>()
                 .setParam("data", userService.profile())
+                .send();
+    }
+
+    @PutMapping("/users/_change-password")
+    public ResponseEntity changePassword(ChangePasswordDTO changePasswordDTO) {
+        return new ResponseHelper<>()
+                .setParam("data", userService.changePassword(changePasswordDTO))
                 .send();
     }
 

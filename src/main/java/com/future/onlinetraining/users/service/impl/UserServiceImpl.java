@@ -1,5 +1,6 @@
 package com.future.onlinetraining.users.service.impl;
 
+import com.future.onlinetraining.dto.ChangePasswordDTO;
 import com.future.onlinetraining.dto.UserDTO;
 import com.future.onlinetraining.users.model.Role;
 import com.future.onlinetraining.users.model.User;
@@ -99,6 +100,18 @@ public class UserServiceImpl implements UserService {
 
     public void delete(int id) {
         userRepository.deleteById(id);
+    }
+
+    public User changePassword(ChangePasswordDTO changePasswordDTO) {
+        if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmPassword()))
+            throw new RuntimeException("Konfirmasi password salah.");
+        if (!encoder.matches(changePasswordDTO.getCurrentPassword(), getUserFromSession().getPassword()))
+            throw new RuntimeException("Password salah.");
+
+        String encodedPassword = encoder.encode(changePasswordDTO.getNewPassword());
+        User user = getUserFromSession();
+        user.setPassword(encodedPassword);
+        return userRepository.save(user);
     }
 
     public ResponseEntity unauthenticated(){

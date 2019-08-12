@@ -1,5 +1,6 @@
 package com.future.onlinetraining.users.service;
 
+import com.future.onlinetraining.dto.ChangePasswordDTO;
 import com.future.onlinetraining.dto.UserDTO;
 import com.future.onlinetraining.users.model.User;
 import org.springframework.data.domain.Page;
@@ -16,5 +17,6 @@ public interface UserService  extends UserDetailsService {
     ResponseEntity unauthenticated();
     User create(UserDTO user);
     void delete(int id);
+    User changePassword(ChangePasswordDTO changePasswordDTO);
     public User profile();
 }
