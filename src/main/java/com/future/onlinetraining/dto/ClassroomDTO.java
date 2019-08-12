@@ -15,7 +15,6 @@ public class ClassroomDTO {
     private int moduleId;
     private int minMember;
     private int maxMember;
-    private int minScore;
     List<ClassroomSession> classroomSessions;
     private Integer refClassroomId;
 }
