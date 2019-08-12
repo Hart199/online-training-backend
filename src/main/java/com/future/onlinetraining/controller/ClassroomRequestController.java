@@ -88,18 +88,11 @@ public class ClassroomRequestController {
                 .send();
     }
 
-    @PutMapping("/_trainer/classrooms/_requests/{id}/_status/{status}")
-    public ResponseEntity editStatus(@PathVariable("id") int id, @PathVariable("status") String status) {
-        ClassroomRequest classroomRequest = classroomRequestService.editStatus(id, status);
-        if (classroomRequest == null)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setMessage("Gagal merubah status permintaan kelas")
-                    .send();
-
+    @DeleteMapping("/_trainer/classrooms/{id}/_requests/_reject")
+    public ResponseEntity reject(@PathVariable("id") int id) {
+        classroomRequestService.reject(id);
         return new ResponseHelper<>()
-                .setParam("data", classroomRequest)
-                .setMessage("Berhasil merubah status permintaan kelas")
+                .setMessage("Berhasil menolak permintaan kelas")
                 .send();
     }
 }

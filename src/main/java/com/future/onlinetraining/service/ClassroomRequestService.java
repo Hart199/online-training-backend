@@ -13,7 +13,7 @@ public interface ClassroomRequestService {
 
     Page<ClassroomRequestsData> getAll(Pageable pageable, String name);
     ClassroomRequest request(ClassroomRequestDTO classroomRequestDTO);
-    ClassroomRequest editStatus(Integer id, String status);
+    void reject(Integer classroomRefId);
     Page<ClassroomRequestsData> getAllByTrainer(Pageable pageable, String name);
     Page<Classroom> getAllByUser(Pageable pageable, String name, String status);
 }

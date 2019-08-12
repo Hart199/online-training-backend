@@ -63,4 +63,6 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
             @Param("classroomId") int classroomId, @Param("userId") int userId);
 
     List<ClassroomRequest> findAllByClassroomId(int id);
+
+    void deleteAllByClassroomId(int classroomId);
 }

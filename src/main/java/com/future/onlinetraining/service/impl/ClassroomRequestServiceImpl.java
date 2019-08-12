@@ -75,13 +75,8 @@ public class ClassroomRequestServiceImpl implements ClassroomRequestService {
         return classroomRequestRepository.save(classroomRequest);
     }
 
-    public ClassroomRequest editStatus (Integer id, String status) {
-        Optional<ClassroomRequest> classroomRequest = classroomRequestRepository.findById(id);
-        if(!classroomRequest.isPresent())
-            return null;
-
-        classroomRequest.get().setStatus(status);
-        return classroomRequestRepository.save(classroomRequest.get());
+    public void reject (Integer classroomRefId) {
+        classroomRequestRepository.deleteAllByClassroomId(classroomRefId);
     }
 
     public Page<ClassroomRequestsData> getAllByTrainer(Pageable pageable, String name) {

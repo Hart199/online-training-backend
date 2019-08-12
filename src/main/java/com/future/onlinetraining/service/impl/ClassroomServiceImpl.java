@@ -114,31 +114,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         classroom = classroomRepository.save(classroom);
 
         if (classroomDTO.getRefClassroomId() != null) {
-            List<ClassroomRequest> classroomRequestList;
-            classroomRequestList = classroomRequestRepository.findAllByClassroomId(classroomDTO.getRefClassroomId());
-
-            List<ClassroomResult> chosenClassroomResultList = new ArrayList<>();
-            int currentMember = 0;
-            for (ClassroomRequest classroomRequest : classroomRequestList) {
-                if (currentMember >= classroomDTO.getMaxMember())
-                    break;
-
-                ClassroomResult classroomResult = ClassroomResult
-                        .builder()
-                        .user(classroomRequest.getUser())
-                        .status("waiting")
-                        .classroom(classroom)
-                        .score(0)
-                        .build();
-
-                chosenClassroomResultList.add(classroomResult);
-
-                classroomRequest.setStatus("accepted");
-                classroomRequestRepository.save(classroomRequest);
-            }
-
-            if (!chosenClassroomResultList.isEmpty())
-                classroomResultRepository.saveAll(chosenClassroomResultList);
+            classroomRequestRepository.deleteAllByClassroomId(classroomDTO.getRefClassroomId());
         }
 
         return classroom;
