@@ -13,7 +13,7 @@ services:
       - backend
 
   app:
-    build: .
+    image: cacadosman/online-training:future
     restart: always
     ports:
       - "0.0.0.0:13370:8080"
