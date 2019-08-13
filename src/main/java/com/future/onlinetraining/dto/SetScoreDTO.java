@@ -7,16 +7,17 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class SetScoreDTO {
-    @NotEmpty
+    @NotNull
     int classroomId;
 
-    @NotEmpty
+    @NotNull
     @Min(0)
     double minScore;
 

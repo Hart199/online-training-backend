@@ -18,17 +18,17 @@ public class ClassroomDTO {
     @Size(min = 6, max = 32)
     private String name;
 
-    @NotEmpty
+    @NotNull
     private int moduleId;
 
-    @NotEmpty
+    @NotNull
     private int minMember;
 
-    @NotEmpty
+    @NotNull
     private int maxMember;
 
     List<ClassroomSession> classroomSessions;
 
-    @NotEmpty
+    @NotNull
     private Integer refClassroomId;
 }

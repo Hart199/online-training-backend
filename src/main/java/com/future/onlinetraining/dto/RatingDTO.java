@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -13,7 +14,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class RatingDTO {
 
-    @NotEmpty
+    @NotNull
     @Min(0)
     private double value;
 
