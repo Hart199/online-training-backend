@@ -19,5 +19,5 @@ public interface UserService  extends UserDetailsService {
     void delete(int id);
     User changePassword(ChangePasswordDTO changePasswordDTO);
     public User profile();
-    User edit(int id, UserDTO userDTO);
+    User edit(Integer id, UserDTO userDTO);
 }

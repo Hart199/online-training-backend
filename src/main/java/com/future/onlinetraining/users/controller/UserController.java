@@ -80,4 +80,11 @@ public class UserController {
                 .send();
     }
 
+    @PutMapping("/users/_profile")
+    public ResponseEntity editProfile(@RequestBody UserDTO userDTO) {
+        return new ResponseHelper<>()
+                .setParam("data", userService.edit(null, userDTO))
+                .send();
+    }
+
 }

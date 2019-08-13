@@ -59,7 +59,6 @@ public class ClassroomServiceTest {
 
         Page<Classroom> results = classroomService.getAllPageableClassroom();
 
-        System.out.println(results.getContent());
         Assert.assertEquals(classroomPage.getContent(), results.getContent());
         Mockito.verify(classroomRepository).findAll(Mockito.any(PageRequest.class));
 

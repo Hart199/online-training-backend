@@ -115,18 +115,24 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    public User edit(int id, UserDTO userDTO) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (!userOptional.isPresent())
-            throw new NullPointerException("User tidak ditemukan.");
+    public User edit(Integer id, UserDTO userDTO) {
+        User user;
+        if (id != null) {
+            Optional<User> userOptional = userRepository.findById(id);
+            if (!userOptional.isPresent())
+                throw new NullPointerException("User tidak ditemukan.");
 
-        Role role = roleRepository.findByValue(userDTO.getRole());
-        if (role == null)
-            throw new NullPointerException("Role tidak ditemukan.");
+            Role role = roleRepository.findByValue(userDTO.getRole());
+            if (role == null)
+                throw new NullPointerException("Role tidak ditemukan.");
 
-        User user = userOptional.get();
+            user = userOptional.get();
+            user.setRole(role);
+        } else {
+            user = getUserFromSession();
+        }
+
         user.setFullname(userDTO.getName());
-        user.setRole(role);
         user.setEmail(userDTO.getEmail());
         user.setPhone(userDTO.getPhone());
 
