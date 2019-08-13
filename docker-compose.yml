@@ -3,8 +3,12 @@ services:
   postgres-service:
     image: postgres
     restart: always
-    expose:
-      - "5432"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=future
+      - POSTGRES_USER=future
+      - POSTGGRES_PASSWORD=future
     networks:
       - backend
 
