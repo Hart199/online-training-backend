@@ -13,12 +13,24 @@ services:
     restart: always
     ports:
       - "0.0.0.0:13370:8080"
+    volumes:
+      - ./storages/:/var/www/storages/
     networks:
       - backend
     links:
       - postgres-service
     depends_on:
       - postgres-service
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./storages/:/var/www/storages/
+    ports:
+      - "0.0.0.0:13371:80"
+    networks:
+      - backend
 
 networks:
   backend:
