@@ -23,8 +23,10 @@ services:
       - backend
     links:
       - postgres-service
+      - redis
     depends_on:
       - postgres-service
+      - redis
 
   nginx:
     image: nginx:latest
@@ -33,6 +35,13 @@ services:
       - ./storages/:/var/www/storages/
     ports:
       - "0.0.0.0:13371:80"
+    networks:
+      - backend
+
+  redis:
+    image: redis
+    expose:
+      - "6379"
     networks:
       - backend
 
