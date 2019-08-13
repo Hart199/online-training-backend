@@ -1,6 +1,5 @@
 package com.future.onlinetraining.controller;
 
-import com.future.onlinetraining.dto.ClassroomMaterialDTO;
 import com.future.onlinetraining.service.ClassroomMaterialService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;

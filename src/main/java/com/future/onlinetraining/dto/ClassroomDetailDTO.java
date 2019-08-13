@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -16,9 +18,21 @@ import java.util.List;
 public class ClassroomDetailDTO {
 
     List<ClassroomSession> classroomSessions;
+
+    @NotEmpty
+    @Size(min = 6, max = 32)
     String name;
+
+    @NotEmpty
+    @Size(min = 6, max = 32)
     String trainerEmail;
+
+    @NotEmpty
     String status;
+
+    @NotEmpty
     Integer minMember;
+
+    @NotEmpty
     Integer maxMember;
 }
