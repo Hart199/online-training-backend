@@ -6,6 +6,7 @@ script:
 - docker build -t cacadosman/online-training:future .
 - docker push cacadosman/online-training:future
 - scp -i ./deploy_key ./docker-compose.yml cacadosman@202.43.92.132:/home/cacadosman/future-online-training/docker-compose.yml
+- scp -i ./deploy_key ./nginx.conf cacadosman@202.43.92.132:/home/cacadosman/future-online-training/nginx.conf
 - ssh -i ./deploy_key cacadosman@202.43.92.132 'cd /home/cacadosman/future-online-training/; ls; docker-compose down; docker-compose pull; docker-compose up -d'
 before_install:
 - openssl aes-256-cbc -K $encrypted_add5053b7f67_key -iv $encrypted_add5053b7f67_iv
