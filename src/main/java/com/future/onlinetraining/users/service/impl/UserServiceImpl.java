@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
 
     public User edit(Integer id, UserDTO userDTO) {
         User user;
-        if (id != null) {
+        if (getUserFromSession().getRole().getValue().equals("ADMIN")) {
             Optional<User> userOptional = userRepository.findById(id);
             if (!userOptional.isPresent())
                 throw new NullPointerException("User tidak ditemukan.");
