@@ -299,4 +299,8 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
         return classroomResultRepository.saveAll(classroomResultList);
     }
+
+    public List<ClassroomResult> getClassroomResultsByClassroomId(int id) {
+        return classroomResultRepository.findAllByClassroomId(id);
+    }
 }

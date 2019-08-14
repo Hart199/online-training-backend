@@ -8,10 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ClassroomResultRepository extends JpaRepository<ClassroomResult, Integer> {
     Optional<ClassroomResult> findByUserIdAndClassroomId(int userId, int classroomId);
+
+    List<ClassroomResult> findAllByClassroomId(int userId);
 
     @Query(
             value = "from ClassroomResult crs " +

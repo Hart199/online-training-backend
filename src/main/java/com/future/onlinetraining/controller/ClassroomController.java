@@ -248,4 +248,11 @@ public class ClassroomController<T> {
                 .setParam("data", classroomService.setScore(setScoreDTO))
                 .send();
     }
+
+    @GetMapping("/_trainer/classrooms/{id}/_results")
+    public ResponseEntity getClassroomResultsByClassroomId(@PathVariable("id") int id) {
+        return new ResponseHelper<>()
+                .setParam("data", classroomService.getClassroomResultsByClassroomId(id))
+                .send();
+    }
 }
