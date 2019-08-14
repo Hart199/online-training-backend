@@ -123,14 +123,6 @@ public class DataSeeder {
                 .build();
         trainerRatingRepository.save(trainerRating);
 
-        trainerRating = TrainerRating.builder()
-                .trainer(trainer)
-                .user(trainee)
-                .comment("gud")
-                .value(4.5)
-                .build();
-        trainerRatingRepository.save(trainerRating);
-
 //      MODULE
         Module module = Module.builder()
                 .moduleCategory(moduleCategory)
