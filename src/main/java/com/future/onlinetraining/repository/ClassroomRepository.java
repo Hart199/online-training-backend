@@ -42,6 +42,7 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
                     "left join m.moduleRatings mrg " +
                     "where (:nameParam is null or lower(m.name) like %:nameParam%) " +
                     "and (:hasExam is null or m.hasExam = :hasExam) " +
+                    "and c.status in ('open', 'ongoing') " +
                     "group by c, m, t"
     )
     Page<ClassroomData> all(Pageable pageable, @Param("nameParam") String name, @Param("hasExam") Boolean hasExam);
