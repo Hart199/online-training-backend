@@ -58,12 +58,8 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     }
 
     public Page<Classroom> getAllSubscribed(int page, int size, String status) {
-        Page<Classroom> classroom = classroomRepository.findSubscribed(
+        return classroomRepository.findSubscribed(
                     PageRequest.of(page, size), userService.getUserFromSession().getId(), status);
-
-        if (classroom == null)
-            return null;
-        return classroom;
     }
 
     public Page<Classroom> getAll(Pageable pageable) {
@@ -192,17 +188,19 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         if (trainer == null)
             return  null;
 
-        verifyClassroomSessionOnModule(classroom.getModule(), classroomDTO.getClassroomSessions());
+        if (classroomDTO.getClassroomSessions() != null) {
+            verifyClassroomSessionOnModule(classroom.getModule(), classroomDTO.getClassroomSessions());
 
-        List<ClassroomSession> classroomSessionList = classroomSessionRepository
-                .saveAll(classroomDTO.getClassroomSessions());
+            List<ClassroomSession> classroomSessionList = classroomSessionRepository
+                    .saveAll(classroomDTO.getClassroomSessions());
+            classroom.setClassroomSessions(classroomSessionList);
+        }
 
         classroom.setName(classroomDTO.getName());
         classroom.setTrainer(trainer);
         classroom.setStatus(classroomDTO.getStatus());
         classroom.setMin_member(classroomDTO.getMinMember());
         classroom.setMax_member(classroomDTO.getMaxMember());
-        classroom.setClassroomSessions(classroomSessionList);
 
         return classroomRepository.save(classroom);
     }
