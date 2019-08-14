@@ -192,11 +192,17 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         if (trainer == null)
             return  null;
 
+        verifyClassroomSessionOnModule(classroom.getModule(), classroomDTO.getClassroomSessions());
+
+        List<ClassroomSession> classroomSessionList = classroomSessionRepository
+                .saveAll(classroomDTO.getClassroomSessions());
+
         classroom.setName(classroomDTO.getName());
         classroom.setTrainer(trainer);
         classroom.setStatus(classroomDTO.getStatus());
         classroom.setMin_member(classroomDTO.getMinMember());
         classroom.setMax_member(classroomDTO.getMaxMember());
+        classroom.setClassroomSessions(classroomSessionList);
 
         return classroomRepository.save(classroom);
     }
