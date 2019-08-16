@@ -18,12 +18,9 @@ public interface ClassroomResultRepository extends JpaRepository<ClassroomResult
 
     @Query(
             value = "from ClassroomResult crs " +
-            "inner join crs.classroom c " +
-            "inner join crs.user u " +
-            "inner join c.module m " +
-            "where u.id = :userId " +
-            "and crs.status = 'finished' " +
-            "and crs.score >= c.minScore " +
+            "inner join crs.classroom c inner join crs.user u " +
+            "inner join c.module m where u.id = :userId " +
+            "and crs.status = 'finished' and crs.score >= c.minScore " +
             "or m.hasExam = false "
     )
     Page<ClassroomResult> getPassed(
@@ -31,10 +28,8 @@ public interface ClassroomResultRepository extends JpaRepository<ClassroomResult
 
     @Query(
             value = "from ClassroomResult crs " +
-                    "inner join crs.classroom c " +
-                    "inner join crs.user u " +
-                    "where u.id = :userId " +
-                    "and crs.status = 'finished' " +
+                    "inner join crs.classroom c inner join crs.user u " +
+                    "where u.id = :userId and crs.status = 'finished' " +
                     "and crs.score < c.minScore "
     )
     Page<ClassroomResult> getNotPassed(

@@ -34,12 +34,9 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
                     "(select count(cr) from cr), " +
                     "case when avg(mrg.value) is null then 0.0 else avg(mrg.value) end, m.version ) " +
                     "from Classroom c " +
-                    "inner join c.module m " +
-                    "inner join m.moduleCategory mc " +
-                    "inner join c.trainer t " +
-                    "left join c.classroomRequests cr " +
-                    "left join c.classroomResults cres " +
-                    "left join m.moduleRatings mrg " +
+                    "inner join c.module m inner join m.moduleCategory mc " +
+                    "inner join c.trainer t left join c.classroomRequests cr " +
+                    "left join c.classroomResults cres left join m.moduleRatings mrg " +
                     "where (:nameParam is null or lower(m.name) like %:nameParam%) " +
                     "and (:hasExam is null or m.hasExam = :hasExam) " +
                     "and c.status in ('open', 'ongoing') " +

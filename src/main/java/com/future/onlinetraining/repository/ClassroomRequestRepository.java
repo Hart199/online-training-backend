@@ -17,8 +17,7 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
                     "c.id, t.fullname, " +
                     "count(c.id) as requesterCount, m.name, min(cr.createdAt) as createdAt ) " +
                     "FROM ClassroomRequest cr " +
-                    "inner join cr.classroom as c " +
-                    "inner join c.trainer as t " +
+                    "inner join cr.classroom as c inner join c.trainer as t " +
                     "inner join c.module m " +
                     "where (:name is null or c.name like :name%) " +
                     "group by c, t, m"
@@ -29,10 +28,8 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
             value = "SELECT new com.future.onlinetraining.entity.projection.ClassroomRequestsData(c.name, " +
                     "c.id, t.fullname, " +
                     "count(c.id) as requesterCount, m.name, min(cr.createdAt) as createdAt ) " +
-                    "FROM ClassroomRequest cr " +
-                    "inner join cr.classroom as c " +
-                    "inner join c.trainer as t " +
-                    "inner join c.module m " +
+                    "FROM ClassroomRequest cr inner join cr.classroom as c " +
+                    "inner join c.trainer as t inner join c.module m " +
                     "where t.id = :id and " +
                     "(:name is null or c.name like :name%) " +
                     "group by c, t, m"
@@ -43,12 +40,9 @@ public interface ClassroomRequestRepository extends JpaRepository<ClassroomReque
             value = "SELECT new com.future.onlinetraining.entity.projection.ClassroomRequestsData(c.name, " +
                     "c.id, t.fullname, " +
                     "count(c.id) as requesterCount, m.name, min(cr.createdAt) as createdAt ) " +
-                    "FROM ClassroomRequest cr " +
-                    "inner join cr.classroom as c " +
-                    "inner join c.trainer as t " +
-                    "inner join cr.user u " +
-                    "inner join c.module m " +
-                    "where u.id = :id and " +
+                    "FROM ClassroomRequest cr inner join cr.classroom as c " +
+                    "inner join c.trainer as t inner join cr.user u " +
+                    "inner join c.module m where u.id = :id and " +
                     "(:name is null or c.name like :name%) and " +
                     "(:status is null or cr.status = :status) " +
                     "group by c, t, m"

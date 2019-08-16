@@ -26,12 +26,10 @@ public interface ModuleRequestRepository extends JpaRepository<ModuleRequest, In
             value = "select new com.future.onlinetraining.entity.projection.ModuleRequestData(mr) " +
                     "from ModuleRequest mr " +
                     "left join mr.moduleRequestLikes mrl " +
-                    "inner join mr.user u " +
-                    "left join mrl.user u2 " +
+                    "inner join mr.user u left join mrl.user u2 " +
                     "where (:nameParam is null or lower(mr.title) like %:nameParam%) " +
                     "and (:status is null or mr.status = :status) " +
-                    "and (u2.id = :id or u.id = :id) " +
-                    "group by mr"
+                    "and (u2.id = :id or u.id = :id) group by mr"
     )
     Page<ModuleRequestData> findAllByUser(
             Pageable pageable, @Param("id") int id, @Param("nameParam") String name, @Param("status") String status);
