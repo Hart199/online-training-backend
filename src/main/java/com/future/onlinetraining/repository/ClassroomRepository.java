@@ -22,10 +22,10 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
                     "inner join c.classroomResults crs " +
                     "inner join crs.user u " +
                     "where u.id = :userId " +
-                    "and (:status is null or crs.status = :status) "
+                    "and crs.status in ('open', 'ongoing') "
     )
     Page<Classroom> findSubscribed(
-            Pageable pageable, @Param("userId") int userId, @Param("status") String status);
+            Pageable pageable, @Param("userId") int userId);
 
     @Query(
             value = "select new com.future.onlinetraining.entity.projection.ClassroomData(" +

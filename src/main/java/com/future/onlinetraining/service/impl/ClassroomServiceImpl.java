@@ -58,9 +58,9 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         return classroomRepository.findAll(PageRequest.of(0,5));
     }
 
-    public Page<Classroom> getAllSubscribed(int page, int size, String status) {
+    public Page<Classroom> getAllSubscribed(int page, int size) {
         return classroomRepository.findSubscribed(
-                    PageRequest.of(page, size), userService.getUserFromSession().getId(), status);
+                    PageRequest.of(page, size), userService.getUserFromSession().getId());
     }
 
     public Page<Classroom> getAll(Pageable pageable) {
