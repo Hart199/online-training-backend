@@ -38,13 +38,13 @@ public class UserServiceImpl implements UserService {
     private final String[] roles = {"ADMIN", "TRAINER", "TRAINEE"};
 
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(s);
+        Optional<User> user = userRepository.findByEmail(s);
 
-        if(user == null){
+        if(!user.isPresent()){
             throw new UsernameNotFoundException("Can't find user with email: "+s);
         }
 
-        return user;
+        return user.get();
     }
 
     public User createOrUpdate(User user) {
