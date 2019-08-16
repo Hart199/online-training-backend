@@ -23,7 +23,6 @@ public interface ClassroomService<T> {
     Page<Classroom> getTrainerClassrooms(Pageable pageable, String status);
     Page<ClassroomResult> getClassroomHistory(Pageable pageable, boolean passed);
     List<ClassroomResult> getClassroomResultsByClassroomId(int id);
-
     Classroom create(ClassroomDTO classroomDTO);
     Classroom createModuleAndClassroom(ModuleClassroomDTO moduleClassroomDTO);
     ClassroomDetailData getClassroomDetail(Integer id);

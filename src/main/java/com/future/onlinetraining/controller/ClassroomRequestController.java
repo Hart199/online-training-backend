@@ -24,6 +24,14 @@ public class ClassroomRequestController {
     @Autowired
     ClassroomRequestService classroomRequestService;
 
+    /**
+     * get all classroom requests
+     * @param page
+     * @param size
+     * @param popular
+     * @param name
+     * @return
+     */
     @GetMapping("/classrooms/_requests")
     public ResponseEntity getAll(@RequestParam(value = "page", defaultValue = "0") int page,
                                  @RequestParam(value = "size", defaultValue = "5") int size,
@@ -42,6 +50,14 @@ public class ClassroomRequestController {
                 .send();
     }
 
+    /**
+     * get all user classroom requests
+     * @param page
+     * @param size
+     * @param name
+     * @param status
+     * @return
+     */
     @GetMapping("/classrooms/_requests/_users")
     public ResponseEntity getAllByUser(@RequestParam(value = "page", defaultValue = "0") int page,
                                        @RequestParam(value = "size", defaultValue = "5") int size,
@@ -56,6 +72,14 @@ public class ClassroomRequestController {
                 .send();
     }
 
+    /**
+     * Get all trainer classroom requests
+     * @param page
+     * @param size
+     * @param name
+     * @param popular
+     * @return
+     */
     @GetMapping("/_trainer/classrooms/_requests")
     public ResponseEntity getAllByTrainer(@RequestParam(value = "page", defaultValue = "0") int page,
                                           @RequestParam(value = "size", defaultValue = "5") int size,
@@ -74,6 +98,11 @@ public class ClassroomRequestController {
                 .send();
     }
 
+    /**
+     * Add classroom request
+     * @param classroomRequestDTO
+     * @return
+     */
     @PostMapping("/classrooms/_requests")
     public ResponseEntity request(@RequestBody @Valid ClassroomRequestDTO classroomRequestDTO) {
         ClassroomRequest classroomRequest = classroomRequestService.request(classroomRequestDTO);
@@ -88,6 +117,11 @@ public class ClassroomRequestController {
                 .send();
     }
 
+    /**
+     * Delete classroom request
+     * @param id
+     * @return
+     */
     @DeleteMapping("/_trainer/classrooms/{id}/_requests/_reject")
     public ResponseEntity reject(@PathVariable("id") int id) {
         classroomRequestService.reject(id);

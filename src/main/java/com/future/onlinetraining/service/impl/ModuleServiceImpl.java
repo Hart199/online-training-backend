@@ -71,7 +71,7 @@ public class ModuleServiceImpl implements ModuleService {
     public ModuleCategory addModuleCategory(ModuleCategory moduleCategory) {
         ModuleCategory category = moduleCategoryRepository.findByName(moduleCategory.getName());
         if (category != null)
-            throw new RuntimeException(ErrorEnum.MODULE_CATEGORY_NOT_FOUND.getMessage());
+            throw new RuntimeException("Kategori sudah ada.");
 
         return moduleCategoryRepository.save(moduleCategory);
     }

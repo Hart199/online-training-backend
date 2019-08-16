@@ -140,12 +140,6 @@ public class ClassroomController<T> {
     public ResponseEntity createModuleWithClassroom(@RequestBody ModuleClassroomDTO moduleClassroomDTO) {
         Classroom newClassroom = classroomService.createModuleAndClassroom(moduleClassroomDTO);
 
-        if (newClassroom == null)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setMessage("Gagal membuat modul dan kelas")
-                    .send();
-
         return new ResponseHelper<>()
                 .setParam("data", newClassroom)
                 .send();
@@ -159,12 +153,6 @@ public class ClassroomController<T> {
     @GetMapping("/classrooms/{id}")
     public ResponseEntity getClassroomDetail(@PathVariable("id") Integer id) {
         ClassroomDetailData classroom = classroomService.getClassroomDetail(id);
-
-        if (classroom == null)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setMessage("Kelas tidak ditemukan")
-                    .send();
 
         return new ResponseHelper<>()
                 .setParam("data", classroom)
@@ -182,12 +170,6 @@ public class ClassroomController<T> {
             @PathVariable("id") Integer id, @RequestBody ClassroomDetailDTO classroomDTO) {
         Classroom classroom = classroomService.editDetail(id, classroomDTO);
 
-        if (classroom == null)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setMessage("Gagal mengedit kelas")
-                    .send();
-
         return new ResponseHelper<>()
                 .setParam("data", classroom)
                 .send();
@@ -200,12 +182,7 @@ public class ClassroomController<T> {
      */
     @DeleteMapping("/_trainer/classrooms/{id}")
     public ResponseEntity delete(@PathVariable("id") int id) {
-        Boolean result = classroomService.delete(id);
-        if (!result)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setMessage("Kelas tidak ditemukan")
-                    .send();
+        classroomService.delete(id);
 
         return new ResponseHelper<>()
                 .setMessage("Berhasil menghapus kelas")
@@ -219,18 +196,20 @@ public class ClassroomController<T> {
      */
     @DeleteMapping("/_trainer/classrooms/_materials/{id}")
     public ResponseEntity deleteMaterial(@PathVariable("id") int id) {
-        Boolean result = classroomService.deleteMaterial(id);
-        if (!result)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setMessage("Materi kelas tidak ditemukan")
-                    .send();
+        classroomService.deleteMaterial(id);
 
         return new ResponseHelper<>()
                 .setMessage("Berhasil menghapus materi kelas")
                 .send();
     }
 
+    /**
+     * Get classroom history
+     * @param page
+     * @param size
+     * @param passed
+     * @return
+     */
     @GetMapping("/classrooms/_history")
     public ResponseEntity getHistory(@RequestParam(value = "page", defaultValue = "0") int page,
                                      @RequestParam(value = "size", defaultValue = "5") int size,
@@ -242,6 +221,11 @@ public class ClassroomController<T> {
                 .send();
     }
 
+    /**
+     * Edit trainee score
+     * @param setScoreDTO
+     * @return
+     */
     @PutMapping("/_trainer/classrooms/_setscore")
     public ResponseEntity setScore(@RequestBody SetScoreDTO setScoreDTO) {
         return new ResponseHelper<>()
@@ -249,6 +233,11 @@ public class ClassroomController<T> {
                 .send();
     }
 
+    /**
+     * Get trainee results
+     * @param id
+     * @return
+     */
     @GetMapping("/_trainer/classrooms/{id}/_results")
     public ResponseEntity getClassroomResultsByClassroomId(@PathVariable("id") int id) {
         return new ResponseHelper<>()

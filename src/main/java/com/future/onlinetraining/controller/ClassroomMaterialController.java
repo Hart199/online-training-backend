@@ -14,6 +14,12 @@ public class ClassroomMaterialController {
     @Autowired
     ClassroomMaterialService classroomMaterialService;
 
+    /**
+     * add new material
+     * @param classroomId
+     * @param multipartFile
+     * @return
+     */
     @PostMapping("/_trainer/classrooms/{id}/_materials")
     public ResponseEntity add(
             @PathVariable("id") int classroomId, @RequestPart("file") MultipartFile multipartFile) {
@@ -22,6 +28,13 @@ public class ClassroomMaterialController {
                 .send();
     }
 
+    /**
+     * update material by classroom id and material id
+     * @param classroomId
+     * @param materialId
+     * @param multipartFile
+     * @return
+     */
     @PutMapping("/_trainer/classrooms/{classroomId}/_materials/{materialId}")
     public ResponseEntity update(
             @PathVariable("classroomId") int classroomId,
@@ -32,6 +45,12 @@ public class ClassroomMaterialController {
                 .send();
     }
 
+    /**
+     * delete material by id and classroom id
+     * @param classroomId
+     * @param materialId
+     * @return
+     */
     @DeleteMapping("/_trainer/classrooms/{classroomId}/_materials/{materialId}")
     public ResponseEntity delete(
             @PathVariable("classroomId") int classroomId,

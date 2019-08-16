@@ -14,6 +14,10 @@ public class AuthController {
     @Autowired
     UserService userService;
 
+    /**
+     * auth when success
+     * @return
+     */
     @GetMapping("/auth/success")
     public ResponseEntity authSuccessController(){
         return new ResponseHelper<>()
@@ -23,6 +27,10 @@ public class AuthController {
                 .send();
     }
 
+    /**
+     * auth when failed
+     * @return
+     */
     @GetMapping("/auth/failed")
     public ResponseEntity authFailedController(){
         return new ResponseHelper<>()
@@ -32,6 +40,10 @@ public class AuthController {
                 .send();
     }
 
+    /**
+     * redirect if unauthenticated
+     * @return
+     */
     @GetMapping("/unauthenticated")
     public ResponseEntity unauthenticated(){
         return new ResponseHelper<>()
@@ -41,6 +53,10 @@ public class AuthController {
                 .send();
     }
 
+    /**
+     * get current role
+     * @return
+     */
     @GetMapping("/auth/_role")
     public ResponseEntity getRole(){
         if(userService.getUserFromSession() == null){

@@ -83,13 +83,6 @@ public class ModuleController {
     public ResponseEntity addModuleCategory(@RequestBody ModuleCategory moduleCategory) {
         ModuleCategory category = moduleService.addModuleCategory(moduleCategory);
 
-        if (category == null)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setHttpStatus(HttpStatus.OK)
-                    .setMessage("Kategori sudah ada")
-                    .send();
-
         return new ResponseHelper<>()
                 .setParam("data", category)
                 .send();
@@ -98,13 +91,6 @@ public class ModuleController {
     @PutMapping("/_trainer/modules/_categories")
     public ResponseEntity updateModuleCategory(@RequestBody UpdateModuleCategoryDTO updateModuleCategoryDTO) {
         ModuleCategory category = moduleService.updateModuleCategory(updateModuleCategoryDTO);
-
-        if (category == null)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setHttpStatus(HttpStatus.OK)
-                    .setMessage("Kategori tidak ditemukan")
-                    .send();
 
         return new ResponseHelper<>()
                 .setParam("data", category)
@@ -131,13 +117,6 @@ public class ModuleController {
     public ResponseEntity getModuleDetail(@PathVariable("id") Integer id) {
         ModuleDetailData module = moduleService.getModuleDetail(id);
 
-        if (module == null)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setHttpStatus(HttpStatus.OK)
-                    .setMessage("Module tidak ditemukan")
-                    .send();
-
         return new ResponseHelper<>()
                 .setParam("data", module)
                 .send();
@@ -146,13 +125,6 @@ public class ModuleController {
     @PutMapping("/_trainer/modules/{id}")
     public ResponseEntity updateModule(@PathVariable("id") Integer id, @RequestBody UpdateModuleDTO updateModuleDTO) {
         Module module = moduleService.editModule(id, updateModuleDTO);
-
-        if (module == null)
-            return new ResponseHelper<>()
-                    .setSuccessStatus(false)
-                    .setHttpStatus(HttpStatus.OK)
-                    .setMessage("Gagal mengedit module")
-                    .send();
 
         return new ResponseHelper<>()
                 .setParam("data", module)
