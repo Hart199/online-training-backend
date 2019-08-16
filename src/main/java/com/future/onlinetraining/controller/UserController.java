@@ -1,11 +1,10 @@
-package com.future.onlinetraining.users.controller;
+package com.future.onlinetraining.controller;
 
 import com.future.onlinetraining.dto.ChangePasswordDTO;
 import com.future.onlinetraining.dto.UserDTO;
-import com.future.onlinetraining.users.service.UserService;
+import com.future.onlinetraining.service.UserService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.util.Arrays;
 
 @RestController

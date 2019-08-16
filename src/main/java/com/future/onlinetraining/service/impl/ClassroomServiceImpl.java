@@ -8,18 +8,16 @@ import com.future.onlinetraining.repository.*;
 import com.future.onlinetraining.service.ClassroomRequestService;
 import com.future.onlinetraining.service.ClassroomService;
 import com.future.onlinetraining.service.FileHandlerService;
-import com.future.onlinetraining.users.model.User;
-import com.future.onlinetraining.users.repository.UserRepository;
-import com.future.onlinetraining.users.service.UserService;
+import com.future.onlinetraining.entity.User;
+import com.future.onlinetraining.repository.UserRepository;
+import com.future.onlinetraining.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -178,7 +176,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         return classroom;
     }
 
-//    @Transactional
+    @Transactional
     public Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO) {
         Classroom classroom = classroomRepository.find(id);
         if (classroom == null)

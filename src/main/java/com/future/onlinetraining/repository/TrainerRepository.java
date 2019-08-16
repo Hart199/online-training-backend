@@ -1,7 +1,7 @@
 package com.future.onlinetraining.repository;
 
 import com.future.onlinetraining.entity.projection.TrainerData;
-import com.future.onlinetraining.users.model.User;
+import com.future.onlinetraining.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

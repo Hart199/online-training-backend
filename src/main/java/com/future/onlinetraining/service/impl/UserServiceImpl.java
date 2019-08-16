@@ -1,29 +1,25 @@
-package com.future.onlinetraining.users.service.impl;
+package com.future.onlinetraining.service.impl;
 
 import com.future.onlinetraining.dto.ChangePasswordDTO;
 import com.future.onlinetraining.dto.UserDTO;
-import com.future.onlinetraining.users.model.Role;
-import com.future.onlinetraining.users.model.User;
-import com.future.onlinetraining.users.repository.RoleRepository;
-import com.future.onlinetraining.users.repository.UserRepository;
-import com.future.onlinetraining.users.service.UserService;
+import com.future.onlinetraining.entity.Role;
+import com.future.onlinetraining.entity.User;
+import com.future.onlinetraining.repository.RoleRepository;
+import com.future.onlinetraining.repository.UserRepository;
+import com.future.onlinetraining.service.UserService;
 import com.future.onlinetraining.utility.ResponseHelper;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 

@@ -2,10 +2,10 @@ package com.future.onlinetraining.utility;
 
 import com.future.onlinetraining.entity.*;
 import com.future.onlinetraining.repository.*;
-import com.future.onlinetraining.users.model.Role;
-import com.future.onlinetraining.users.model.User;
-import com.future.onlinetraining.users.repository.RoleRepository;
-import com.future.onlinetraining.users.repository.UserRepository;
+import com.future.onlinetraining.entity.Role;
+import com.future.onlinetraining.entity.User;
+import com.future.onlinetraining.repository.RoleRepository;
+import com.future.onlinetraining.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 
 @Component
 public class DataSeeder {

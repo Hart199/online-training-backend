@@ -1,14 +1,12 @@
-package com.future.onlinetraining.users.service;
+package com.future.onlinetraining.service;
 
 import com.future.onlinetraining.dto.ChangePasswordDTO;
 import com.future.onlinetraining.dto.UserDTO;
-import com.future.onlinetraining.users.model.User;
+import com.future.onlinetraining.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
-import java.util.List;
 
 public interface UserService  extends UserDetailsService {
     User createOrUpdate(User user);

@@ -1,8 +1,7 @@
 package com.future.onlinetraining.repository;
 
 import com.future.onlinetraining.entity.Classroom;
-import com.future.onlinetraining.users.model.User;
-import com.future.onlinetraining.users.repository.UserRepository;
+import com.future.onlinetraining.entity.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

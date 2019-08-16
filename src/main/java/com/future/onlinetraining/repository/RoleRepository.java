@@ -1,6 +1,6 @@
-package com.future.onlinetraining.users.repository;
+package com.future.onlinetraining.repository;
 
-import com.future.onlinetraining.users.model.Role;
+import com.future.onlinetraining.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoleRepository extends JpaRepository<Role, Integer> {

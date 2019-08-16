@@ -7,15 +7,14 @@ import com.future.onlinetraining.entity.projection.ClassroomRequestsData;
 import com.future.onlinetraining.repository.ClassroomRepository;
 import com.future.onlinetraining.repository.ClassroomRequestRepository;
 import com.future.onlinetraining.service.ClassroomRequestService;
-import com.future.onlinetraining.users.model.User;
-import com.future.onlinetraining.users.service.UserService;
+import com.future.onlinetraining.entity.User;
+import com.future.onlinetraining.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service("classroomRequestService")
 public class ClassroomRequestServiceImpl implements ClassroomRequestService {

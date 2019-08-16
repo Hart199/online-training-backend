@@ -1,4 +1,4 @@
-package com.future.onlinetraining.users.model;
+package com.future.onlinetraining.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

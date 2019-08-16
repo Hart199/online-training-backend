@@ -1,10 +1,6 @@
-package com.future.onlinetraining.users.model;
+package com.future.onlinetraining.entity;
 
 import com.fasterxml.jackson.annotation.*;
-import com.future.onlinetraining.entity.ClassroomRequest;
-import com.future.onlinetraining.entity.ClassroomResult;
-import com.future.onlinetraining.entity.ModuleRequest;
-import com.future.onlinetraining.entity.TrainerRating;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

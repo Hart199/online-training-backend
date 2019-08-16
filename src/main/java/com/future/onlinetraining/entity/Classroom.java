@@ -1,7 +1,6 @@
 package com.future.onlinetraining.entity;
 
 import com.fasterxml.jackson.annotation.*;
-import com.future.onlinetraining.users.model.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
