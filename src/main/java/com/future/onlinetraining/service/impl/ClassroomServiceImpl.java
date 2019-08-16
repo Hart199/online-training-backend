@@ -178,7 +178,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         return classroom;
     }
 
-    @Transactional
+//    @Transactional
     public Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO) {
         Classroom classroom = classroomRepository.find(id);
         if (classroom == null)
@@ -191,9 +191,11 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         if (classroomDTO.getClassroomSessions() != null) {
             verifyClassroomSessionOnModule(classroom.getModule(), classroomDTO.getClassroomSessions());
 
-            List<ClassroomSession> classroomSessionList = classroomSessionRepository
-                    .saveAll(classroomDTO.getClassroomSessions());
-            classroom.setClassroomSessions(classroomSessionList);
+            classroomDTO.getClassroomSessions().forEach(classroomSession -> {
+                classroomSession.setClassroom(classroom);
+            });
+
+            classroomSessionRepository.saveAll(classroomDTO.getClassroomSessions());
         }
 
         classroom.setName(classroomDTO.getName());
