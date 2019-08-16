@@ -71,7 +71,7 @@ public class ModuleServiceImpl implements ModuleService {
     public ModuleCategory addModuleCategory(ModuleCategory moduleCategory) {
         ModuleCategory category = moduleCategoryRepository.findByName(moduleCategory.getName());
         if (category != null)
-            return null;
+            throw new RuntimeException(ErrorEnum.MODULE_CATEGORY_NOT_FOUND.getMessage());
 
         return moduleCategoryRepository.save(moduleCategory);
     }
@@ -79,7 +79,7 @@ public class ModuleServiceImpl implements ModuleService {
     public ModuleCategory updateModuleCategory(UpdateModuleCategoryDTO updateModuleCategoryDTO) {
         ModuleCategory category = moduleCategoryRepository.findByName(updateModuleCategoryDTO.getModuleCategory().getName());
         if (category == null)
-            return null;
+            throw new RuntimeException(ErrorEnum.MODULE_CATEGORY_NOT_FOUND.getMessage());
 
         category.setName(updateModuleCategoryDTO.getNewCategoryName());
         return moduleCategoryRepository.save(category);
@@ -108,12 +108,12 @@ public class ModuleServiceImpl implements ModuleService {
         ModuleCategory category = moduleCategoryRepository.findByName(updateModuleDTO.getModuleCategory());
 
         if (category == null)
-            return null;
+            throw new RuntimeException(ErrorEnum.MODULE_CATEGORY_NOT_FOUND.getMessage());
 
         Module module = moduleRepository.getOne(id);
 
         if (module == null)
-            return null;
+            throw new RuntimeException(ErrorEnum.MODULE_NOT_FOUND.getMessage());
 
         module.setModuleCategory(category);
         module.setDescription(updateModuleDTO.getDescription());

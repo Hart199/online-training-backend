@@ -5,6 +5,7 @@ import com.future.onlinetraining.dto.ModuleRequestLikeDTO;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRequest;
 import com.future.onlinetraining.entity.ModuleRequestLike;
+import com.future.onlinetraining.entity.enumerator.ErrorEnum;
 import com.future.onlinetraining.entity.enumerator.ModuleRequestStatus;
 import com.future.onlinetraining.entity.projection.ModuleRequestData;
 import com.future.onlinetraining.repository.ModuleCategoryRepository;
@@ -64,7 +65,7 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
     public ModuleRequest store(ModuleRequestDTO moduleRequestDTO) {
         ModuleCategory moduleCategory = moduleCategoryRepository.findByName(moduleRequestDTO.getCategory());
         if (moduleCategory == null)
-            return null;
+            throw new RuntimeException(ErrorEnum.MODULE_CATEGORY_NOT_FOUND.getMessage());
 
         ModuleRequest moduleRequest = ModuleRequest.builder()
                 .title(moduleRequestDTO.getTitle())
@@ -103,7 +104,7 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
     public ModuleRequest changeStatus(Integer id, String status) {
         Optional<ModuleRequest> moduleRequest = moduleRequestRepository.findById(id);
         if (!moduleRequest.isPresent())
-            return null;
+            throw new RuntimeException(ErrorEnum.MODULE_REQUEST_NOT_FOUND.getMessage());
 
         moduleRequest.get().setStatus(status);
         return moduleRequestRepository.save(moduleRequest.get());

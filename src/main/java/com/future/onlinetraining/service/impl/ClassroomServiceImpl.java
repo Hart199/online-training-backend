@@ -88,12 +88,12 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     public Classroom create(ClassroomDTO classroomDTO) {
         User user = userService.getUserFromSession();
 
-        Module module = moduleRepository.getOne(classroomDTO.getModuleId());
+        Optional<Module> module = moduleRepository.findById(classroomDTO.getModuleId());
 
-        if (module == null)
-            return null;
+        if (!module.isPresent())
+            throw new RuntimeException(ErrorEnum.MODULE_NOT_FOUND.getMessage());
 
-        verifyClassroomSessionOnModule(module, classroomDTO.getClassroomSessions());
+        verifyClassroomSessionOnModule(module.get(), classroomDTO.getClassroomSessions());
 
         List<ClassroomSession> classroomSessions = classroomSessionRepository.saveAll(classroomDTO.getClassroomSessions());
 
@@ -101,7 +101,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                 .builder()
                 .name(classroomDTO.getName())
                 .status(ClassroomStatus.OPEN.getStatus())
-                .module(module)
+                .module(module.get())
                 .min_member(classroomDTO.getMinMember())
                 .max_member(classroomDTO.getMaxMember())
                 .classroomSessions(classroomSessions)
@@ -121,15 +121,15 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     public Classroom createModuleAndClassroom(ModuleClassroomDTO moduleClassroomDTO) {
         ModuleCategory moduleCategory = moduleCategoryRepository.findByName(moduleClassroomDTO.getModule().getModuleCategory());
         if (moduleCategory == null)
-            return null;
+            throw new RuntimeException(ErrorEnum.MODULE_CATEGORY_NOT_FOUND.getMessage());
 
         Optional<ModuleRequest> moduleRequest = Optional.empty();
         if (moduleClassroomDTO.getModuleRequestId() != null)
             moduleRequest = moduleRequestRepository.findById(moduleClassroomDTO.getModuleRequestId());
 
-        User trainer = userRepository.findByEmail(moduleClassroomDTO.getClassroom().getTrainerEmail());
-        if (trainer == null)
-            return null;
+        Optional<User> trainer = userRepository.findByEmail(moduleClassroomDTO.getClassroom().getTrainerEmail());
+        if (!trainer.isPresent())
+            throw new RuntimeException(ErrorEnum.TRAINER_NOT_FOUND.getMessage());
 
         Module module = Module
                 .builder()
@@ -159,7 +159,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         Classroom classroom = Classroom
                 .builder()
                 .module(module)
-                .trainer(trainer)
+                .trainer(trainer.get())
                 .max_member(moduleClassroomDTO.getClassroom().getMaxMember())
                 .min_member(moduleClassroomDTO.getClassroom().getMinMember())
                 .status(moduleClassroomDTO.getClassroom().getStatus())
@@ -174,7 +174,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         ClassroomDetailData classroom = classroomRepository.getDetail(id);
 
         if (classroom == null)
-            return  null;
+            throw new RuntimeException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
 
         return classroom;
     }
@@ -183,11 +183,11 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     public Classroom editDetail(Integer id, ClassroomDetailDTO classroomDTO) {
         Classroom classroom = classroomRepository.find(id);
         if (classroom == null)
-            return null;
+            throw new RuntimeException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
 
-        User trainer = userRepository.findByEmail(classroomDTO.getTrainerEmail());
+        Optional<User> trainer = userRepository.findByEmail(classroomDTO.getTrainerEmail());
         if (trainer == null)
-            return  null;
+            throw new RuntimeException(ErrorEnum.TRAINER_NOT_FOUND.getMessage());
 
         if (classroomDTO.getClassroomSessions() != null) {
             verifyClassroomSessionOnModule(classroom.getModule(), classroomDTO.getClassroomSessions());
@@ -200,7 +200,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         }
 
         classroom.setName(classroomDTO.getName());
-        classroom.setTrainer(trainer);
+        classroom.setTrainer(trainer.get());
         classroom.setStatus(classroomDTO.getStatus());
         classroom.setMin_member(classroomDTO.getMinMember());
         classroom.setMax_member(classroomDTO.getMaxMember());
@@ -241,7 +241,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     public Boolean delete(Integer id) {
         Classroom classroom = classroomRepository.find(id);
         if (classroom == null)
-            return false;
+            throw new RuntimeException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
 
         classroomRepository.deleteById(id);
         return true;
@@ -259,8 +259,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     public Page<Classroom> getTrainerClassrooms(Pageable pageable, String status) {
         User user = userService.getUserFromSession();
         Page<Classroom> trainerClassrooms = classroomRepository.getTrainerClassrooms(pageable, user.getId(), status);
-        if (trainerClassrooms.getContent() == null)
-            return null;
         return trainerClassrooms;
     }
 

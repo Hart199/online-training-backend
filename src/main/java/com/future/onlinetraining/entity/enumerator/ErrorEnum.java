@@ -4,6 +4,8 @@ public enum ErrorEnum {
 
     USER_NOT_FOUND("User tidak ditemukan."),
     TRAINER_NOT_FOUND("Trainer tidak ditemukan."),
+    MODULE_CATEGORY_NOT_FOUND("Kategori modul tidak ditemukan."),
+    MODULE_REQUEST_NOT_FOUND("Module request tidak ditemukan."),
     NOT_LOGGED_IN("Anda belum login."),
     MATERIAL_NOT_FOUND("Materi tidak ditemukan."),
     CLASSROOM_NOT_FOUND("Kelas tidak ditemukan."),
