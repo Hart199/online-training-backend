@@ -186,7 +186,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
             throw new RuntimeException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
 
         Optional<User> trainer = userRepository.findByEmail(classroomDTO.getTrainerEmail());
-        if (trainer == null)
+        if (!trainer.isPresent())
             throw new RuntimeException(ErrorEnum.TRAINER_NOT_FOUND.getMessage());
 
         if (classroomDTO.getClassroomSessions() != null) {
