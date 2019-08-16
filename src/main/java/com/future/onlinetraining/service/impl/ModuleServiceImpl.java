@@ -7,6 +7,7 @@ import com.future.onlinetraining.dto.UpdateModuleDTO;
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRating;
+import com.future.onlinetraining.entity.enumerator.ErrorEnum;
 import com.future.onlinetraining.entity.projection.GetAllModuleData;
 import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import com.future.onlinetraining.repository.ModuleCategoryRepository;
@@ -34,22 +35,16 @@ public class ModuleServiceImpl implements ModuleService {
     @Autowired
     UserService userService;
 
-//    public Page<ModuleData> getAll(Pageable pageable) {
-//        return moduleRepository.getAllModule(pageable);
-//    }
-
     public Page<ModuleRating> getRatings(int id, Pageable pageable) {
         return moduleRatingRepository.findAllByModuleId(id, pageable);
     }
 
     public ModuleRating addRating(int id, RatingDTO ratingDTO) {
         User user = userService.getUserFromSession();
-        if (user == null)
-            throw new NullPointerException("Anda belum login.");
 
         Optional<Module> module = moduleRepository.findById(id);
         if (!module.isPresent())
-            throw new RuntimeException("Module tidak ditemukan.");
+            throw new RuntimeException(ErrorEnum.MODULE_NOT_FOUND.getMessage());
 
         Optional<ModuleRating> moduleRatingOptional = moduleRatingRepository.findByModuleIdAndUserId(
                 id, user.getId());

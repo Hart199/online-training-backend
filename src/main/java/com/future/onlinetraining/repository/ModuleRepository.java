@@ -2,7 +2,6 @@ package com.future.onlinetraining.repository;
 
 import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.projection.GetAllModuleData;
-import com.future.onlinetraining.entity.projection.ModuleData;
 import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,8 +19,7 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
             value = "select new com.future.onlinetraining.entity.projection.GetAllModuleData(" +
                     "m.id, m.name, m.description, avg(mr.value) as rating, m.timePerSession, mc.name, " +
                     "count(c), count(cs), m.hasExam, m.version) " +
-                    "from Module m " +
-                    "left join m.moduleRatings mr inner join m.classrooms c " +
+                    "from Module m left join m.moduleRatings mr inner join m.classrooms c " +
                     "inner join c.classroomSessions cs inner join m.moduleCategory mc " +
                     "where (:nameParam is null or lower(m.name) like :nameParam%) " +
                     "and (:categoryParam is null or mc.name = :categoryParam ) " +
@@ -34,10 +32,8 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
 
     @Query(
             value = "select new com.future.onlinetraining.entity.projection.ModuleDetailData(m, avg(mr.value), m.hasExam) " +
-                    "from Module m " +
-                    "left join m.moduleRatings mr " +
-                    "where m.id = :id " +
-                    "group by m.id "
+                    "from Module m left join m.moduleRatings mr " +
+                    "where m.id = :id group by m.id "
     )
     ModuleDetailData find(@Param("id") Integer id);
 

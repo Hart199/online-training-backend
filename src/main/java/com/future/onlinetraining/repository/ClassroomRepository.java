@@ -30,17 +30,14 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
     @Query(
             value = "select new com.future.onlinetraining.entity.projection.ClassroomData(" +
                     "c.id, c.name, m.name, t.fullname, c.status, c.min_member, c.max_member, " +
-                    "(select count(cres) from cres), " +
-                    "(select count(cr) from cr), " +
+                    "(select count(cres) from cres), (select count(cr) from cr), " +
                     "case when avg(mrg.value) is null then 0.0 else avg(mrg.value) end, m.version ) " +
-                    "from Classroom c " +
-                    "inner join c.module m inner join m.moduleCategory mc " +
+                    "from Classroom c inner join c.module m inner join m.moduleCategory mc " +
                     "inner join c.trainer t left join c.classroomRequests cr " +
                     "left join c.classroomResults cres left join m.moduleRatings mrg " +
                     "where (:nameParam is null or lower(m.name) like %:nameParam%) " +
                     "and (:hasExam is null or m.hasExam = :hasExam) " +
-                    "and c.status in ('open', 'ongoing') " +
-                    "group by c, m, t"
+                    "and c.status in ('open', 'ongoing') group by c, m, t"
     )
     Page<ClassroomData> all(Pageable pageable, @Param("nameParam") String name, @Param("hasExam") Boolean hasExam);
 

@@ -4,6 +4,7 @@ import com.future.onlinetraining.dto.ChangePasswordDTO;
 import com.future.onlinetraining.dto.UserDTO;
 import com.future.onlinetraining.entity.Role;
 import com.future.onlinetraining.entity.User;
+import com.future.onlinetraining.entity.enumerator.ErrorEnum;
 import com.future.onlinetraining.repository.RoleRepository;
 import com.future.onlinetraining.repository.UserRepository;
 import com.future.onlinetraining.service.UserService;
@@ -116,11 +117,11 @@ public class UserServiceImpl implements UserService {
         if (getUserFromSession().getRole().getValue().equals("ADMIN")) {
             Optional<User> userOptional = userRepository.findById(id);
             if (!userOptional.isPresent())
-                throw new NullPointerException("User tidak ditemukan.");
+                throw new RuntimeException(ErrorEnum.USER_NOT_FOUND.getMessage());
 
             Role role = roleRepository.findByValue(userDTO.getRole());
             if (role == null)
-                throw new NullPointerException("Role tidak ditemukan.");
+                throw new RuntimeException("Role tidak ditemukan.");
 
             user = userOptional.get();
             user.setRole(role);

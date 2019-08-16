@@ -2,6 +2,9 @@ package com.future.onlinetraining.service.impl;
 
 import com.future.onlinetraining.dto.*;
 import com.future.onlinetraining.entity.*;
+import com.future.onlinetraining.entity.enumerator.ClassroomStatus;
+import com.future.onlinetraining.entity.enumerator.ErrorEnum;
+import com.future.onlinetraining.entity.enumerator.ModuleRequestStatus;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.repository.*;
@@ -70,7 +73,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public void verifyClassroomSessionOnModule(Module module, List<ClassroomSession> classroomSessions) {
         if (classroomSessions.size() != module.getTotalSession())
-            throw new RuntimeException("Jumlah sesi pada kelas harus sama dengan jumlah sesi pada modul.");
+            throw new RuntimeException(ErrorEnum.CLASSROOM_SESSION_VALIDATION_ERROR.getMessage());
 
         boolean hasExam = false;
         for(ClassroomSession classroomSession : classroomSessions) {
@@ -78,7 +81,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         }
 
         if (module.isHasExam() != hasExam)
-            throw new RuntimeException("Opsi ujian harus sama dengan modul.");
+            throw new RuntimeException(ErrorEnum.EXAM_VALIDATION_ERROR.getMessage());
     }
 
     @Transactional
@@ -97,7 +100,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         Classroom classroom = Classroom
                 .builder()
                 .name(classroomDTO.getName())
-                .status("open")
+                .status(ClassroomStatus.OPEN.getStatus())
                 .module(module)
                 .min_member(classroomDTO.getMinMember())
                 .max_member(classroomDTO.getMaxMember())
@@ -149,7 +152,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         classroomSessions = classroomSessionRepository.saveAll(classroomSessions);
 
         if (moduleRequest.isPresent()) {
-            moduleRequest.get().setStatus("accepted");
+            moduleRequest.get().setStatus(ModuleRequestStatus.ACCEPTED.getStatus());
             moduleRequestRepository.save(moduleRequest.get());
         }
 
@@ -207,17 +210,15 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public T join(int classroomId) {
         User user = userService.getUserFromSession();
-        if (user == null)
-            throw new NullPointerException("Anda belum login.");
 
         Optional<Classroom> classroomOptional = classroomRepository.findById(classroomId);
         if (!classroomOptional.isPresent())
-            throw new NullPointerException("Kelas tidak ditemukan.");
+            throw new NullPointerException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
 
         Optional<ClassroomResult> classroomResultOptional = classroomResultRepository
                 .findByUserIdAndClassroomId(user.getId(), classroomId);
         if (classroomResultOptional.isPresent())
-            throw new RuntimeException("Anda sudah mengikuti kelas.");
+            throw new RuntimeException(ErrorEnum.HAS_JOINED_CLASSROOM.getMessage());
 
         // Check if classroom is full or not
         // if classroom is full, call request classroom
@@ -257,8 +258,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public Page<Classroom> getTrainerClassrooms(Pageable pageable, String status) {
         User user = userService.getUserFromSession();
-        if (user == null)
-            throw new NullPointerException("Anda belum login.");
         Page<Classroom> trainerClassrooms = classroomRepository.getTrainerClassrooms(pageable, user.getId(), status);
         if (trainerClassrooms.getContent() == null)
             return null;
@@ -268,18 +267,18 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     public Page<ClassroomResult> getClassroomHistory(Pageable pageable, boolean passed) {
         if (passed)
             return classroomResultRepository.getPassed(pageable, userService.getUserFromSession().getId());
-        return classroomResultRepository.getPassed(pageable, userService.getUserFromSession().getId());
+        return classroomResultRepository.getNotPassed(pageable, userService.getUserFromSession().getId());
     }
 
     @Transactional
     public List<ClassroomResult> setScore(SetScoreDTO setScoreDTO) {
         Optional<Classroom> classroomOptional = classroomRepository.findById(setScoreDTO.getClassroomId());
         if (!classroomOptional.isPresent())
-            throw new NullPointerException("Kelas tidak ditemukan");
+            throw new NullPointerException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
 
         Classroom classroom = classroomOptional.get();
         classroom.setMinScore(setScoreDTO.getMinScore());
-        classroom.setStatus("closed");
+        classroom.setStatus(ClassroomStatus.CLOSED.getStatus());
         classroomRepository.save(classroom);
 
         List<ClassroomResult> classroomResultList = new ArrayList<>();

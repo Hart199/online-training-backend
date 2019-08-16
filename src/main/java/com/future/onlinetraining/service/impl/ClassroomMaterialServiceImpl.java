@@ -3,6 +3,7 @@ package com.future.onlinetraining.service.impl;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.ClassroomMaterial;
 import com.future.onlinetraining.entity.ClassroomSession;
+import com.future.onlinetraining.entity.enumerator.ErrorEnum;
 import com.future.onlinetraining.repository.ClassroomMaterialRepository;
 import com.future.onlinetraining.repository.ClassroomRepository;
 import com.future.onlinetraining.service.ClassroomMaterialService;
@@ -28,7 +29,7 @@ public class ClassroomMaterialServiceImpl implements ClassroomMaterialService {
     public ClassroomMaterial add(int classroomId, MultipartFile multipartFile) {
         Optional<Classroom> classroomOptional = classroomRepository.findById(classroomId);
         if (!classroomOptional.isPresent())
-            throw new NullPointerException("Kelas tidak ditemukan.");
+            throw new RuntimeException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
 
         ClassroomMaterial classroomMaterial = ClassroomMaterial
                 .builder()
@@ -41,7 +42,7 @@ public class ClassroomMaterialServiceImpl implements ClassroomMaterialService {
         String file = fileHandlerService.store(
                 hashedFilename + "_" + multipartFile.getOriginalFilename(), multipartFile);
         if (file == null)
-            throw new NullPointerException("Gagal mengupload file");
+            throw new RuntimeException(ErrorEnum.FAILED_UPLOAD_FILE.getMessage());
 
         classroomMaterial.setFile(file);
         return classroomMaterialRepository.save(classroomMaterial);
@@ -53,7 +54,7 @@ public class ClassroomMaterialServiceImpl implements ClassroomMaterialService {
         Optional<ClassroomMaterial> classroomMaterialOptional = classroomMaterialRepository
                 .findByIdAndClassroomId(materialId, classroomId);
         if (!classroomMaterialOptional.isPresent())
-            throw new NullPointerException("Materi kelas tidak ditemukan.");
+            throw new RuntimeException(ErrorEnum.MATERIAL_NOT_FOUND.getMessage());
 
         Classroom classroom = classroomMaterialOptional.get().getClassroom();
         String hashedFilename = DigestUtils.md5DigestAsHex(
@@ -63,7 +64,7 @@ public class ClassroomMaterialServiceImpl implements ClassroomMaterialService {
                 classroomMaterialOptional.get().getFile(),
                 hashedFilename + "_" + multipartFile.getOriginalFilename(), multipartFile);
         if (file == null)
-            throw new NullPointerException("Gagal mengupload file");
+            throw new NullPointerException(ErrorEnum.FAILED_UPLOAD_FILE.getMessage());
 
         ClassroomMaterial classroomMaterial = classroomMaterialOptional.get();
         classroomMaterial.setFile(file);
@@ -75,7 +76,7 @@ public class ClassroomMaterialServiceImpl implements ClassroomMaterialService {
         Optional<ClassroomMaterial> classroomMaterialOptional = classroomMaterialRepository
                 .findByIdAndClassroomId(materialId, classroomId);
         if (!classroomMaterialOptional.isPresent())
-            throw new NullPointerException("Materi kelas tidak ditemukan.");
+            throw new NullPointerException(ErrorEnum.MATERIAL_NOT_FOUND.getMessage());
 
         boolean success = fileHandlerService.delete(classroomMaterialOptional.get().getFile());
         if (success) {

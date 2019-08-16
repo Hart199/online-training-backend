@@ -2,6 +2,7 @@ package com.future.onlinetraining.service.impl;
 
 import com.future.onlinetraining.dto.RatingDTO;
 import com.future.onlinetraining.entity.TrainerRating;
+import com.future.onlinetraining.entity.enumerator.ErrorEnum;
 import com.future.onlinetraining.entity.projection.TrainerData;
 import com.future.onlinetraining.repository.TrainerRatingRepository;
 import com.future.onlinetraining.repository.TrainerRepository;
@@ -36,12 +37,10 @@ public class TrainerServiceImpl implements TrainerService {
 
     public TrainerRating rate(int trainerId, RatingDTO ratingDTO) {
         User user = userService.getUserFromSession();
-        if (user == null)
-            throw new NullPointerException("Anda belum login.");
 
         Optional<User> trainer = userRepository.findById(trainerId);
         if (!trainer.isPresent())
-            throw new NullPointerException("Trainer tidak ditemukan.");
+            throw new NullPointerException(ErrorEnum.TRAINER_NOT_FOUND.getMessage());
 
         Optional<TrainerRating>  trainerRatingOptional = trainerRatingRepository
                 .findByUserIdAndTrainerId(user.getId(), trainerId);

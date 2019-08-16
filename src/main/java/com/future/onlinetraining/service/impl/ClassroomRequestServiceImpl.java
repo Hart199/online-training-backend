@@ -3,6 +3,7 @@ package com.future.onlinetraining.service.impl;
 import com.future.onlinetraining.dto.ClassroomRequestDTO;
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.ClassroomRequest;
+import com.future.onlinetraining.entity.enumerator.ErrorEnum;
 import com.future.onlinetraining.entity.projection.ClassroomRequestsData;
 import com.future.onlinetraining.repository.ClassroomRepository;
 import com.future.onlinetraining.repository.ClassroomRequestRepository;
@@ -37,19 +38,12 @@ public class ClassroomRequestServiceImpl implements ClassroomRequestService {
     public Page<Classroom> getAllByUser(
             Pageable pageable, String name, String status) {
         User user = userService.getUserFromSession();
-        if (user == null)
-            throw new NullPointerException("Anda belum login.");
 
         return classroomRepository.getRequestedUserClassroom(pageable, user.getId(), name, status);
     }
 
     public Boolean isHasVote(int classId) {
-        User user;
-        try {
-            user = userService.getUserFromSession();
-        } catch (NullPointerException e) {
-            throw new RuntimeException("Anda belum login");
-        }
+        User user = userService.getUserFromSession();
         ClassroomRequest classroomRequest = classroomRequestRepository
                 .findByClassroomIdandUserId(classId, user.getId());
         if (classroomRequest == null)
@@ -82,8 +76,6 @@ public class ClassroomRequestServiceImpl implements ClassroomRequestService {
 
     public Page<ClassroomRequestsData> getAllByTrainer(Pageable pageable, String name) {
         User user = userService.getUserFromSession();
-        if (user == null)
-            throw new NullPointerException("Anda belum login.");
 
         Page<ClassroomRequestsData> classroomRequestsDataPage = classroomRequestRepository
                 .getAllbyTrainerId(pageable, user.getId(), name);

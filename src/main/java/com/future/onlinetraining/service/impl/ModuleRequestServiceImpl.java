@@ -5,6 +5,7 @@ import com.future.onlinetraining.dto.ModuleRequestLikeDTO;
 import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.ModuleRequest;
 import com.future.onlinetraining.entity.ModuleRequestLike;
+import com.future.onlinetraining.entity.enumerator.ModuleRequestStatus;
 import com.future.onlinetraining.entity.projection.ModuleRequestData;
 import com.future.onlinetraining.repository.ModuleCategoryRepository;
 import com.future.onlinetraining.repository.ModuleRequestLikeRepository;
@@ -41,8 +42,6 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
 
     public Page<ModuleRequestData> getAllByUser(Pageable pageable, String name, String status) {
         User user = userService.getUserFromSession();
-        if (user == null)
-            throw new NullPointerException("Anda belum login.");
 
         Page<ModuleRequestData> moduleRequestData = moduleRequestRepository
                 .findAllByUser(pageable, user.getId(), name, status);
@@ -54,12 +53,7 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
     }
 
     public Boolean isHasVote(int moduleRequestId) {
-        User user;
-        try {
-            user = userService.getUserFromSession();
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Anda belum login.");
-        }
+        User user = userService.getUserFromSession();
 
         ModuleRequestLike moduleRequestLike = moduleRequestLikeRepository
                 .findByIdAndUserId(moduleRequestId, user.getId());
@@ -75,7 +69,7 @@ public class ModuleRequestServiceImpl implements ModuleRequestService {
         ModuleRequest moduleRequest = ModuleRequest.builder()
                 .title(moduleRequestDTO.getTitle())
                 .user(userService.getUserFromSession())
-                .status("waiting")
+                .status(ModuleRequestStatus.WAITING.getStatus())
                 .moduleCategory(moduleCategory)
                 .build();
 
