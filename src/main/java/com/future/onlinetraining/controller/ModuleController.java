@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 public class ModuleController {
 
@@ -80,7 +82,7 @@ public class ModuleController {
     }
 
     @PostMapping("/_trainer/modules/_categories")
-    public ResponseEntity addModuleCategory(@RequestBody ModuleCategory moduleCategory) {
+    public ResponseEntity addModuleCategory(@Valid @RequestBody ModuleCategory moduleCategory) {
         ModuleCategory category = moduleService.addModuleCategory(moduleCategory);
 
         return new ResponseHelper<>()
@@ -89,7 +91,7 @@ public class ModuleController {
     }
 
     @PutMapping("/_trainer/modules/_categories")
-    public ResponseEntity updateModuleCategory(@RequestBody UpdateModuleCategoryDTO updateModuleCategoryDTO) {
+    public ResponseEntity updateModuleCategory(@Valid @RequestBody UpdateModuleCategoryDTO updateModuleCategoryDTO) {
         ModuleCategory category = moduleService.updateModuleCategory(updateModuleCategoryDTO);
 
         return new ResponseHelper<>()
@@ -98,7 +100,7 @@ public class ModuleController {
     }
 
     @DeleteMapping("/_trainer/modules/_categories")
-    public ResponseEntity deleteModuleCategory(@RequestBody DeleteModuleCategoryDTO deleteModuleCategoryDTO) {
+    public ResponseEntity deleteModuleCategory(@Valid @RequestBody DeleteModuleCategoryDTO deleteModuleCategoryDTO) {
         boolean category = moduleService.deleteModuleCategory(deleteModuleCategoryDTO);
 
         if (!category)

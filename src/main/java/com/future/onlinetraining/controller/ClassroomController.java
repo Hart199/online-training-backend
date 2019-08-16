@@ -25,6 +25,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 @Controller
 public class ClassroomController<T> {
 
@@ -108,7 +110,7 @@ public class ClassroomController<T> {
      * @return
      */
     @PostMapping("/_trainer/classrooms")
-    public ResponseEntity create(@RequestBody ClassroomDTO classroomDTO) {
+    public ResponseEntity create(@Valid @RequestBody ClassroomDTO classroomDTO) {
         return new ResponseHelper<>()
                 .setParam("data", classroomService.create(classroomDTO))
                 .send();
@@ -137,7 +139,7 @@ public class ClassroomController<T> {
      * @return
      */
     @PostMapping("/_trainer/_modulesclassrooms")
-    public ResponseEntity createModuleWithClassroom(@RequestBody ModuleClassroomDTO moduleClassroomDTO) {
+    public ResponseEntity createModuleWithClassroom(@Valid @RequestBody ModuleClassroomDTO moduleClassroomDTO) {
         Classroom newClassroom = classroomService.createModuleAndClassroom(moduleClassroomDTO);
 
         return new ResponseHelper<>()
@@ -167,7 +169,7 @@ public class ClassroomController<T> {
      */
     @PutMapping(value= "/_trainer/classrooms/{id}")
     public ResponseEntity editDetail(
-            @PathVariable("id") Integer id, @RequestBody ClassroomDetailDTO classroomDTO) {
+            @PathVariable("id") Integer id, @Valid @RequestBody ClassroomDetailDTO classroomDTO) {
         Classroom classroom = classroomService.editDetail(id, classroomDTO);
 
         return new ResponseHelper<>()
@@ -227,7 +229,7 @@ public class ClassroomController<T> {
      * @return
      */
     @PutMapping("/_trainer/classrooms/_setscore")
-    public ResponseEntity setScore(@RequestBody SetScoreDTO setScoreDTO) {
+    public ResponseEntity setScore(@Valid @RequestBody SetScoreDTO setScoreDTO) {
         return new ResponseHelper<>()
                 .setParam("data", classroomService.setScore(setScoreDTO))
                 .send();

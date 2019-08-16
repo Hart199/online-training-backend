@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 
 @RestController
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/_admin/users")
-    public ResponseEntity create(@RequestBody UserDTO userDTO) {
+    public ResponseEntity create(@Valid @RequestBody UserDTO userDTO) {
         return new ResponseHelper<>()
                 .setParam("data", userService.create(userDTO))
                 .send();
@@ -57,7 +58,7 @@ public class UserController {
     }
 
     @PutMapping("/users/_change-password")
-    public ResponseEntity changePassword(ChangePasswordDTO changePasswordDTO) {
+    public ResponseEntity changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
         return new ResponseHelper<>()
                 .setParam("data", userService.changePassword(changePasswordDTO))
                 .send();
@@ -79,7 +80,7 @@ public class UserController {
     }
 
     @PutMapping("/users/_profile")
-    public ResponseEntity editProfile(@RequestBody UserDTO userDTO) {
+    public ResponseEntity editProfile(@Valid @RequestBody UserDTO userDTO) {
         return new ResponseHelper<>()
                 .setParam("data", userService.edit(null, userDTO))
                 .send();
