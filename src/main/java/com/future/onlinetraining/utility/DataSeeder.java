@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 @Component
 public class DataSeeder {
@@ -59,9 +60,9 @@ public class DataSeeder {
             role = roleRepository.findByValue("ADMIN");
         }
 
-        User user = userRepository.findByEmail("root@gmail.com");
+        Optional<User> user = userRepository.findByEmail("root@gmail.com");
 
-        if(user == null){
+        if(!user.isPresent()){
             return userRepository.save(User.builder()
                     .email("root@gmail.com")
                     .password(encoder.encode("root"))
@@ -70,7 +71,7 @@ public class DataSeeder {
                     .build());
         }
 
-        return user;
+        return user.get();
     }
 
     @EventListener

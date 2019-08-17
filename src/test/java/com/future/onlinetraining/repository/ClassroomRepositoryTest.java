@@ -2,6 +2,7 @@ package com.future.onlinetraining.repository;
 
 import com.future.onlinetraining.entity.Classroom;
 import com.future.onlinetraining.entity.User;
+import com.future.onlinetraining.entity.enumerator.ErrorEnum;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,14 +37,16 @@ public class ClassroomRepositoryTest {
     }
 
 
-    @Test
-    public void getSubscribedClassroomTest() {
-        User user = userRepository.findByEmail("trainee@gmail.com");
-        Page<Classroom> classroomSubscribedPage = classroomRepository.findSubscribed(
-                PageRequest.of(0, 2), user.getId(), null);
-
-        for (Classroom classroomSubscribed : classroomSubscribedPage.getContent()) {
-            System.out.println(classroomSubscribed.getName());
-        }
-    }
+//    @Test
+//    public void getSubscribedClassroomTest() {
+//        Optional<User> user = userRepository.findByEmail("trainee@gmail.com");
+//        if (!user.isPresent())
+//            throw new RuntimeException(ErrorEnum.USER_NOT_FOUND.getMessage());
+//        Page<Classroom> classroomSubscribedPage = classroomRepository.findSubscribed(
+//                PageRequest.of(0, 2), user.get().getId());
+//
+//        for (Classroom classroomSubscribed : classroomSubscribedPage.getContent()) {
+//            System.out.println(classroomSubscribed.getName());
+//        }
+//    }
 }
