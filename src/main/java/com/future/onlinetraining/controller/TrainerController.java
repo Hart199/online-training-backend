@@ -3,10 +3,12 @@ package com.future.onlinetraining.controller;
 import com.future.onlinetraining.dto.RatingDTO;
 import com.future.onlinetraining.service.TrainerService;
 import com.future.onlinetraining.utility.ResponseHelper;
+import com.future.onlinetraining.utility.ValidationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,7 +28,9 @@ public class TrainerController {
     }
 
     @PostMapping("/trainers/_ratings/{id}")
-    public ResponseEntity addRatings(@PathVariable("id") int id, @RequestBody RatingDTO ratingDTO) {
+    public ResponseEntity addRatings(
+            @PathVariable("id") int id, @RequestBody RatingDTO ratingDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         return new ResponseHelper<>()
                 .setParam("data", trainerService.rate(id, ratingDTO))
                 .send();

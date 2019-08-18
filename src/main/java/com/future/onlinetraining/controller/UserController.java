@@ -4,12 +4,14 @@ import com.future.onlinetraining.dto.ChangePasswordDTO;
 import com.future.onlinetraining.dto.UserDTO;
 import com.future.onlinetraining.service.UserService;
 import com.future.onlinetraining.utility.ResponseHelper;
+import com.future.onlinetraining.utility.ValidationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,7 +46,8 @@ public class UserController {
     }
 
     @PostMapping("/_admin/users")
-    public ResponseEntity create(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity create(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         return new ResponseHelper<>()
                 .setParam("data", userService.create(userDTO))
                 .send();
@@ -58,7 +61,9 @@ public class UserController {
     }
 
     @PutMapping("/users/_change-password")
-    public ResponseEntity changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
+    public ResponseEntity changePassword(
+            @Valid @RequestBody ChangePasswordDTO changePasswordDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         return new ResponseHelper<>()
                 .setParam("data", userService.changePassword(changePasswordDTO))
                 .send();
@@ -73,7 +78,9 @@ public class UserController {
     }
 
     @PutMapping("/_admin/users/{id}")
-    public ResponseEntity edit(@PathVariable("id") int id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity edit(
+            @PathVariable("id") int id, @Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         return new ResponseHelper<>()
                 .setParam("data", userService.edit(id, userDTO))
                 .send();

@@ -6,6 +6,7 @@ import com.future.onlinetraining.entity.ModuleRequest;
 import com.future.onlinetraining.entity.ModuleRequestLike;
 import com.future.onlinetraining.service.ModuleRequestService;
 import com.future.onlinetraining.utility.ResponseHelper;
+import com.future.onlinetraining.utility.ValidationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -67,7 +69,9 @@ public class ModuleRequestController {
     }
 
     @PostMapping("/modules/_requests")
-    public ResponseEntity store(@RequestBody @Valid ModuleRequestDTO moduleRequestDTO) {
+    public ResponseEntity store(
+            @RequestBody @Valid ModuleRequestDTO moduleRequestDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         ResponseHelper responseHelper = new ResponseHelper();
         ModuleRequest moduleRequest = moduleRequestService.store(moduleRequestDTO);
 
@@ -85,7 +89,9 @@ public class ModuleRequestController {
     }
 
     @PostMapping("/modules/_likes")
-    public ResponseEntity voteLike(@RequestBody @Valid ModuleRequestLikeDTO moduleRequestLikeDTO) {
+    public ResponseEntity voteLike(
+            @RequestBody @Valid ModuleRequestLikeDTO moduleRequestLikeDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         ModuleRequestLike moduleRequestLike = moduleRequestService.voteLike(moduleRequestLikeDTO);
 
         if (moduleRequestLike == null)
@@ -99,7 +105,9 @@ public class ModuleRequestController {
     }
 
     @PutMapping("/_trainer/modules/_requests/{id}/_status/{status}")
-    public ResponseEntity editStatus(@PathVariable("id") int id, @PathVariable("status") String status) {
+    public ResponseEntity editStatus(
+            @PathVariable("id") int id, @PathVariable("status") String status, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         ModuleRequest moduleRequest = moduleRequestService.changeStatus(id, status);
         if (moduleRequest == null)
             return new ResponseHelper<>()

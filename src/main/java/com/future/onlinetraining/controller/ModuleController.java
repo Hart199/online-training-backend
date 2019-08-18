@@ -9,12 +9,14 @@ import com.future.onlinetraining.entity.ModuleCategory;
 import com.future.onlinetraining.entity.projection.ModuleDetailData;
 import com.future.onlinetraining.service.ModuleService;
 import com.future.onlinetraining.utility.ResponseHelper;
+import com.future.onlinetraining.utility.ValidationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,7 +43,8 @@ public class ModuleController {
     }
 
     @PostMapping("/modules/_ratings/{id}")
-    public ResponseEntity addRatings(@PathVariable("id") int id, @RequestBody RatingDTO ratingDTO) {
+    public ResponseEntity addRatings(@PathVariable("id") int id, @Valid @RequestBody RatingDTO ratingDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         return new ResponseHelper<>()
                 .setParam("data", moduleService.addRating(id, ratingDTO))
                 .send();
@@ -82,7 +85,8 @@ public class ModuleController {
     }
 
     @PostMapping("/_trainer/modules/_categories")
-    public ResponseEntity addModuleCategory(@Valid @RequestBody ModuleCategory moduleCategory) {
+    public ResponseEntity addModuleCategory(@Valid @RequestBody ModuleCategory moduleCategory, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         ModuleCategory category = moduleService.addModuleCategory(moduleCategory);
 
         return new ResponseHelper<>()
@@ -91,7 +95,9 @@ public class ModuleController {
     }
 
     @PutMapping("/_trainer/modules/_categories")
-    public ResponseEntity updateModuleCategory(@Valid @RequestBody UpdateModuleCategoryDTO updateModuleCategoryDTO) {
+    public ResponseEntity updateModuleCategory(
+            @Valid @RequestBody UpdateModuleCategoryDTO updateModuleCategoryDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         ModuleCategory category = moduleService.updateModuleCategory(updateModuleCategoryDTO);
 
         return new ResponseHelper<>()
@@ -100,7 +106,9 @@ public class ModuleController {
     }
 
     @DeleteMapping("/_trainer/modules/_categories")
-    public ResponseEntity deleteModuleCategory(@Valid @RequestBody DeleteModuleCategoryDTO deleteModuleCategoryDTO) {
+    public ResponseEntity deleteModuleCategory(
+            @Valid @RequestBody DeleteModuleCategoryDTO deleteModuleCategoryDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         boolean category = moduleService.deleteModuleCategory(deleteModuleCategoryDTO);
 
         if (!category)
@@ -125,7 +133,9 @@ public class ModuleController {
     }
 
     @PutMapping("/_trainer/modules/{id}")
-    public ResponseEntity updateModule(@PathVariable("id") Integer id, @RequestBody UpdateModuleDTO updateModuleDTO) {
+    public ResponseEntity updateModule(
+            @PathVariable("id") Integer id, @RequestBody UpdateModuleDTO updateModuleDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         Module module = moduleService.editModule(id, updateModuleDTO);
 
         return new ResponseHelper<>()

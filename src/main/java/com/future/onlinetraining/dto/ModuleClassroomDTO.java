@@ -55,7 +55,7 @@ public class ModuleClassroomDTO {
         @NotEmpty
         @Size(min = 6, max = 32)
         String description;
-        
+
         @Min(30)
         int timePerSession;
 

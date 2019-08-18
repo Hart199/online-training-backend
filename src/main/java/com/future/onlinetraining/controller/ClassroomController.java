@@ -10,6 +10,7 @@ import com.future.onlinetraining.entity.Module;
 import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.service.ClassroomService;
 import com.future.onlinetraining.utility.ResponseHelper;
+import com.future.onlinetraining.utility.ValidationHandler;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
@@ -22,12 +23,13 @@ import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
 public class ClassroomController<T> {
 
     @Autowired
@@ -109,7 +111,8 @@ public class ClassroomController<T> {
      * @return
      */
     @PostMapping("/_trainer/classrooms")
-    public ResponseEntity create(@Valid @RequestBody ClassroomDTO classroomDTO) {
+    public ResponseEntity create(@Valid @RequestBody ClassroomDTO classroomDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         return new ResponseHelper<>()
                 .setParam("data", classroomService.create(classroomDTO))
                 .send();
@@ -138,7 +141,8 @@ public class ClassroomController<T> {
      * @return
      */
     @PostMapping("/_trainer/_modulesclassrooms")
-    public ResponseEntity createModuleWithClassroom(@Valid @RequestBody ModuleClassroomDTO moduleClassroomDTO) {
+    public ResponseEntity createModuleWithClassroom(@RequestBody @Valid ModuleClassroomDTO moduleClassroomDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         Classroom newClassroom = classroomService.createModuleAndClassroom(moduleClassroomDTO);
 
         return new ResponseHelper<>()
@@ -168,7 +172,8 @@ public class ClassroomController<T> {
      */
     @PutMapping(value= "/_trainer/classrooms/{id}")
     public ResponseEntity editDetail(
-            @PathVariable("id") Integer id, @Valid @RequestBody ClassroomDetailDTO classroomDTO) {
+            @PathVariable("id") Integer id, @Valid @RequestBody ClassroomDetailDTO classroomDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         Classroom classroom = classroomService.editDetail(id, classroomDTO);
 
         return new ResponseHelper<>()
@@ -228,7 +233,8 @@ public class ClassroomController<T> {
      * @return
      */
     @PutMapping("/_trainer/classrooms/_setscore")
-    public ResponseEntity setScore(@Valid @RequestBody SetScoreDTO setScoreDTO) {
+    public ResponseEntity setScore(@Valid @RequestBody SetScoreDTO setScoreDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         return new ResponseHelper<>()
                 .setParam("data", classroomService.setScore(setScoreDTO))
                 .send();

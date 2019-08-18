@@ -7,6 +7,7 @@ import com.future.onlinetraining.entity.ModuleRequestLike;
 import com.future.onlinetraining.service.ClassroomRequestService;
 import com.future.onlinetraining.service.ClassroomService;
 import com.future.onlinetraining.utility.ResponseHelper;
+import com.future.onlinetraining.utility.ValidationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -104,7 +106,8 @@ public class ClassroomRequestController {
      * @return
      */
     @PostMapping("/classrooms/_requests")
-    public ResponseEntity request(@RequestBody @Valid ClassroomRequestDTO classroomRequestDTO) {
+    public ResponseEntity request(@RequestBody @Valid ClassroomRequestDTO classroomRequestDTO, BindingResult bindingResult) {
+        ValidationHandler.validate(bindingResult);
         ClassroomRequest classroomRequest = classroomRequestService.request(classroomRequestDTO);
 
         if (classroomRequest == null)
