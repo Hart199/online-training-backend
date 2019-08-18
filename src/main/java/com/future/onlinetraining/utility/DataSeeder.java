@@ -203,7 +203,7 @@ public class DataSeeder {
                 .max_member(25)
                 .min_member(10)
                 .module(module2)
-                .status("close")
+                .status("closed")
                 .name("Kelas Spring Boot 02")
                 .trainer(trainer)
                 .build());
