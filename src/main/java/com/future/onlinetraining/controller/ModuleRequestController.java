@@ -106,8 +106,7 @@ public class ModuleRequestController {
 
     @PutMapping("/_trainer/modules/_requests/{id}/_status/{status}")
     public ResponseEntity editStatus(
-            @PathVariable("id") int id, @PathVariable("status") String status, BindingResult bindingResult) {
-        ValidationHandler.validate(bindingResult);
+            @PathVariable("id") int id, @PathVariable("status") String status) {
         ModuleRequest moduleRequest = moduleRequestService.changeStatus(id, status);
         if (moduleRequest == null)
             return new ResponseHelper<>()
