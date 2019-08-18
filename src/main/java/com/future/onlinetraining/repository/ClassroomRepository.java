@@ -23,7 +23,7 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
                     "inner join c.classroomResults crs " +
                     "inner join crs.user u " +
                     "where u.id = :userId " +
-                    "and crs.status in ('open', 'ongoing') "
+                    "and c.status in ('open', 'ongoing') "
     )
     Page<Classroom> findSubscribed(
             Pageable pageable, @Param("userId") int userId);
