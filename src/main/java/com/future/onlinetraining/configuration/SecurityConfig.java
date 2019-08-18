@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/auth")
                 .failureUrl("/unauthenticated")
+                .failureForwardUrl("/unauthenticated")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .successHandler(this.loginSuccessHandler())

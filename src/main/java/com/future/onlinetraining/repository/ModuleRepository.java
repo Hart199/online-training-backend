@@ -20,7 +20,7 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
                     "m.id, m.name, m.description, avg(mr.value) as rating, m.timePerSession, mc.name, " +
                     "count(c), count(cs), m.hasExam, m.version) " +
                     "from Module m left join m.moduleRatings mr inner join m.classrooms c " +
-                    "inner join c.classroomSessions cs inner join m.moduleCategory mc " +
+                    "left join c.classroomSessions cs inner join m.moduleCategory mc " +
                     "where (:nameParam is null or lower(m.name) like :nameParam%) " +
                     "and (:categoryParam is null or mc.name = :categoryParam ) " +
                     "and (:hasExam is null or m.hasExam = :hasExam) " +

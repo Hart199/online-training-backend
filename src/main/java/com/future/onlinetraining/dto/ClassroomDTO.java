@@ -29,6 +29,5 @@ public class ClassroomDTO {
 
     List<ClassroomSession> classroomSessions;
 
-    @NotNull
     private Integer refClassroomId;
 }
