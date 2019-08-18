@@ -10,12 +10,15 @@ import java.util.List;
 
 public class ValidationHandler {
     public static void validate(BindingResult bindingResult) {
-        ArrayList<String> errors = new ArrayList();
-        for (Object objectError : bindingResult.getAllErrors())
-            if(objectError instanceof FieldError) {
-                FieldError fieldError = (FieldError) objectError;
-                errors.add(fieldError.getField() + " " + fieldError.getDefaultMessage());
+        if (bindingResult.hasErrors()) {
+            ArrayList<String> errors = new ArrayList();
+            for (Object object : bindingResult.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+                    errors.add(fieldError.getField() + " " + fieldError.getDefaultMessage());
+                }
+            }
+            throw new ValidationException(errors.toArray(new String[0]));
         }
-        throw new ValidationException(errors.toArray(new String[0]));
     }
 }
