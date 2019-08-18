@@ -90,8 +90,8 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
             if (sessionSize > 0) {
                 Timestamp startTimestamp = classroom.get().getClassroomSessions().get(0).getStartTime();
 
-                int endTime = (int) classroom.get().getClassroomSessions().get(sessionSize - 1).getStartTime().getTime()
-                        + (classroom.get().getModule().getTimePerSession() * 60);
+                long endTime = classroom.get().getClassroomSessions().get(sessionSize - 1).getStartTime().getTime()
+                        + (long) (classroom.get().getModule().getTimePerSession() * 60);
                 Timestamp endTimestamp = new Timestamp(endTime);
 
                 if (startTimestamp.after(timestamp) && !classroomData.getStatus().equals(ClassroomStatus.CLOSED.getStatus()))
@@ -211,9 +211,23 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public ClassroomDetailData getClassroomDetail(Integer id) {
         ClassroomDetailData classroom = classroomRepository.getDetail(id);
-
         if (classroom == null)
             throw new RuntimeException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
+
+        List<ClassroomSession> classroomSessions = classroom.getClassroom().getClassroomSessions();
+        if (!classroomSessions.isEmpty()) {
+            Timestamp timestamp = new Timestamp(new Date().getTime());
+            Timestamp startTimestamp = classroomSessions.get(0).getStartTime();
+            long endTime = classroomSessions.get(classroomSessions.size() - 1).getStartTime().getTime()
+                    + (classroom.getClassroom().getModule().getTimePerSession() * 60);
+            Timestamp endTimeStamp = new Timestamp(endTime);
+
+            if (startTimestamp.before(timestamp))
+                classroom.getClassroom().setStatus(ClassroomStatus.ONGOING.getStatus());
+
+            if (endTimeStamp.before(timestamp))
+                classroom.getClassroom().setStatus(ClassroomStatus.CLOSED.getStatus());
+        }
 
         return classroom;
     }

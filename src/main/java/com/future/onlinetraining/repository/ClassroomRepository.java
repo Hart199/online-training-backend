@@ -82,12 +82,12 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
                     "where (:id is null or c.trainer.id = :id ) " +
                     "and c.status in ('ongoing', 'closed')"
     )
-    Page<Classroom> getNotMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id);
+    Page<Classroom> getNotMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") Integer id);
 
     @Query(
             value = "from Classroom c " +
                     "where (:id is null or c.trainer.id = :id ) " +
                     "and c.hasFinished = true "
     )
-    Page<Classroom> getMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id);
+    Page<Classroom> getMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") Integer id);
 }
