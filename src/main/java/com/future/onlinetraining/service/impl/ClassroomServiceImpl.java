@@ -178,8 +178,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         List<ClassroomSession> classroomSessions = moduleClassroomDTO.getClassroom().getClassroomSessions();
         verifyClassroomSessionOnModule(module, moduleClassroomDTO.getClassroom().getClassroomSessions());
 
-        classroomSessions = classroomSessionRepository.saveAll(classroomSessions);
-
         if (moduleRequest.isPresent()) {
             moduleRequest.get().setStatus(ModuleRequestStatus.ACCEPTED.getStatus());
             moduleRequestRepository.save(moduleRequest.get());
@@ -193,8 +191,12 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                 .min_member(moduleClassroomDTO.getClassroom().getMinMember())
                 .status(moduleClassroomDTO.getClassroom().getStatus())
                 .name(moduleClassroomDTO.getClassroom().getName())
-                .classroomSessions(classroomSessions)
                 .build();
+
+        for (ClassroomSession classroomSession : classroomSessions) {
+            classroomSession.setClassroom(classroom);
+        }
+        classroomSessionRepository.saveAll(classroomSessions);
 
         return classroomRepository.save(classroom);
     }
