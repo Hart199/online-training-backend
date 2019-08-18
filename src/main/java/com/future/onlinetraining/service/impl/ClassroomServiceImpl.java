@@ -8,12 +8,9 @@ import com.future.onlinetraining.entity.enumerator.ModuleRequestStatus;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.repository.*;
-import com.future.onlinetraining.service.ClassroomRequestService;
-import com.future.onlinetraining.service.ClassroomService;
-import com.future.onlinetraining.service.FileHandlerService;
+import com.future.onlinetraining.service.*;
 import com.future.onlinetraining.entity.User;
 import com.future.onlinetraining.repository.UserRepository;
-import com.future.onlinetraining.service.UserService;
 import com.future.onlinetraining.utility.TimeHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,6 +54,8 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     @Autowired
     ClassroomRequestService classroomRequestService;
     @Autowired
+    ClassroomSessionService classroomSessionService;
+    @Autowired
     TimeHelper timeHelper;
 
     @Override
@@ -79,18 +78,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         return classroomDataPage;
     }
 
-    public void verifyClassroomSessionOnModule(Module module, List<ClassroomSession> classroomSessions) {
-        if (classroomSessions.size() != module.getTotalSession())
-            throw new RuntimeException(ErrorEnum.CLASSROOM_SESSION_VALIDATION_ERROR.getMessage());
 
-        boolean hasExam = false;
-        for(ClassroomSession classroomSession : classroomSessions) {
-            hasExam = classroomSession.isExam() ? true : hasExam;
-        }
-
-        if (module.isHasExam() != hasExam)
-            throw new RuntimeException(ErrorEnum.EXAM_VALIDATION_ERROR.getMessage());
-    }
 
     @Transactional
     public Classroom create(ClassroomDTO classroomDTO) {
@@ -101,7 +89,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         if (!module.isPresent())
             throw new RuntimeException(ErrorEnum.MODULE_NOT_FOUND.getMessage());
 
-        verifyClassroomSessionOnModule(module.get(), classroomDTO.getClassroomSessions());
+        classroomSessionService.verifyClassroomSessionOnModule(module.get(), classroomDTO.getClassroomSessions());
 
         Classroom classroom = Classroom
                 .builder()
@@ -158,7 +146,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         module = moduleRepository.save(module);
 
         List<ClassroomSession> classroomSessions = moduleClassroomDTO.getClassroom().getClassroomSessions();
-        verifyClassroomSessionOnModule(module, moduleClassroomDTO.getClassroom().getClassroomSessions());
+        classroomSessionService.verifyClassroomSessionOnModule(module, moduleClassroomDTO.getClassroom().getClassroomSessions());
 
         if (moduleRequest.isPresent()) {
             moduleRequest.get().setStatus(ModuleRequestStatus.ACCEPTED.getStatus());
@@ -202,7 +190,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
             throw new RuntimeException(ErrorEnum.TRAINER_NOT_FOUND.getMessage());
 
         if (classroomDTO.getClassroomSessions() != null) {
-            verifyClassroomSessionOnModule(classroom.getModule(), classroomDTO.getClassroomSessions());
+            classroomSessionService.verifyClassroomSessionOnModule(classroom.getModule(), classroomDTO.getClassroomSessions());
 
             classroomDTO.getClassroomSessions().forEach(classroomSession -> {
                 classroomSession.setClassroom(classroom);
