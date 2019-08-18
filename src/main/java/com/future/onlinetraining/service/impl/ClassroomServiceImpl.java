@@ -21,7 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,11 +66,35 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     }
 
     public Page<Classroom> getAll(Pageable pageable) {
-        return classroomRepository.findAll(pageable);
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        Page<Classroom> classroomPage = classroomRepository.findAll(pageable);
+        classroomPage.forEach(classroom -> {
+            if (classroom.getClassroomSessions().size() > 0) {
+                Timestamp startTime = classroom.getClassroomSessions().get(0).getStartTime();
+                if (startTime.after(timestamp) && !classroom.getStatus().equals(ClassroomStatus.CLOSED.getStatus()))
+                    classroom.setStatus(ClassroomStatus.ONGOING.getStatus());
+            }
+        });
+
+        return classroomPage;
     }
 
     public Page<ClassroomData> all(String name, Boolean hasExam, Pageable pageable) {
-        return classroomRepository.all(pageable, name, hasExam);
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        Page<ClassroomData> classroomDataPage = classroomRepository.all(pageable, name, hasExam);
+
+        classroomDataPage.forEach(classroomData -> {
+            Optional<Classroom> classroom = classroomRepository.findById(classroomData.getId());
+
+            if (classroom.get().getClassroomSessions().size() > 0) {
+                Timestamp startTime = classroom.get().getClassroomSessions().get(0).getStartTime();
+
+                if (startTime.after(timestamp) && !classroomData.getStatus().equals(ClassroomStatus.CLOSED.getStatus()))
+                    classroomData.setStatus(ClassroomStatus.ONGOING.getStatus());
+            }
+        });
+
+        return classroomDataPage;
     }
 
     public void verifyClassroomSessionOnModule(Module module, List<ClassroomSession> classroomSessions) {

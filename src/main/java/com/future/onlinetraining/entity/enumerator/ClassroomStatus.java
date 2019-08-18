@@ -4,7 +4,7 @@ public enum ClassroomStatus {
 
     OPEN("open"),
     CLOSED("closed"),
-    ONGOINF("ongoing");
+    ONGOING("ongoing");
 
     private String status;
 
