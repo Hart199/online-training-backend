@@ -75,7 +75,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     }
 
     public Page<ClassroomData> all(String name, Boolean hasExam, Pageable pageable) {
-        Timestamp timestamp = new Timestamp(new Date().getTime());
         Page<ClassroomData> classroomDataPage = classroomRepository.all(pageable, name, hasExam);
 
         classroomDataPage.forEach(classroomData -> {
@@ -290,9 +289,26 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public Page<Classroom> getTrainerClassrooms(Pageable pageable, String status) {
         User user = userService.getUserFromSession();
-        if (status.toLowerCase().equals("available"))
-            return classroomRepository.getAvailableTrainerClassrooms(pageable, user.getId());
-        return classroomRepository.getTrainerClassrooms(pageable, user.getId(), status);
+        List<Classroom> newClassroomList = new ArrayList<>();
+        List<Classroom> classroomList = classroomRepository.getAllTrainerClassrooms(user.getId());
+        if (status.toLowerCase().equals("available")) {
+            classroomList.forEach(classroom -> {
+                if (!timeHelper.isClassroomSessionHasEnded(classroom.getClassroomSessions(), classroom.getModule().getTimePerSession()))
+                    if(timeHelper.isClassroomSessionHasStarted(classroom.getClassroomSessions()))
+                        classroom.setStatus(ClassroomStatus.ONGOING.getStatus());
+                    newClassroomList.add(classroom);
+            });
+        } else {
+            classroomList.forEach(classroom -> {
+                if(timeHelper.isClassroomSessionHasEnded(classroom.getClassroomSessions(), classroom.getModule().getTimePerSession())) {
+                    classroom.setStatus(ClassroomStatus.CLOSED.getStatus());
+                    newClassroomList.add(classroom);
+                }
+            });
+        }
+
+        Page<Classroom> classroomPage = new PageImpl<>(newClassroomList, pageable, newClassroomList.size());
+        return classroomPage;
     }
 
     public Page<ClassroomResult> getClassroomHistory(Pageable pageable, boolean passed) {

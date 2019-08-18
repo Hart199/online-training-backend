@@ -129,7 +129,7 @@ public class ClassroomController<T> {
     public ResponseEntity getTrainerClassrooms(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "status", required = false) String status) {
+            @RequestParam(value = "status", defaultValue = "available") String status) {
         return new ResponseHelper<>()
                 .setParam("data", classroomService.getTrainerClassrooms(PageRequest.of(page, size), status))
                 .send();
