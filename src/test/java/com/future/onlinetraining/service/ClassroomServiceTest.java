@@ -54,6 +54,8 @@ public class ClassroomServiceTest {
     private ClassroomSessionService classroomSessionService;
     @MockBean
     private ModuleCategoryRepository moduleCategoryRepository;
+    @MockBean
+    private ClassroomResultRepository classroomResultRepository;
     @Spy
     private ClassroomRequestRepository classroomRequestRepository;
 //
@@ -258,85 +260,124 @@ public class ClassroomServiceTest {
 
         Assert.assertEquals(classroomService.getClassroomDetail(1), classroomDetailData);
     }
-//
-//    @Test
-//    public void editDetail_WhenClassroomIsNull_Test() {
-//        when(classroomRepository.find(Mockito.anyInt())).thenReturn(null);
-//        Assert.assertEquals(classroomService.editDetail(1, Mockito.mock(ClassroomDetailDTO.class)), null);
-//    }
-//
-//    @Test
-//    public void editDetail_WhenTrainerIsNull_Test() {
-//        when(classroomRepository.find(Mockito.anyInt())).thenReturn(Mockito.mock(Classroom.class));
-//        when(userRepository.findByEmail(Mockito.anyString())).thenReturn(null);
-//        Assert.assertEquals(classroomService.editDetail(1, Mockito.mock(ClassroomDetailDTO.class)), null);
-//    }
-//
-//    @Test
-//    public void editDetail_WhenClassroomSessionsIsNull_Test() {
-//        when(classroomRepository.find(Mockito.anyInt())).thenReturn(Mockito.mock(Classroom.class));
+
+    @Test(expected = RuntimeException.class)
+    public void editDetail_WhenClassroomIsNull_Test() {
+        when(classroomRepository.find(Mockito.anyInt())).thenReturn(null);
+        classroomService.editDetail(1, Mockito.mock(ClassroomDetailDTO.class));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void editDetail_WhenTrainerIsNull_Test() {
+        when(classroomRepository.find(Mockito.anyInt())).thenReturn(Mockito.mock(Classroom.class));
+        when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.empty());
+        classroomService.editDetail(1, Mockito.mock(ClassroomDetailDTO.class));
+    }
+
+    @Test
+    public void editDetail_WhenClassroomSessionsIsNull_Test() {
+        when(classroomRepository.find(Mockito.anyInt())).thenReturn(Mockito.mock(Classroom.class));
+        when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(Mockito.mock(User.class)));
+
+        doNothing().when(classroomSessionService)
+                .verifyClassroomSessionOnModule(Mockito.any(Module.class), Mockito.anyList());
+
+        Classroom classroom = new Classroom();
+        when(classroomRepository.save(Mockito.any(Classroom.class))).thenReturn(classroom);
+
+        ClassroomDetailDTO classroomDetailDTO = new ClassroomDetailDTO();
+        classroomDetailDTO.setTrainerEmail("trainer@gmail.com");
+        classroomService.editDetail(1, classroomDetailDTO);
+    }
+
+    @Test
+    public void editDetail_Test() {
+        when(classroomRepository.find(Mockito.anyInt())).thenReturn(Mockito.mock(Classroom.class));
+        when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(Mockito.mock(User.class)));
+
+        doNothing().when(classroomSessionService)
+                .verifyClassroomSessionOnModule(Mockito.any(Module.class), Mockito.anyList());
+
+        Classroom classroom = new Classroom();
+        when(classroomRepository.save(Mockito.any(Classroom.class))).thenReturn(classroom);
+
+        when(classroomSessionRepository.saveAll(Mockito.anyIterable())).thenReturn(Mockito.mock(List.class));
+
+        ClassroomDetailDTO classroomDetailDTO = new ClassroomDetailDTO();
+        List<ClassroomSession> classroomSessionList = new ArrayList<>();
+        classroomSessionList.add(Mockito.mock(ClassroomSession.class));
+        classroomDetailDTO.setClassroomSessions(classroomSessionList);
+        classroomDetailDTO.setTrainerEmail("trainer@gmail.com");
+        classroomService.editDetail(1, classroomDetailDTO);
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void join_WhenUserIsNull_Test() {
+        when(userService.getUserFromSession()).thenReturn(null);
+        classroomService.join(1);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void join_WhenClassroomOptionalIsNotPresent_Test() {
+        when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
+        when(classroomRepository.findById(Mockito.anyInt())).thenReturn(null);
+        classroomService.join(1);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void createModuleAndClassroom_Test() {
+        ModuleClassroomDTO moduleClassroomDTO = new ModuleClassroomDTO();
+        ModuleClassroomDTO.ModuleDTO moduleDTO = Mockito.mock(ModuleClassroomDTO.ModuleDTO.class);
+        moduleClassroomDTO.setModule(moduleDTO);
+        moduleClassroomDTO.setClassroom(Mockito.mock(ModuleClassroomDTO.Classroom.class));
+        moduleClassroomDTO.setModuleRequestId(1);
+
+        when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(Mockito.mock(User.class)));
+
+        when(moduleCategoryRepository.findByName(Mockito.any())).thenReturn(Mockito.mock(ModuleCategory.class));
+
+        Optional<ModuleRequest> moduleRequestOptional = Optional.of(Mockito.mock(ModuleRequest.class));
+        when(moduleRequestRepository.findById(Mockito.anyInt())).thenReturn(moduleRequestOptional);
+
+//        Module m = Mockito.mock(Module.class, RETURNS_DEEP_STUBS);
+//        when(Module.builder()).thenReturn(Module.builder());
+//        when(Module.builder().build()).thenReturn(Mockito.mock(Module.class));
+
+        List classroomSessions = new ArrayList();
+        classroomSessions.add(
+                ClassroomSession.builder()
+                        .isExam(true)
+                        .build()
+        );
+        Module module = Module.builder().totalSession(1).hasExam(true).build();
+        moduleClassroomDTO.getClassroom().setClassroomSessions(classroomSessions);
+        moduleClassroomDTO.getClassroom().setTrainerEmail("trainer@gmail.com");
+//        classroomDTO.setClassroomSessions(classroomSessions);
+
+        when(moduleRepository.save(Mockito.any(Module.class))).thenReturn(module);
+        when(classroomSessionRepository.saveAll(Mockito.anyIterable())).thenReturn(Mockito.mock(List.class));
+        when(moduleRequestRepository.save(Mockito.any(ModuleRequest.class))).thenReturn(null);
 //        when(userRepository.findByEmail("trainer@gmail.com")).thenReturn(Mockito.mock(User.class));
 //
-//        Classroom classroom = new Classroom();
-//        when(classroomRepository.save(Mockito.any(Classroom.class))).thenReturn(classroom);
-//
-//        ClassroomDetailDTO classroomDetailDTO = new ClassroomDetailDTO();
-//        classroomDetailDTO.setTrainerEmail("trainer@gmail.com");
-//        Assert.assertEquals(classroomService.editDetail(1, classroomDetailDTO), classroom);
-//    }
-//
-//    @Test(expected = NullPointerException.class)
-//    public void join_WhenUserIsNull_Test() {
-//        when(userService.getUserFromSession()).thenReturn(null);
-//        classroomService.join(1);
-//    }
-//
-//    @Test(expected = NullPointerException.class)
-//    public void join_WhenClassroomOptionalIsNotPresent_Test() {
-//        when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
-//        when(classroomRepository.findById(Mockito.anyInt())).thenReturn(null);
-//        classroomService.join(1);
-//    }
+        Classroom classroom = new Classroom();
+        when(classroomRepository.save(Mockito.any(Classroom.class))).thenReturn(classroom);
 
-//    @Test
-//    public void createModuleAndClassroom_Test() {
-//        ModuleClassroomDTO moduleClassroomDTO = new ModuleClassroomDTO();
-//        ModuleClassroomDTO.ModuleDTO moduleDTO = Mockito.mock(ModuleClassroomDTO.ModuleDTO.class);
-//        moduleClassroomDTO.setModule(moduleDTO);
-//        moduleClassroomDTO.setClassroom(Mockito.mock(ModuleClassroomDTO.Classroom.class));
-//        moduleClassroomDTO.setModuleRequestId(1);
-//
-//        when(moduleCategoryRepository.findByName(Mockito.any())).thenReturn(Mockito.mock(ModuleCategory.class));
-//
-//        Optional<ModuleRequest> moduleRequestOptional = Optional.of(Mockito.mock(ModuleRequest.class));
-//        when(moduleRequestRepository.findById(Mockito.anyInt())).thenReturn(moduleRequestOptional);
-//
-////        Module m = Mockito.mock(Module.class, RETURNS_DEEP_STUBS);
-////        when(Module.builder()).thenReturn(Module.builder());
-////        when(Module.builder().build()).thenReturn(Mockito.mock(Module.class));
-//
-//        List classroomSessions = new ArrayList();
-//        classroomSessions.add(
-//                ClassroomSession.builder()
-//                        .isExam(true)
-//                        .build()
-//        );
-//        Module module = Module.builder().totalSession(1).hasExam(true).build();
-//        moduleClassroomDTO.getClassroom().setClassroomSessions(classroomSessions);
-//        moduleClassroomDTO.getClassroom().setTrainerEmail("trainer@gmail.com");
-////        classroomDTO.setClassroomSessions(classroomSessions);
-//
-//        when(moduleRepository.save(Mockito.any(Module.class))).thenReturn(module);
-//        when(classroomSessionRepository.saveAll(Mockito.anyIterable())).thenReturn(Mockito.mock(List.class));
-//        when(moduleRequestRepository.save(Mockito.any(ModuleRequest.class))).thenReturn(null);
-////        when(userRepository.findByEmail("trainer@gmail.com")).thenReturn(Mockito.mock(User.class));
-////
-//        Classroom classroom = new Classroom();
-//        when(classroomRepository.save(Mockito.any(Classroom.class))).thenReturn(classroom);
-//
-//        Assert.assertEquals(
-//                classroomService.createModuleAndClassroom(moduleClassroomDTO), classroom);
-//    }
+
+        Assert.assertEquals(
+                classroomService.createModuleAndClassroom(moduleClassroomDTO), classroom);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void join_WhenClassroomResultOptionalIsNotPresent_Test() {
+        when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
+        when(classroomRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(Mockito.mock(Classroom.class)));
+
+        when(classroomResultRepository.findByUserIdAndClassroomId(Mockito.anyInt(), Mockito.anyInt()))
+                .thenReturn(Optional.of(Mockito.mock(ClassroomResult.class)));
+
+        classroomService.join(1);
+    }
 
 
 
