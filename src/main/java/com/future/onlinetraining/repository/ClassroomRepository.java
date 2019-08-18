@@ -75,4 +75,24 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
     )
     Page<Classroom> getRequestedUserClassroom(
             Pageable pageable, @Param("id") int id, @Param("name") String name, @Param("status") String status);
+
+    @Query(
+            value = "from Classroom c " +
+                    "inner join c.classroomSessions cs " +
+                    "inner join c.trainer t " +
+                    "inner join c.module m " +
+                    "where (:id is null or t.id = :id ) " +
+                    "and (c.hasFinished = false and (max(cs.timeStart) + m.timePerSession) < :timestamp)"
+    )
+    Page<Classroom> getNotMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id, @Param("timestamp") int timestamp);
+
+    @Query(
+            value = "from Classroom c " +
+                    "inner join c.classroomSessions cs " +
+                    "inner join c.trainer t " +
+                    "inner join c.module m " +
+                    "where (:id is null or t.id = :id ) " +
+                    "and c.hasFinished = true "
+    )
+    Page<Classroom> getMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id);
 }

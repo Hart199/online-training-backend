@@ -228,6 +228,24 @@ public class ClassroomController<T> {
     }
 
     /**
+     * Get classroom history
+     * @param page
+     * @param size
+     * @param marked
+     * @return
+     */
+    @GetMapping("/_trainer/classrooms/_history")
+    public ResponseEntity getTrainerHistory(@RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "size", defaultValue = "5") int size,
+                                     @RequestParam(value = "marked", defaultValue = "false") boolean marked) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        return new ResponseHelper<>()
+                .setParam("data", classroomService.getClassroomHistory(pageable, marked))
+                .send();
+    }
+
+    /**
      * Edit trainee score
      * @param setScoreDTO
      * @return

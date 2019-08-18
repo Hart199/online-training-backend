@@ -310,6 +310,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         Classroom classroom = classroomOptional.get();
         classroom.setMinScore(setScoreDTO.getMinScore());
         classroom.setStatus(ClassroomStatus.CLOSED.getStatus());
+        classroom.setHasFinished(true);
         classroomRepository.save(classroom);
 
         List<ClassroomResult> classroomResultList = new ArrayList<>();
@@ -330,5 +331,28 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public List<ClassroomResult> getClassroomResultsByClassroomId(int id) {
         return classroomResultRepository.findAllByClassroomId(id);
+    }
+
+    public Page<Classroom> getTrainerHistory(Pageable pageable, boolean marked) {
+        User user = userService.getUserFromSession();
+        int userId = user.getRole().getValue().toLowerCase().equals("ADMIN") ? null : user.getId();
+        if (!marked) {
+            int time = (int) new Date().getTime();
+            Timestamp timestamp = new Timestamp(time);
+            Page<Classroom> classroomPage = classroomRepository
+                    .getNotMarkedTrainerClassroomHistory(pageable, userId, time);
+            classroomPage.forEach(classroom -> {
+                List<ClassroomSession> classroomSession = classroom.getClassroomSessions();
+                if (!classroomSession.isEmpty()) {
+                    int endTime = (int) classroomSession.get(classroomSession.size()-1).getStartTime().getTime()
+                            + classroom.getModule().getTimePerSession();
+                    Timestamp endTimestamp = new Timestamp(endTime);
+                    if (endTimestamp.before(timestamp))
+                        classroom.setStatus(ClassroomStatus.CLOSED.getStatus());
+                }
+            });
+            return  classroomPage;
+        }
+        return classroomRepository.getMarkedTrainerClassroomHistory(pageable, userId);
     }
 }

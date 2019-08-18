@@ -67,4 +67,6 @@ public class Classroom {
 
     private String status;
 
+    private boolean hasFinished = false;
+
 }
