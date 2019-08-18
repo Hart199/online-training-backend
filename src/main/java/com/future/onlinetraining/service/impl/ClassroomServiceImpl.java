@@ -86,11 +86,19 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         classroomDataPage.forEach(classroomData -> {
             Optional<Classroom> classroom = classroomRepository.findById(classroomData.getId());
 
-            if (classroom.get().getClassroomSessions().size() > 0) {
-                Timestamp startTime = classroom.get().getClassroomSessions().get(0).getStartTime();
+            int sessionSize = classroom.get().getClassroomSessions().size();
+            if (sessionSize > 0) {
+                Timestamp startTimestamp = classroom.get().getClassroomSessions().get(0).getStartTime();
 
-                if (startTime.after(timestamp) && !classroomData.getStatus().equals(ClassroomStatus.CLOSED.getStatus()))
+                int endTime = (int) classroom.get().getClassroomSessions().get(sessionSize - 1).getStartTime().getTime()
+                        + classroom.get().getModule().getTimePerSession();
+                Timestamp endTimestamp = new Timestamp(endTime);
+
+                if (startTimestamp.after(timestamp) && !classroomData.getStatus().equals(ClassroomStatus.CLOSED.getStatus()))
                     classroomData.setStatus(ClassroomStatus.ONGOING.getStatus());
+
+                if (endTimestamp.before(timestamp))
+                    classroomData.setStatus(ClassroomStatus.CLOSED.getStatus());
             }
         });
 
