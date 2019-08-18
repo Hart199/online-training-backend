@@ -14,8 +14,10 @@ import com.future.onlinetraining.service.FileHandlerService;
 import com.future.onlinetraining.entity.User;
 import com.future.onlinetraining.repository.UserRepository;
 import com.future.onlinetraining.service.UserService;
+import com.future.onlinetraining.utility.TimeHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,8 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     UserService userService;
     @Autowired
     ClassroomRequestService classroomRequestService;
+    @Autowired
+    TimeHelper timeHelper;
 
     @Override
     public Page<Classroom> getAllPageableClassroom() {
@@ -66,16 +70,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     }
 
     public Page<Classroom> getAll(Pageable pageable) {
-        Timestamp timestamp = new Timestamp(new Date().getTime());
         Page<Classroom> classroomPage = classroomRepository.findAll(pageable);
-        classroomPage.forEach(classroom -> {
-            if (classroom.getClassroomSessions().size() > 0) {
-                Timestamp startTime = classroom.getClassroomSessions().get(0).getStartTime();
-                if (startTime.after(timestamp) && !classroom.getStatus().equals(ClassroomStatus.CLOSED.getStatus()))
-                    classroom.setStatus(ClassroomStatus.ONGOING.getStatus());
-            }
-        });
-
         return classroomPage;
     }
 
@@ -85,21 +80,12 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
         classroomDataPage.forEach(classroomData -> {
             Optional<Classroom> classroom = classroomRepository.findById(classroomData.getId());
+            List<ClassroomSession> classroomSessionList = classroom.get().getClassroomSessions();
+            if (timeHelper.isClassroomSessionHasStarted(classroomSessionList))
+                classroomData.setStatus(ClassroomStatus.ONGOING.getStatus());
 
-            int sessionSize = classroom.get().getClassroomSessions().size();
-            if (sessionSize > 0) {
-                Timestamp startTimestamp = classroom.get().getClassroomSessions().get(0).getStartTime();
-
-                long endTime = classroom.get().getClassroomSessions().get(sessionSize - 1).getStartTime().getTime()
-                        + (long) (classroom.get().getModule().getTimePerSession() * 60);
-                Timestamp endTimestamp = new Timestamp(endTime);
-
-                if (startTimestamp.after(timestamp) && !classroomData.getStatus().equals(ClassroomStatus.CLOSED.getStatus()))
-                    classroomData.setStatus(ClassroomStatus.ONGOING.getStatus());
-
-                if (endTimestamp.before(timestamp))
-                    classroomData.setStatus(ClassroomStatus.CLOSED.getStatus());
-            }
+            if (timeHelper.isClassroomSessionHasEnded(classroomSessionList, classroom.get().getModule().getTimePerSession()))
+                classroomData.setStatus(ClassroomStatus.CLOSED.getStatus());
         });
 
         return classroomDataPage;
@@ -215,19 +201,12 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
             throw new RuntimeException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
 
         List<ClassroomSession> classroomSessions = classroom.getClassroom().getClassroomSessions();
-        if (!classroomSessions.isEmpty()) {
-            Timestamp timestamp = new Timestamp(new Date().getTime());
-            Timestamp startTimestamp = classroomSessions.get(0).getStartTime();
-            long endTime = classroomSessions.get(classroomSessions.size() - 1).getStartTime().getTime()
-                    + (classroom.getClassroom().getModule().getTimePerSession() * 60);
-            Timestamp endTimeStamp = new Timestamp(endTime);
 
-            if (startTimestamp.before(timestamp))
-                classroom.getClassroom().setStatus(ClassroomStatus.ONGOING.getStatus());
+        if (timeHelper.isClassroomSessionHasStarted(classroomSessions))
+            classroom.getClassroom().setStatus(ClassroomStatus.ONGOING.getStatus());
 
-            if (endTimeStamp.before(timestamp))
-                classroom.getClassroom().setStatus(ClassroomStatus.CLOSED.getStatus());
-        }
+        if (timeHelper.isClassroomSessionHasEnded(classroomSessions, classroom.getClassroom().getModule().getTimePerSession()))
+            classroom.getClassroom().setStatus(ClassroomStatus.CLOSED.getStatus());
 
         return classroom;
     }
@@ -359,21 +338,18 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         User user = userService.getUserFromSession();
         int userId = user.getRole().getValue().toLowerCase().equals("ADMIN") ? null : user.getId();
         if (!marked) {
-            int time = (int) new Date().getTime();
-            Timestamp timestamp = new Timestamp(time);
-            Page<Classroom> classroomPage = classroomRepository
-                    .getNotMarkedTrainerClassroomHistory(pageable, userId);
-            classroomPage.forEach(classroom -> {
+            List<Classroom> classroomListNeedMarked = new ArrayList<>();
+            List<Classroom> classrooms = classroomRepository
+                    .getNotMarkedTrainerClassroomHistory(userId);
+            classrooms.forEach(classroom -> {
                 List<ClassroomSession> classroomSession = classroom.getClassroomSessions();
-                if (!classroomSession.isEmpty()) {
-                    int endTime = (int) classroomSession.get(classroomSession.size()-1).getStartTime().getTime()
-                            + (classroom.getModule().getTimePerSession() * 60);
-                    Timestamp endTimestamp = new Timestamp(endTime);
-                    if (endTimestamp.before(timestamp))
-                        classroom.setStatus(ClassroomStatus.CLOSED.getStatus());
+                if (timeHelper.isClassroomSessionHasEnded(classroomSession, classroom.getModule().getTimePerSession())) {
+                    classroom.setStatus(ClassroomStatus.CLOSED.getStatus());
+                    classroomListNeedMarked.add(classroom);
                 }
             });
-            return  classroomPage;
+            Page<Classroom> classroomPage = new PageImpl<>(classroomListNeedMarked, pageable, classroomListNeedMarked.size());
+            return classroomPage;
         }
         return classroomRepository.getMarkedTrainerClassroomHistory(pageable, userId);
     }
