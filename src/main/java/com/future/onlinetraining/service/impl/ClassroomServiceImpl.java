@@ -295,10 +295,9 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public Page<ClassroomResult> getClassroomHistory(Pageable pageable, boolean passed) {
         User user = userService.getUserFromSession();
-        Integer userId = user.getRole().getValue().equals("ADMIN") ? null : user.getId();
         if (passed)
-            return classroomResultRepository.getPassed(pageable, userId);
-        return classroomResultRepository.getNotPassed(pageable, userId);
+            return classroomResultRepository.getPassed(pageable, user.getId());
+        return classroomResultRepository.getNotPassed(pageable, user.getId());
     }
 
     @Transactional

@@ -20,7 +20,7 @@ public interface ClassroomResultRepository extends JpaRepository<ClassroomResult
     @Query(
             value = "from ClassroomResult crs " +
             "inner join crs.classroom c inner join crs.user u " +
-            "inner join c.module m where (:userId is null or u.id = :userId) " +
+            "inner join c.module m where u.id = :userId " +
             "and crs.status = 'finished' and crs.score >= c.minScore " +
             "or m.hasExam = false "
     )
@@ -30,8 +30,8 @@ public interface ClassroomResultRepository extends JpaRepository<ClassroomResult
     @Query(
             value = "from ClassroomResult crs " +
                     "inner join crs.classroom c inner join crs.user u " +
-                    "where (:userId is null or u.id = :userId) " +
-                    "and crs.status = 'finished' and crs.score < c.minScore "
+                    "where u.id = :userId and crs.status = 'finished' " +
+                    "and crs.score < c.minScore "
     )
     Page<ClassroomResult> getNotPassed(
             Pageable pageable, @Param("userId") Integer userId);
