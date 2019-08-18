@@ -30,7 +30,7 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
     @Query(
             value = "select new com.future.onlinetraining.entity.projection.ClassroomData(" +
                     "c.id, c.name, m.name, t.fullname, c.status, c.min_member, c.max_member, " +
-                    "(select count(cres) from cres), (select count(cr) from cr), " +
+                    "count(cres), count(cr), " +
                     "case when avg(mrg.value) is null then 0.0 else avg(mrg.value) end, m.version ) " +
                     "from Classroom c inner join c.module m inner join m.moduleCategory mc " +
                     "inner join c.trainer t left join c.classroomRequests cr " +
