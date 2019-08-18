@@ -82,7 +82,7 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
                     "inner join c.trainer t " +
                     "inner join c.module m " +
                     "where (:id is null or t.id = :id ) " +
-                    "and (c.hasFinished = false and (max(cs.timeStart) + m.timePerSession) < :timestamp)"
+                    "and (c.hasFinished = false and (max(cs.startTime) + m.timePerSession) < :timestamp)"
     )
     Page<Classroom> getNotMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id, @Param("timestamp") int timestamp);
 

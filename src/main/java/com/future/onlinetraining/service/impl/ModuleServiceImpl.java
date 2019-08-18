@@ -59,7 +59,7 @@ public class ModuleServiceImpl implements ModuleService {
         return moduleRatingRepository.save(moduleRating);
     }
 
-    public Page<GetAllModuleData> getAllBySearchTerm(
+    public Page<Module> getAllBySearchTerm(
             Pageable pageable, String name, String category, Boolean hasExam) {
         return moduleRepository.getAllBySearhTerm(pageable, name, category, hasExam);
     }

@@ -16,7 +16,7 @@ public interface ModuleService {
 
     Page<ModuleRating> getRatings(int id, Pageable pageable);
     ModuleRating addRating(int id, RatingDTO ratingDTO);
-    Page<GetAllModuleData> getAllBySearchTerm(
+    Page<Module> getAllBySearchTerm(
             Pageable pageable, String name,
             String category, Boolean hasExam);
     Page<ModuleCategory> getAllModuleCategory(Pageable pageable);
