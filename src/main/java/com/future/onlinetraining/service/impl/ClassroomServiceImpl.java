@@ -292,7 +292,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
             ClassroomResult classroomResult = classroomResultOptional.get();
             classroomResult.setScore(classroomResultDTO.getScore());
-            classroomResult.setStatus("finished");
+            classroomResult.setStatus("done");
             classroomResultList.add(classroomResult);
         }
 
