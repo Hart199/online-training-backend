@@ -305,7 +305,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public Page<Classroom> getTrainerHistory(Pageable pageable, boolean marked) {
         User user = userService.getUserFromSession();
-        int userId = user.getRole().getValue().toLowerCase().equals("ADMIN") ? null : user.getId();
+        Integer userId = user.getRole().getValue().toLowerCase().equals("ADMIN") ? null : user.getId();
         if (!marked) {
             return classroomRepository.getNotMarkedTrainerClassroomHistory(pageable, userId);
         }
