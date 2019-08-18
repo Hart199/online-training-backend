@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
                 user.getPhoto(), hashedFilename + "_" + multipartFile.getOriginalFilename(), multipartFile);
         user.setPhoto(file);
 
-        return user;
+        return userRepository.save(user);
     }
 
     public ResponseEntity unauthenticated(){
