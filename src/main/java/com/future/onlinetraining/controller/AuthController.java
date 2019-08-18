@@ -44,7 +44,7 @@ public class AuthController {
      * redirect if unauthenticated
      * @return
      */
-    @GetMapping("/unauthenticated")
+    @GetMapping("/auth")
     public ResponseEntity unauthenticated(){
         return new ResponseHelper<>()
                 .setSuccessStatus(false)
