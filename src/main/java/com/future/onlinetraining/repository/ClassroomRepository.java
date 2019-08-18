@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
@@ -78,20 +79,14 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
 
     @Query(
             value = "from Classroom c " +
-                    "inner join c.classroomSessions cs " +
-                    "inner join c.trainer t " +
-                    "inner join c.module m " +
-                    "where (:id is null or t.id = :id ) " +
-                    "and (c.hasFinished = false and (max(cs.startTime) + m.timePerSession) < :timestamp)"
+                    "where (:id is null or c.trainer.id = :id ) " +
+                    "and c.status in ('ongoing', 'closed')"
     )
-    Page<Classroom> getNotMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id, @Param("timestamp") int timestamp);
+    Page<Classroom> getNotMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id);
 
     @Query(
             value = "from Classroom c " +
-                    "inner join c.classroomSessions cs " +
-                    "inner join c.trainer t " +
-                    "inner join c.module m " +
-                    "where (:id is null or t.id = :id ) " +
+                    "where (:id is null or c.trainer.id = :id ) " +
                     "and c.hasFinished = true "
     )
     Page<Classroom> getMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id);

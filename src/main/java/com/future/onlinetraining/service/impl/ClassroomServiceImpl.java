@@ -91,7 +91,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                 Timestamp startTimestamp = classroom.get().getClassroomSessions().get(0).getStartTime();
 
                 int endTime = (int) classroom.get().getClassroomSessions().get(sessionSize - 1).getStartTime().getTime()
-                        + classroom.get().getModule().getTimePerSession();
+                        + (classroom.get().getModule().getTimePerSession() * 60);
                 Timestamp endTimestamp = new Timestamp(endTime);
 
                 if (startTimestamp.after(timestamp) && !classroomData.getStatus().equals(ClassroomStatus.CLOSED.getStatus()))
@@ -348,12 +348,12 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
             int time = (int) new Date().getTime();
             Timestamp timestamp = new Timestamp(time);
             Page<Classroom> classroomPage = classroomRepository
-                    .getNotMarkedTrainerClassroomHistory(pageable, userId, time);
+                    .getNotMarkedTrainerClassroomHistory(pageable, userId);
             classroomPage.forEach(classroom -> {
                 List<ClassroomSession> classroomSession = classroom.getClassroomSessions();
                 if (!classroomSession.isEmpty()) {
                     int endTime = (int) classroomSession.get(classroomSession.size()-1).getStartTime().getTime()
-                            + classroom.getModule().getTimePerSession();
+                            + (classroom.getModule().getTimePerSession() * 60);
                     Timestamp endTimestamp = new Timestamp(endTime);
                     if (endTimestamp.before(timestamp))
                         classroom.setStatus(ClassroomStatus.CLOSED.getStatus());
