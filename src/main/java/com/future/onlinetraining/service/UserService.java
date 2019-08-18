@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService  extends UserDetailsService {
     User createOrUpdate(User user);
@@ -18,4 +19,5 @@ public interface UserService  extends UserDetailsService {
     User changePassword(ChangePasswordDTO changePasswordDTO);
     User profile();
     User edit(Integer id, UserDTO userDTO);
+    User editPhoto(MultipartFile multipartFile);
 }

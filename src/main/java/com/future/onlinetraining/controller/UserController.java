@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Arrays;
@@ -93,4 +94,10 @@ public class UserController {
                 .send();
     }
 
+    @PutMapping("/users/_profile/_photo")
+    public ResponseEntity editPhoto(MultipartFile multipartFile) {
+        return new ResponseHelper<>()
+                .setParam("data", userService.editPhoto(multipartFile))
+                .send();
+    }
 }

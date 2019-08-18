@@ -7,6 +7,7 @@ import com.future.onlinetraining.entity.User;
 import com.future.onlinetraining.entity.enumerator.ErrorEnum;
 import com.future.onlinetraining.repository.RoleRepository;
 import com.future.onlinetraining.repository.UserRepository;
+import com.future.onlinetraining.service.FileHandlerService;
 import com.future.onlinetraining.service.UserService;
 import com.future.onlinetraining.utility.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -31,6 +34,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    FileHandlerService fileHandlerService;
 
     @Autowired
     BCryptPasswordEncoder encoder;
@@ -134,6 +139,20 @@ public class UserServiceImpl implements UserService {
         user.setPhone(userDTO.getPhone());
 
         return userRepository.save(user);
+    }
+
+    public User editPhoto(MultipartFile multipartFile) {
+        User user = getUserFromSession();
+
+        fileHandlerService.setDirPath("photos/");
+        String hashedFilename = DigestUtils.md5DigestAsHex(
+                (user.getEmail()).getBytes());
+
+        String file = fileHandlerService.update(
+                user.getPhoto(), hashedFilename + "_" + multipartFile.getOriginalFilename(), multipartFile);
+        user.setPhoto(file);
+
+        return user;
     }
 
     public ResponseEntity unauthenticated(){

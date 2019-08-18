@@ -9,4 +9,5 @@ public interface FileHandlerService {
     String store (String filename, MultipartFile multipartFile);
     String update(String oldFilename, String newFilename, MultipartFile multipartFile);
     boolean delete(String filename);
+    void setDirPath(String dirPath);
 }
