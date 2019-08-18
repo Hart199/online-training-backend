@@ -241,7 +241,7 @@ public class ClassroomController<T> {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
         return new ResponseHelper<>()
-                .setParam("data", classroomService.getClassroomHistory(pageable, marked))
+                .setParam("data", classroomService.getTrainerHistory(pageable, marked))
                 .send();
     }
 
