@@ -15,8 +15,15 @@ public class FileHandlerServiceImpl implements FileHandlerService {
     @Value("${filePath}")
     private String uploadDir;
 
+    private String dirPath = "";
+
     public String store (String filename, MultipartFile multipartFile) {
-        File file = new File(uploadDir + filename);
+        if (!dirPath.equals("")) {
+            File dir = new File(uploadDir + dirPath);
+            if (!dir.exists())
+                dir.mkdirs();
+        }
+        File file = new File(uploadDir + dirPath + filename);
         try {
             multipartFile.transferTo(file);
         } catch (Exception e) {
@@ -28,9 +35,9 @@ public class FileHandlerServiceImpl implements FileHandlerService {
 
     public String update(
             String oldFilename, String newFilename, MultipartFile multipartFile) {
-        File file = new File(uploadDir + oldFilename);
+        File file = new File(uploadDir + dirPath + oldFilename);
         if (file.delete()) {
-            file = new File(uploadDir + newFilename);
+            file = new File(uploadDir + dirPath + newFilename);
             try {
                 multipartFile.transferTo(file);
                 return newFilename;
@@ -42,7 +49,7 @@ public class FileHandlerServiceImpl implements FileHandlerService {
     }
 
     public boolean delete(String filename) {
-        File file = new File(uploadDir + filename);
+        File file = new File(uploadDir + dirPath + filename);
         return file.delete();
     }
 }
