@@ -53,10 +53,10 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
     ClassroomDetailData getDetail(@Param("id") Integer id);
 
     @Query(
-            value = "from Classroom c where c.trainer.id = :id " +
+            value = "from Classroom c where (:id is null or c.trainer.id = :id) " +
                     "and (:status is null or c.status = :status) "
     )
-    Page<Classroom> getTrainerClassrooms(Pageable pageable, @Param("id") int id, @Param("status") String status);
+    Page<Classroom> getTrainerClassrooms(Pageable pageable, @Param("id") Integer id, @Param("status") String status);
 
     @Query(
             value = "from Classroom c " +

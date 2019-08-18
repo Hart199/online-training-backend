@@ -289,7 +289,8 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public Page<Classroom> getTrainerClassrooms(Pageable pageable, String status) {
         User user = userService.getUserFromSession();
-        Page<Classroom> trainerClassrooms = classroomRepository.getTrainerClassrooms(pageable, user.getId(), status);
+        Integer userId = user.getRole().getValue().equals("ADMIN") ? null : user.getId();
+        Page<Classroom> trainerClassrooms = classroomRepository.getTrainerClassrooms(pageable, userId, status);
         return trainerClassrooms;
     }
 
