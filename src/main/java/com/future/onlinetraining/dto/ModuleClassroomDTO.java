@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -39,6 +40,7 @@ public class ModuleClassroomDTO {
         @Size(min = 6, max = 32)
         String trainerEmail;
 
+        @Valid
         List<ClassroomSession> classroomSessions;
     }
 
@@ -53,8 +55,7 @@ public class ModuleClassroomDTO {
         @NotEmpty
         @Size(min = 6, max = 32)
         String description;
-
-        @NotEmpty
+        
         @Min(30)
         int timePerSession;
 
@@ -73,7 +74,9 @@ public class ModuleClassroomDTO {
         boolean hasExam;
     }
 
+    @Valid
     Classroom classroom;
+    @Valid
     ModuleDTO module;
     Integer moduleRequestId;
 }
