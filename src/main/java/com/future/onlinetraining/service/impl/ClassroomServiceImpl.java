@@ -95,8 +95,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
         verifyClassroomSessionOnModule(module.get(), classroomDTO.getClassroomSessions());
 
-        List<ClassroomSession> classroomSessions = classroomSessionRepository.saveAll(classroomDTO.getClassroomSessions());
-
         Classroom classroom = Classroom
                 .builder()
                 .name(classroomDTO.getName())
@@ -104,11 +102,16 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
                 .module(module.get())
                 .min_member(classroomDTO.getMinMember())
                 .max_member(classroomDTO.getMaxMember())
-                .classroomSessions(classroomSessions)
                 .trainer(user)
                 .build();
 
         classroom = classroomRepository.save(classroom);
+
+        for (ClassroomSession classroomSession : classroomDTO.getClassroomSessions()) {
+            classroomSession.setClassroom(classroom);
+        }
+        List<ClassroomSession> classroomSessions = classroomSessionRepository.saveAll(classroomDTO.getClassroomSessions());
+        classroom.setClassroomSessions(classroomSessions);
 
         if (classroomDTO.getRefClassroomId() != null) {
             classroomRequestRepository.deleteAllByClassroomId(classroomDTO.getRefClassroomId());
