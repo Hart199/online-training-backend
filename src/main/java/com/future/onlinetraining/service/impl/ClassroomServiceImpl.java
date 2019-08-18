@@ -76,17 +76,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public Page<ClassroomData> all(String name, Boolean hasExam, Pageable pageable) {
         Page<ClassroomData> classroomDataPage = classroomRepository.all(pageable, name, hasExam);
-
-        classroomDataPage.forEach(classroomData -> {
-            Optional<Classroom> classroom = classroomRepository.findById(classroomData.getId());
-            List<ClassroomSession> classroomSessionList = classroom.get().getClassroomSessions();
-            if (timeHelper.isClassroomSessionHasStarted(classroomSessionList))
-                classroomData.setStatus(ClassroomStatus.ONGOING.getStatus());
-
-            if (timeHelper.isClassroomSessionHasEnded(classroomSessionList, classroom.get().getModule().getTimePerSession()))
-                classroomData.setStatus(ClassroomStatus.CLOSED.getStatus());
-        });
-
         return classroomDataPage;
     }
 
@@ -199,14 +188,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         if (classroom == null)
             throw new RuntimeException(ErrorEnum.CLASSROOM_NOT_FOUND.getMessage());
 
-        List<ClassroomSession> classroomSessions = classroom.getClassroom().getClassroomSessions();
-
-        if (timeHelper.isClassroomSessionHasStarted(classroomSessions))
-            classroom.getClassroom().setStatus(ClassroomStatus.ONGOING.getStatus());
-
-        if (timeHelper.isClassroomSessionHasEnded(classroomSessions, classroom.getClassroom().getModule().getTimePerSession()))
-            classroom.getClassroom().setStatus(ClassroomStatus.CLOSED.getStatus());
-
         return classroom;
     }
 
@@ -289,26 +270,10 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
 
     public Page<Classroom> getTrainerClassrooms(Pageable pageable, String status) {
         User user = userService.getUserFromSession();
-        List<Classroom> newClassroomList = new ArrayList<>();
-        List<Classroom> classroomList = classroomRepository.getAllTrainerClassrooms(user.getId());
         if (status.toLowerCase().equals("available")) {
-            classroomList.forEach(classroom -> {
-                if (!timeHelper.isClassroomSessionHasEnded(classroom.getClassroomSessions(), classroom.getModule().getTimePerSession()))
-                    if(timeHelper.isClassroomSessionHasStarted(classroom.getClassroomSessions()))
-                        classroom.setStatus(ClassroomStatus.ONGOING.getStatus());
-                    newClassroomList.add(classroom);
-            });
-        } else {
-            classroomList.forEach(classroom -> {
-                if(timeHelper.isClassroomSessionHasEnded(classroom.getClassroomSessions(), classroom.getModule().getTimePerSession())) {
-                    classroom.setStatus(ClassroomStatus.CLOSED.getStatus());
-                    newClassroomList.add(classroom);
-                }
-            });
+            return classroomRepository.getAvailableTrainerClassrooms(pageable, user.getId());
         }
-
-        Page<Classroom> classroomPage = new PageImpl<>(newClassroomList, pageable, newClassroomList.size());
-        return classroomPage;
+        return classroomRepository.getTrainerClassrooms(pageable, user.getId(), status);
     }
 
     public Page<ClassroomResult> getClassroomHistory(Pageable pageable, boolean passed) {
@@ -354,18 +319,7 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
         User user = userService.getUserFromSession();
         int userId = user.getRole().getValue().toLowerCase().equals("ADMIN") ? null : user.getId();
         if (!marked) {
-            List<Classroom> classroomListNeedMarked = new ArrayList<>();
-            List<Classroom> classrooms = classroomRepository
-                    .getNotMarkedTrainerClassroomHistory(userId);
-            classrooms.forEach(classroom -> {
-                List<ClassroomSession> classroomSession = classroom.getClassroomSessions();
-                if (timeHelper.isClassroomSessionHasEnded(classroomSession, classroom.getModule().getTimePerSession())) {
-                    classroom.setStatus(ClassroomStatus.CLOSED.getStatus());
-                    classroomListNeedMarked.add(classroom);
-                }
-            });
-            Page<Classroom> classroomPage = new PageImpl<>(classroomListNeedMarked, pageable, classroomListNeedMarked.size());
-            return classroomPage;
+            return classroomRepository.getNotMarkedTrainerClassroomHistory(pageable, userId);
         }
         return classroomRepository.getMarkedTrainerClassroomHistory(pageable, userId);
     }

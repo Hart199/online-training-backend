@@ -57,18 +57,13 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
             value = "from Classroom c where (:id is null or c.trainer.id = :id) " +
                     "and (:status is null or c.status = :status) "
     )
-    List<Classroom> getTrainerClassrooms(Pageable pageable, @Param("id") Integer id, @Param("status") String status);
-
-    @Query(
-            value = "from Classroom c where (:id is null or c.trainer.id = :id) "
-    )
-    List<Classroom> getAllTrainerClassrooms(@Param("id") Integer id);
+    Page<Classroom> getTrainerClassrooms(Pageable pageable, @Param("id") Integer id, @Param("status") String status);
 
     @Query(
             value = "from Classroom c where (:id is null or c.trainer.id = :id) " +
                     "and c.status in ('open', 'ongoing') "
     )
-    List<Classroom> getAvailableTrainerClassrooms(@Param("id") Integer id);
+    Page<Classroom> getAvailableTrainerClassrooms(Pageable pageable, @Param("id") Integer id);
 
     @Query(
             value = "from Classroom c " +
@@ -84,15 +79,21 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
 
     @Query(
             value = "from Classroom c " +
-                    "where (:id is null or c.trainer.id = :id ) " +
-                    "and c.hasFinished = false "
+                    "inner join c.classroomSessions cs " +
+                    "inner join c.trainer t " +
+                    "inner join c.module m " +
+                    "where (:id is null or t.id = :id ) " +
+                    "and c.status in ('ongoing', 'closed')"
     )
-    List<Classroom> getNotMarkedTrainerClassroomHistory(@Param("id") Integer id);
+    Page<Classroom> getNotMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id);
 
     @Query(
             value = "from Classroom c " +
-                    "where (:id is null or c.trainer.id = :id ) " +
-                    "and (c.hasFinished = true or c.module.hasExam = false) "
+                    "inner join c.classroomSessions cs " +
+                    "inner join c.trainer t " +
+                    "inner join c.module m " +
+                    "where (:id is null or t.id = :id ) " +
+                    "and c.hasFinished = true "
     )
-    Page<Classroom> getMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") Integer id);
+    Page<Classroom> getMarkedTrainerClassroomHistory(Pageable pageable, @Param("id") int id);
 }
