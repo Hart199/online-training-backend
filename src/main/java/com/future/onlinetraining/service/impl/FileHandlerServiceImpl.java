@@ -16,6 +16,9 @@ public class FileHandlerServiceImpl implements FileHandlerService {
     private String uploadDir;
 
     private String dirPath = "";
+    public void setDirPath(String dirPath) {
+        this.dirPath = dirPath;
+    }
 
     public String store (String filename, MultipartFile multipartFile) {
         if (!dirPath.equals("")) {
