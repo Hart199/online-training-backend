@@ -59,6 +59,12 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
     Page<Classroom> getTrainerClassrooms(Pageable pageable, @Param("id") Integer id, @Param("status") String status);
 
     @Query(
+            value = "from Classroom c where (:id is null or c.trainer.id = :id) " +
+                    "and c.status in ('open', 'ongoing') "
+    )
+    Page<Classroom> getAvailableTrainerClassrooms(Pageable pageable, @Param("id") Integer id);
+
+    @Query(
             value = "from Classroom c " +
                     "inner join c.classroomRequests cr " +
                     "inner join cr.user u " +
