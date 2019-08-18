@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -64,7 +65,9 @@ public class ModuleController {
         if (!popular)
             pageable = PageRequest.of(page, size);
         else
-            pageable = PageRequest.of(page, size, Sort.by("rating").descending());
+            pageable = PageRequest.of(page, size);
+//            pageable = PageRequest.of(page, size, Sort.by("moduleRatings.value").descending());
+//            pageable = PageRequest.of(page, size, JpaSort.unsafe(Sort.Direction.DESC, "m.moduleRatings.value)"));
 
         return new ResponseHelper<>()
                 .setSuccessStatus(true)

@@ -27,11 +27,10 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
 //                    "group by m, mc, c"
 //    )
     @Query(
-            value = "from Module m left join m.moduleRatings mr inner join m.classrooms c " +
-                    "left join c.classroomSessions cs inner join m.moduleCategory mc " +
+            value = "from Module m " +
                     "where (:nameParam is null or lower(m.name) like :nameParam%) " +
-                    "and (:categoryParam is null or mc.name = :categoryParam ) " +
-                    "and (:hasExam is null or m.hasExam = :hasExam) "
+                    "and (:categoryParam is null or m.moduleCategory.name = :categoryParam ) " +
+                    "and (:hasExam is null or m.hasExam = :hasExam)"
     )
     Page<Module> getAllBySearhTerm(
             Pageable pageable, @Param("nameParam") String name,
