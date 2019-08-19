@@ -1,8 +1,6 @@
 package com.future.onlinetraining.service;
 
-import com.future.onlinetraining.dto.ClassroomDTO;
-import com.future.onlinetraining.dto.ClassroomDetailDTO;
-import com.future.onlinetraining.dto.ModuleClassroomDTO;
+import com.future.onlinetraining.dto.*;
 import com.future.onlinetraining.entity.*;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomDetailData;
@@ -21,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.constraints.Null;
@@ -56,6 +55,10 @@ public class ClassroomServiceTest {
     private ModuleCategoryRepository moduleCategoryRepository;
     @MockBean
     private ClassroomResultRepository classroomResultRepository;
+    @MockBean
+    private ClassroomRequestService classroomRequestService;
+    @MockBean
+    private ClassroomMaterialRepository classroomMaterialRepository;
     @Spy
     private ClassroomRequestRepository classroomRequestRepository;
 //
@@ -369,7 +372,8 @@ public class ClassroomServiceTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void join_WhenClassroomResultOptionalIsNotPresent_Test() {
+    public void join_WhenClassroomResultOptionalNotEmpty_Test() {
+
         when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
         when(classroomRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(Mockito.mock(Classroom.class)));
 
@@ -379,7 +383,158 @@ public class ClassroomServiceTest {
         classroomService.join(1);
     }
 
+    @Test
+    public void join_WhenClassroomResultMoreThanMaxMember_Test() {
+        List<ClassroomResult> classroomResultList = new ArrayList<>();
+        classroomResultList.add(ClassroomResult.builder().build());
+        Classroom classroom = Classroom
+                .builder()
+                .classroomResults(classroomResultList)
+                .max_member(1)
+                .build();
 
+        when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
+        when(classroomRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(Mockito.mock(Classroom.class)));
+
+        when(classroomResultRepository.findByUserIdAndClassroomId(Mockito.anyInt(), Mockito.anyInt()))
+                .thenReturn(Optional.empty());
+
+        when(classroomRequestService.request(Mockito.any(ClassroomRequestDTO.class)))
+                .thenReturn(null);
+
+        Assert.assertEquals(classroomService.join(1), null);
+    }
+
+    @Test
+    public void join_Test() {
+        List<ClassroomResult> classroomResultList = new ArrayList<>();
+        Classroom classroom = Classroom
+                .builder()
+                .classroomResults(classroomResultList)
+                .max_member(1)
+                .build();
+
+        when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
+        when(classroomRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(classroom));
+
+        when(classroomResultRepository.findByUserIdAndClassroomId(Mockito.anyInt(), Mockito.anyInt()))
+                .thenReturn(Optional.empty());
+
+        when(classroomResultRepository.save(Mockito.any(ClassroomResult.class)))
+                .thenReturn(null);
+
+        Assert.assertEquals(classroomService.join(1), null);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void delete_whenClassroomIsNull_Test() {
+        when(classroomRepository.find(Mockito.anyInt())).thenReturn(null);
+        classroomService.delete(1);
+    }
+
+    @Test
+    public void delete_Test() {
+        when(classroomRepository.find(Mockito.anyInt())).thenReturn(Mockito.mock(Classroom.class));
+        doNothing().when(classroomRepository).deleteById(Mockito.anyInt());
+        Assert.assertEquals(classroomService.delete(1), true);
+    }
+
+    @Test
+    public void deleteMaterial_WhenClassroomMaterialIsNull_Test() {
+        when(classroomMaterialRepository.find(Mockito.anyInt()))
+                .thenReturn(null);
+        Assert.assertEquals(classroomService.deleteMaterial(1), false);
+    }
+
+    @Test
+    public void deleteMaterial_Test() {
+        when(classroomMaterialRepository.find(Mockito.anyInt()))
+                .thenReturn(Mockito.mock(ClassroomMaterial.class));
+        doNothing().when(classroomMaterialRepository).deleteById(Mockito.anyInt());
+        Assert.assertEquals(classroomService.deleteMaterial(1), true);
+    }
+
+    @Test
+    public void getTrainerClassroom_WhenStatusIsAvailable_Test() {
+        when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
+        when(classroomRepository
+                .getAvailableTrainerClassrooms(Mockito.any(PageRequest.class), Mockito.anyInt()))
+                .thenReturn(null);
+        Assert.assertEquals(classroomService
+                .getTrainerClassrooms(Mockito.mock(PageRequest.class),
+                        "available"), null);
+    }
+
+    @Test
+    public void getTrainerClassroom_WhenStatusIsNotAvailable_Test() {
+        when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
+        when(classroomRepository.getTrainerClassrooms(
+                Mockito.any(PageRequest.class), Mockito.anyInt(), Mockito.anyString()))
+                .thenReturn(null);
+        Assert.assertEquals(classroomService
+                .getTrainerClassrooms(Mockito.mock(PageRequest.class),
+                        ""), null);
+    }
+
+    @Test
+    public void getClassroomHistory_WhenPassed_Test() {
+        when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
+        when(classroomResultRepository.getPassed(Mockito.any(PageRequest.class), Mockito.anyInt()))
+                .thenReturn(null);
+        Assert.assertEquals(classroomService.getClassroomHistory(Mockito.mock(PageRequest.class), true), null);
+    }
+
+    @Test
+    public void getClassroomHistory_WhenNotPassed_Test() {
+        when(userService.getUserFromSession()).thenReturn(Mockito.mock(User.class));
+        when(classroomResultRepository.getNotPassed(Mockito.any(PageRequest.class), Mockito.anyInt()))
+                .thenReturn(null);
+        Assert.assertEquals(classroomService.getClassroomHistory(Mockito.mock(PageRequest.class), false), null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void setScore_WhenClassroomOptionalIsEmpty_Test() {
+        when(classroomRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
+        classroomService.setScore(Mockito.mock(SetScoreDTO.class));
+    }
+
+    @Test
+    public void setScore_1_Test() {
+        when(classroomRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(Mockito.mock(Classroom.class)));
+        SetScoreDTO setScoreDTO = new SetScoreDTO();
+        ArrayList<ClassroomResult> list = new ArrayList();
+        list.add(Mockito.mock(ClassroomResult.class));
+        setScoreDTO.setClassroomResultList(list);
+        when(classroomResultRepository.findById(Mockito.anyInt()))
+                .thenReturn(Optional.of(Mockito.mock(ClassroomResult.class)));
+        when(classroomResultRepository.saveAll(Mockito.anyIterable())).thenReturn(null);
+        classroomService.setScore(Mockito.mock(SetScoreDTO.class));
+        Assert.assertEquals(classroomService.setScore(setScoreDTO), null);
+    }
+
+    @Test
+    public void getClassroomResultsByClassroomId_Test() {
+        when(classroomResultRepository.findAllByClassroomId(Mockito.anyInt())).thenReturn(null);
+        Assert.assertEquals(classroomService.getClassroomResultsByClassroomId(1), null);
+    }
+
+    @Test
+    public void getTrainerHistory_WhenNotMarked_Test() {
+        User user = User.builder().role(Role.builder().value("ADMIN").build()).build();
+        when(userService.getUserFromSession()).thenReturn(user);
+        when(classroomRepository.getNotMarkedTrainerClassroomHistory(
+                Mockito.any(PageRequest.class), Mockito.anyInt())).thenReturn(null);
+        Assert.assertEquals(classroomService.getTrainerHistory(Mockito.mock(PageRequest.class), false), null);
+    }
+
+    @Test
+    public void getTrainerHistory_WhenMarked_Test() {
+        User user = User.builder().role(Role.builder().value("ADMIN").build()).build();
+        when(userService.getUserFromSession()).thenReturn(user);
+        when(classroomRepository.getMarkedTrainerClassroomHistory(
+                Mockito.any(PageRequest.class), Mockito.anyInt())).thenReturn(null);
+        Assert.assertEquals(classroomService.getTrainerHistory(Mockito.mock(PageRequest.class), true), null);
+    }
 
 //    @After
 //    public void tearDown(){
