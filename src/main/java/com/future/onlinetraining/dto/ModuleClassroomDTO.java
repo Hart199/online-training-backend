@@ -53,7 +53,7 @@ public class ModuleClassroomDTO {
         String name;
 
         @NotEmpty
-        @Size(min = 6, max = 32)
+        @Size(min = 6)
         String description;
 
         @Min(30)
