@@ -11,18 +11,14 @@ import com.future.onlinetraining.repository.*;
 import com.future.onlinetraining.service.*;
 import com.future.onlinetraining.entity.User;
 import com.future.onlinetraining.repository.UserRepository;
-import com.future.onlinetraining.utility.TimeHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,8 +51,6 @@ public class ClassroomServiceImpl<T> implements ClassroomService {
     ClassroomRequestService classroomRequestService;
     @Autowired
     ClassroomSessionService classroomSessionService;
-    @Autowired
-    TimeHelper timeHelper;
 
     @Override
     public Page<Classroom> getAllPageableClassroom() {
