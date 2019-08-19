@@ -1,10 +1,14 @@
-package com.future.onlinetraining.service;
+package com.future.onlinetraining.service.impl;
 
 import com.future.onlinetraining.dto.*;
 import com.future.onlinetraining.entity.*;
 import com.future.onlinetraining.entity.projection.ClassroomData;
 import com.future.onlinetraining.entity.projection.ClassroomDetailData;
 import com.future.onlinetraining.repository.*;
+import com.future.onlinetraining.service.ClassroomRequestService;
+import com.future.onlinetraining.service.ClassroomService;
+import com.future.onlinetraining.service.ClassroomSessionService;
+import com.future.onlinetraining.service.UserService;
 import com.future.onlinetraining.service.impl.ClassroomServiceImpl;
 import com.future.onlinetraining.entity.Role;
 import com.future.onlinetraining.entity.User;
@@ -32,7 +36,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ClassroomServiceTest {
+public class ClassroomServiceImplTest {
 
     @InjectMocks
     private ClassroomServiceImpl classroomService;
